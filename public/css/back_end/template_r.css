@@ -1,0 +1,142 @@
+main{
+    overflow-y: auto !important;
+}
+
+section{
+    margin-left: 34vw;
+    width:100%;
+}
+.btn_area{
+    width:100%;
+    padding:0 4% 1% 4%;
+    border-bottom: 1px solid #BEBEBE;
+    font-size: 24px;
+}
+.btn_area > button{
+    font-size: 1em;
+    width:8.5vw;
+    background-color: white;
+    border-radius: 30px;
+    font-weight: bold;
+    border: 2px solid #6C6C6C;
+    padding:0.2em 0.5em;
+    transition: 0.3s;
+}
+.btn_area > button:hover{
+    background-color: #6C6C6C	;
+    color: white;
+}
+.btn_area > label{
+    float: right;
+    font-size: 1em;
+    margin-right: 0.5em;
+}
+.btn_area > select{
+    float: right;
+    font-size: 1em;
+    width:8vw;
+    border-radius: 30px;
+    padding:0.2em 0.5em;
+}
+.content{
+    width:100%;
+    padding:2%;
+    font-size: 24px;
+}
+.data_table > .d_table{
+    width:63%;
+    border: 1px solid #D0D0D0	;
+    font-size: 24px;
+    margin:1%;
+    border-radius: 10px;
+    overflow-x: hidden;
+    
+}
+
+.data_table > .t_table{
+    width:33%;
+    border: 1px solid #D0D0D0	;
+    font-size: 24px;
+    margin:1%;
+    border-radius: 10px;
+    overflow-x: hidden;
+}
+
+.table_title{
+    width:100%;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding:0.2em 0.1em 0.2em 1em;
+    background-color:#D0D0D0	;
+}
+.r_table > table{
+    width:100%;
+    text-align: center;
+}
+
+.r_table  th{
+    font-size: 1em;
+    padding:0.7em;
+}
+.r_table  tr{
+    transition: 0.3s;
+    cursor: pointer;
+}
+.r_table  tr:nth-child(even){
+    background-color: #F0F0F0;
+    transition: 0.3s;
+}
+.r_table  tr:hover{
+    background-color: #BEBEBE	;
+}
+.r_table  td{
+    font-size: 1em;
+    padding:0.7em;
+}
+.r_table > table  img{
+    height:1.5em;
+    width:1.5em;
+    transition: 0.3s;
+}
+.r_table > table  img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+@media (max-width:1600px){
+    section{
+        margin-left: 34vw;
+        width:100%;
+    }
+    .btn_area{
+        font-size: 20px;
+    }
+    .content{
+        font-size: 20px;
+    }
+}
+
+@media (max-width:1280px){
+    
+    section{
+        margin-left: 34vw;
+        width:100%;
+    }
+    .btn_area{
+        font-size: 16px;
+    }
+    .content{
+        font-size: 16px;
+    }
+    
+}
+
+
+
+
+

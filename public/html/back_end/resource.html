@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>DSN管理後臺-資源管理</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/back_end/resource.css" rel="stylesheet">
+    <link href="../../css/back_end/sidebars.css" rel="stylesheet">
+    <link href="../../css/back_end/data_block_list.css" rel="stylesheet">
+</head>
+<body>
+    <main class="d-flex flex-nowrap">
+        <div class="flex-shrink-0 p-3" style="position: fixed;">
+            <a href="./" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
+            <img src="../../img/resource.png" style="margin-right:5%">
+            <span class="fs-2 fw-semibold">DSN管理後臺</span>
+            </a>
+            <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <img src="../../img/resource.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    資源管理
+                    </button>
+                    <div class="collapse show" id="home-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/monitor.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                    監控管理
+                    </button>
+                    <div class="collapse" id="dashboard-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">客流數據</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">網站監視器</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增監視器</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/supplier.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    供應商管理
+                    </button>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/language.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
+                    語言管理
+                    </button>
+                    <div class="collapse" id="language-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
+                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <img src="../../img/member.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+                    管理員
+                    </button>
+                    <div class="collapse" id="account-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            
+        </div>
+        <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
+        <section>
+            <div class="container-breadcrumb my-2">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item">
+                      <a class="link-body-emphasis" href="#">
+                        <img src="../../img/resource.png">
+                        <span class="visually-hidden fs-4">DSN管理系統</span>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
+                    </li>
+                  </ol>
+                </nav>
+            </div>
+            <div class="content">
+                <div class="data_block_list">
+                    <div class="data_block"><p>12</p><span>總資源數量</span></div>
+                    <div class="data_block"><p>10</p><span>上架數量</span></div>
+                    <div class="data_block"><p>2</p><span>下架數量</span></div>
+                    <div class="data_block"><p>5</p><span>模板數量</span></div>
+                    <div class="data_block block_click" onclick="url('')"><p><img src="../../img/resource.png"></p><span>新增需求</span></div>
+                    <div class="data_block block_click" onclick="url('')"><p><img src="../../img/resource.png"></p><span>新增模板</span></div>
+                </div>
+                <div class="data_table">
+                    <div class="d_table">
+                        <div class="table_title">需求種類</div>
+                        <table>
+                            <tr><th>需求名稱</th><th>需求資源數</th><th>上架數量</th><th>下架數量</th><th>刪除</th></tr>
+                            <!-- <tr><td>經濟資訊</td><td>10</td><td>3</td><td>7</td><td><img src="../../img/bin.png"></td></tr> -->
+                        </table>
+                    </div>
+                    <div class="t_table">
+                        <div class="table_title">資源模板</div>
+                        <table>
+                            <tr><th>模板名稱</th><th>使用數量</th></tr>
+                            <!-- <tr><td>模板1</td><td>10</td></tr> -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/resource.js"></script>
+<script src="../../js/back_end/data_block_list.js"></script>
+<script>
+    setData_block(0,5);
+    setData_block(1,4);
+    setData_block(2,3);
+    setData_block(3,2);
+    setResource({
+        "Demand":[{
+            "D_Name" : "經濟資源",
+            "D_Resource" : 10,
+            "D_On_Shelf" : 5,
+            "D_Down_Shelf" : 5
+        },
+        {
+            "D_Name" : "緊急資源",
+            "D_Resource" : 8,
+            "D_On_Shelf" : 3,
+            "D_Down_Shelf" : 5
+        }],
+        "Template":[{
+            "T_Name" : "模板1",
+            "T_Use" : 2,
+        },
+        {
+            "T_Name" : "模板2",
+            "T_Use" : 1,
+        }]
+    });
+</script>
+</html>

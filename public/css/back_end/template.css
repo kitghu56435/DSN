@@ -1,0 +1,117 @@
+main{
+    overflow-y: auto !important;
+}
+
+section{
+    margin-left: 22vw;
+    width:100%;
+}
+
+
+
+
+.data_table{
+    display: flex;
+    width:100%;
+}
+
+.data_table > .t_table{
+    width:92%;
+    border: 1px solid #D0D0D0;
+    margin:2% 4% 0 4%;
+    border-radius: 10px;
+    overflow-x: hidden;
+    font-size: 24px;
+}
+
+
+.table_title{
+    width:100%;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding:0.2em 0.1em 0.2em 1em;
+    background-color:#D0D0D0	;
+}
+.t_table > table{
+    width:100%;
+    text-align: center;
+}
+
+.t_table  th{
+    font-size: 1em;
+    padding:0.7em;
+}
+.t_table  tr{
+    transition: 0.3s;
+    cursor: pointer;
+}
+.t_table  tr:nth-child(even){
+    background-color: #F0F0F0;
+    transition: 0.3s;
+}
+.t_table  tr:hover{
+    background-color: #BEBEBE	;
+}
+.t_table  td{
+    font-size: 1em;
+    padding:0.7em;
+}
+.t_table > table  img{
+    height:1.5em;
+    width:1.5em;
+    transition: 0.3s;
+}
+.t_table  select{
+    font-size: 1em;
+    padding:0.2em;
+    width:70%;
+    border-radius: 10px;
+}
+.t_table > table  img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+
+
+
+@media (max-width:1600px){
+    
+    section{
+        margin-left: 22vw;
+        width:100%;
+    }
+    
+    
+    .data_table > .t_table{
+        font-size: 20px;
+    }
+    
+
+    .t_table > table  img{
+        height:1.4em;
+        width:1.4em;
+    }
+}
+
+@media (max-width:1280px){
+    
+    section{
+        margin-left: 22vw;
+        width:100%;
+    }
+    .data_table > .t_table{
+        font-size: 16px;
+    }
+    
+    
+    .t_table > table  img{
+        height:1.4em;
+        width:1.4em;
+    }
+}
+
+
+
+
+

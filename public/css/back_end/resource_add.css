@@ -1,0 +1,101 @@
+main{
+    overflow-y: auto !important;
+}
+
+section{
+    margin-left: 22vw;
+    width:100%;
+}
+.btn_area{
+    width:100%;
+    padding:0 4% 1% 4%;
+    border-bottom: 1px solid #BEBEBE;
+    font-size: 24px;
+}
+.btn_area > button{
+    font-size: 1em;
+    width:8.5vw;
+    background-color: white;
+    border-radius: 30px;
+    font-weight: bold;
+    border: 2px solid #6C6C6C;
+    padding:0.2em 0.5em;
+    transition: 0.3s;
+}
+.btn_area > button:hover{
+    background-color: #6C6C6C	;
+    color: white;
+}
+.btn_area > label{
+    float: right;
+    font-size: 1em;
+    margin-right: 0.5em;
+}
+.btn_area > select{
+    float: right;
+    font-size: 1em;
+    width:8vw;
+    border-radius: 30px;
+    padding:0.2em 0.5em;
+}
+.content{
+    width:100%;
+    padding:2%;
+    font-size: 24px;
+}
+.content > table{
+    width:60%;
+}
+.content th{
+    width: 10%;
+    padding:0.2em 1em 0.2em 1em;
+}
+.content td{
+    width: 40%;
+    padding:0.2em 1em 0.2em 1em;
+}
+.content input,.content select{
+    padding:0.2em;
+    width: 90%;
+}
+
+
+
+
+
+
+
+
+
+@media (max-width:1600px){
+    section{
+        margin-left: 22vw;
+        width:100%;
+    }
+    .btn_area{
+        font-size: 20px;
+    }
+    .content{
+        font-size: 20px;
+    }
+}
+
+@media (max-width:1280px){
+    
+    section{
+        margin-left: 22vw;
+        width:100%;
+    }
+    .btn_area{
+        font-size: 16px;
+    }
+    .content{
+        font-size: 16px;
+    }
+    
+}
+
+
+
+
+

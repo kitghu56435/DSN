@@ -1,0 +1,128 @@
+.selector-for-some-widget {
+    box-sizing: content-box;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.nav-link-hover{
+    white-space:nowrap;
+}
+.nav-link-hover:hover + .nav-link-hover-menu{
+    display: block;
+}
+.nav-link-hover:hover{
+    opacity: 0.8;
+}
+.nav-link-hr{
+    margin:auto;
+    margin-top:0.1px;
+    margin-bottom: 0.1px;
+    width:90%;
+}
+.nav-link-hover-menu:hover{
+    display: block;
+}
+
+.nav-link-hover-menu{
+    position: absolute;
+    list-style: none;
+    padding-left:0%;
+    background-color: white;
+    width:220px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #ADADAD;
+    display: none;
+}
+.dropdown-hover-item{
+    font-size: 16px;
+    color: black;
+    padding:4% 0 4% 8%;
+    margin:2% 0 2% 0;
+    display: block;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.dropdown-hover-item:hover{
+    background-color:#66B3FF;
+    color: white;
+    font-weight: bold;
+}
+
+
+.footer_div{
+    padding-right:8%;
+    padding-left:8%;
+}
+
+
+.cookie_msg{
+    position: fixed;
+    z-index: 9999;
+    top:72%;
+    left: 2%;
+    width:30vw;
+    height:200px;
+    background-color: #CECEFF;
+    border-radius: 10px;
+    padding:1% 2% 2% 2%;
+    font-size: 20px;
+}
+.cookie_msg  img{
+    margin-right:-10px;
+    height:1.3em;
+    width:1.3em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.cookie_msg  img:hover{
+    transform: scale(1.08);
+}
+.cookie_msg .no{
+    border: 1px solid white;
+    font-size: 1em;
+    background-color: #CECEFF;
+    color:white;
+    padding:0.2em 2em 0.2em 2em;
+    border-radius: 5px;
+    margin-right:2em;
+    transition: 0.3s;
+}
+.cookie_msg .no:hover{
+    background-color: white;
+    color:black;
+}
+.cookie_msg .yes{
+    border: 0;
+    font-size: 1em;
+    background-color:#4A4AFF	;
+    color:white;
+    padding:0.2em 2em 0.2em 2em;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.cookie_msg .yes:hover{
+    background-color:#000093	;
+}
+
+
+
+@media (max-width:1600px){
+    .cookie_msg{
+        top:72%;
+        height:170px;
+        padding:1% 2% 2% 2%;
+        font-size: 16px;
+    }
+}
+
+@media (max-width:1280px){
+    .cookie_msg{
+        top:72%;
+        height:140px;
+        padding:1% 2% 2% 2%;
+        font-size: 14px;
+    }
+}
+
