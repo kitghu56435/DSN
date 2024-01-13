@@ -122,7 +122,7 @@
             </div>
             <div class="content">
                 <table>
-                    <tr><th>模板名稱</th><td><input type="text" placeholder="請輸入模板名稱"></td></tr>
+                    <tr><th>模板名稱</th><td><input name="T_Name" type="text" placeholder="請輸入模板名稱"></td></tr>
                 </table>
             </div>
         </section>
@@ -130,4 +130,10 @@
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/template.js"></script>
+<script>
+    setTemplate_setting({
+        "T_Name" : "模板名稱"
+    })
+</script>
 </html>

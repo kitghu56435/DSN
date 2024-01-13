@@ -128,21 +128,88 @@
                     <span>連結標籤：1</span>
                 </p>
                 <div class="html_area">
-                    <div class="text_container">
-                        <span>模板標籤：RFITI223</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>模板提示：資源的介紹1</span>
-                        <textarea placeholder="請輸入內容..."></textarea>
+                    <div class="container2_title">
+                        <div class="item">
+                            <div class="item_title">項目ID(標題)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <input placeholder="請輸入標題">
+                            </div>
+                        </div>
+                        
                     </div>
-                    <div class="text_container">
-                        <span>模板標籤：RFITI223</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>模板提示：資源的介紹1</span>
-                        <textarea placeholder="請輸入內容..."></textarea>
+                    <div class="container2">
+                        <div class="item">
+                            <div class="item_title">項目ID(文字)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <textarea placeholder="請輸入文字內容"></textarea>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item_title">項目ID(連結)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <textarea placeholder="請輸入文字內容"></textarea>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item_title">項目ID(照片)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <img src="../../img/plus.png" title="上傳照片">
+                            </div>
+                        </div>
                     </div>
-                    <div class="img_container">
-                        <span>模板標籤：RFITI223</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span>模板提示：資源的介紹的照片(500x500)</span><br>
-                        <input type="file">
-                        <img src="../../img/p1.jpg">
+                    <div class="container2">
+                        <div class="item">
+                            <div class="item_title">項目ID(文字)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <textarea placeholder="請輸入文字內容"></textarea>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="item_title">項目ID(照片)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <img src="../../img/plus.png" title="上傳照片">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container2_title">
+                        <div class="item">
+                            <div class="item_title">項目ID(標題)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <input placeholder="請輸入標題">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container2">
+                        <div class="item">
+                            <div class="item_title">項目ID(文字)</div>
+                            <div class="item_label">
+                                <span>項目提示：.....</span>
+                            </div>
+                            <div class="item_content">
+                                <textarea placeholder="請輸入文字內容"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -151,4 +218,50 @@
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/template.js"></script>
+<script>
+
+    setTemplate_edit({
+        "all_label" : 4,
+        "text_label" : 2,
+        "img_label" : 1,
+        "url_label" : 1,
+        "container" : [
+            {
+                "type" : "title",
+                "item" : 1,
+                "note" : ["最上面的標題"],
+                "id" : ["qweqew"],
+                "item_type" : ["text"],
+                "content" : ["頁面標題"]
+            },
+            {
+                "type" : "content",
+                "item" : 2,
+                "note" : ["左邊的文章","右邊的照片"],
+                "id" : ["231231","we12312"],
+                "item_type" : ["text","img"],
+                "content" :["文章","p1.jpg"]
+            },
+            {
+                "type" : "content",
+                "item" : 3,
+                "note" : ["三個都是照片","",""],
+                "id" : ["z21231","z31231","z123123"],
+                "item_type" : ["img","img","img"],
+                "content" :["p1.jpg","p1.jpg",""]
+            },
+            {
+                "type" : "content",
+                "item" : 4,
+                "note" : ["","","",""],
+                "id" : ["z21231","z31231","z123123","z123123"],
+                "item_type" : ["url","url","url",'url'],
+                "content" :["p1.jpg","p1.jpg","",""]
+            },
+        ]
+    })    
+</script>
 </html>
+
+

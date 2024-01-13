@@ -110,7 +110,7 @@
             </div>
             <div class="content">
                 <div class="data_block_list">
-                    <div class="data_block"><p>12</p><span>模板數量</span></div>
+                    <div class="data_block"><p>0</p><span>模板數量</span></div>
                     <div class="data_block block_click"><p><img src="../../img/resource.png"></p><span>新增模板</span></div>
                 </div>
                 <div class="data_table">
@@ -118,27 +118,14 @@
                         <div class="table_title">模板清單</div>
                         <table>
                             <tr><th style="width:20%">模板名稱</th><th style="width:15%">套用數量</th><th style="width:15%">模板下載</th><th style="width:30%">使用資源</th><th style="width:20%">刪除</th></tr>
-                            <tr><td>模板1</td><td>1</td><td><img src="../../img/download.png"></td><td>
+                            <tr><td colspan="5">無資料</td></tr>
+                            <!-- <tr><td>模板1</td><td>1</td><td><img src="../../img/download.png"></td><td>
                                 <select>
                                     <option>資源1</option>
                                     <option>資源2</option>
                                     <option>資源3</option>
                                 </select>
-                            </td><td><img src="../../img/bin.png"></td></tr>
-                            <tr><td>模板2</td><td>1</td><td><img src="../../img/download.png"></td><td>
-                                <select>
-                                    <option>資源1</option>
-                                    <option>資源2</option>
-                                    <option>資源3</option>
-                                </select>
-                            </td><td><img src="../../img/bin.png"></td></tr>
-                            <tr><td>模板3</td><td>1</td><td><img src="../../img/download.png"></td><td>
-                                <select>
-                                    <option>資源1</option>
-                                    <option>資源2</option>
-                                    <option>資源3</option>
-                                </select>
-                            </td><td><img src="../../img/bin.png"></td></tr>
+                            </td><td><img src="../../img/bin.png"></td></tr> -->
                         </table>
                     </div>
                 </div>
@@ -148,4 +135,28 @@
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/template.js"></script>
+<script src="../../js/back_end/data_block_list.js"></script>
+<script>
+    setData_block(0,5);
+    setTemplate({
+        "template" : [
+            {
+                "T_Name" : "模板1",
+                "T_Use" : 2,
+                "T_Resource" : ["資源1","資源2","資源3"],
+            },
+            {
+                "T_Name" : "模板2",
+                "T_Use" : 1,
+                "T_Resource" : ["資源1","資源2","資源3"],
+            },
+            {
+                "T_Name" : "模板3",
+                "T_Use" : 4,
+                "T_Resource" : ["資源1","資源2","資源3"],
+            },
+        ]
+    })
+</script>
 </html>

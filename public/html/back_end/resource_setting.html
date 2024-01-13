@@ -90,6 +90,7 @@
             <a href="" >資源編輯</a>
             <a href="" style="background-color: #7B7B7B;color: white;">資源設定</a>
             <a href="">資源回饋</a>
+            <a href="">資源供應商</a>
             <a href="">刪除資源</a>
         </div>
         <section>
@@ -121,29 +122,121 @@
                 <button>儲存</button>
                 <button>下架資源</button>
                 <button>查看資源</button>
+                <select class="lang">
+                    <option>中文</option>
+                </select>
+                <label>選擇語言</label>
             </div>
             <div class="content">
-                <table>
-                    <tr><th>資源名稱</th><td><input type="text" placeholder="請輸入資源名稱"></td></tr>
-                    <tr><th>選擇模組</th><td>
-                        <select>
-                            <option>模組1</option>
-                            <option>模組2</option>
-                        </select>
-                    </td></tr>
-                    <tr><th>資源需求</th><td>
-                        <select>
-                            <option>經濟資訊</option>
-                            <option>法律資訊</option>
-                            <option>緊急資訊</option>
-                        </select>
-                    </td></tr>
-                    <tr><th>供應商</th><td><input type="text" placeholder="請選擇資源供應商"></td></tr>
-                </table>
+                <div class="data_area">
+                    <table>
+                        <tr><th>資源名稱</th><td><input name="R_Name" type="text" placeholder="請輸入資源名稱"></td></tr>
+                        <tr><th>選擇模組</th><td>
+                            <select name="T_ID">
+                                <option value="">無資料</option>
+                                <!-- <option value="">模組1</option> -->
+                            </select>
+                        </td></tr>
+                        <tr><th>資源需求</th><td>
+                            <select name="D_ID">
+                                <option value="">無資料</option>
+                                <!-- <option value="">無資料</option> -->
+                            </select>
+                        </td></tr>
+                    </table>
+                </div>
+                <div class="supplier_area">
+                    <div class="s_table">
+                        <div class="table_title">綁定供應商</div>
+                        <div class="scroll">
+                            <table id="s_table">
+                                <tr><th>供應商序號</th><th>供應商名稱</th><th>勾選</th></tr>
+                                <tr><td colspan="3">無資料</td></tr>
+                                <!-- <tr onclick="checkbox('c1')"><td>S000000001</td><td>供應商1</td><td><input id="c1" type="checkbox"></td></tr> -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/resource.js"></script>
+<script>
+    setResource_setting({
+        "leng" : ['中文','英文'],
+        "R_Name" : "獎(助)學金",
+        "T_ID" : "T000000002",
+        "D_ID" : "D000000002",
+        "T_List" : [
+            {
+                "T_Name" : "模板1",
+                "T_ID" : "T000000001"
+            },
+            {
+                "T_Name" : "模板2",
+                "T_ID" : "T000000002"
+            },
+        ],
+        "D_List" : [
+            {
+                "D_Name" : "經濟資訊",
+                "D_ID" : "D000000001"
+            },
+            {
+                "D_Name" : "緊急資訊",
+                "D_ID" : "D000000002"
+            },
+        ],
+        "S_List" : [
+            {
+                "S_Name" : "供應商1",
+                "S_ID" : "S000000001",
+                "S_Check" : true
+            },
+            {
+                "S_Name" : "供應商2",
+                "S_ID" : "S000000002",
+                "S_Check" : false
+            },
+            {
+                "S_Name" : "供應商3",
+                "S_ID" : "S000000003",
+                "S_Check" : true
+            },
+            {
+                "S_Name" : "供應商4",
+                "S_ID" : "S000000004",
+                "S_Check" : false
+            },
+            {
+                "S_Name" : "供應商4",
+                "S_ID" : "S000000004",
+                "S_Check" : false
+            },
+            {
+                "S_Name" : "供應商4",
+                "S_ID" : "S000000004",
+                "S_Check" : false
+            },
+            {
+                "S_Name" : "供應商4",
+                "S_ID" : "S000000004",
+                "S_Check" : false
+            },
+            {
+                "S_Name" : "供應商4",
+                "S_ID" : "S000000004",
+                "S_Check" : false
+            },
+            {
+                "S_Name" : "供應商4",
+                "S_ID" : "S000000004",
+                "S_Check" : false
+            },
+        ]
+    })
+</script>
 </html>

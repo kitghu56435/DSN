@@ -42,31 +42,21 @@ section{
     width:100%;
     padding:2%;
     font-size: 24px;
-    display: flex;
-}
-.content > .data_area{
-    width:50%;
-}
-.data_area  th{
-    width: 25%;
-    padding:0.2em 1em 0.2em 1em;
-}
-.data_area  td{
-    width: 75%;
-    padding:0.2em 1em 0.2em 1em;
-}
-.data_area input,.data_area select{
-    padding:0.2em;
-    width: 100%;
 }
 
-.supplier_area{
-    width:50%;
-}
 .s_table{
     width:100%;
     border: 1px solid #D0D0D0	;
-    font-size: 24px;
+    font-size: 1em;
+    margin:1%;
+    border-radius: 10px;
+    margin-bottom: 2%;
+    overflow-x: hidden;
+}
+.s_table_p{
+    width:60%;
+    border: 1px solid #D0D0D0	;
+    font-size: 1em;
     margin:1%;
     border-radius: 10px;
     overflow-x: hidden;
@@ -79,39 +69,37 @@ section{
     padding:0.2em 0.1em 0.2em 1em;
     background-color:#D0D0D0	;
 }
-.s_table .scroll{
-    height: 65vh;
-    overflow-y: scroll;
-}
-.s_table  table{
+.s_table > table,.s_table_p > table{
     width:100%;
     text-align: center;
 }
 
-.s_table  th{
-    font-size: 1em;
+.s_table  th,.s_table_p  th{
     padding:0.7em;
 }
-.s_table  tr{
+.s_table  tr,.s_table_p  tr{
     transition: 0.3s;
     cursor: pointer;
 }
-.s_table  tr:nth-child(even){
+.s_table  tr:nth-child(even),.s_table_p  tr:nth-child(even){
     background-color: #F0F0F0;
     transition: 0.3s;
 }
-.s_table  tr:hover{
+.s_table  tr:hover,.s_table_p  tr:hover{
     background-color: #BEBEBE	;
 }
-.s_table  td{
-    font-size: 1em;
+.s_table  td,.s_table_p  td{
     padding:0.7em;
 }
-.s_table  td input[type='checkbox']{
-    height: 1em;
-    width:1em;
+.s_table > table  img,.s_table_p > table  img{
+    height:1.5em;
+    width:1.5em;
+    transition: 0.3s;
 }
-
+.s_table > table  img:hover,.s_table_p > table  img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
 
 
 

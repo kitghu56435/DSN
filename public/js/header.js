@@ -1,5 +1,5 @@
 window.onresize = header_nav_check;
-header_nav_check();
+
 function header_nav_check(){
     let nav_item = document.getElementsByClassName('nav-item');
     if(window.innerWidth >= 768){
@@ -31,7 +31,7 @@ function header_nav_check(){
     }
 }
 
-cookie_msg()   //cookie 後端設置
+
 function cookie_msg(){
     let cookie_msg = document.getElementsByClassName('cookie_msg')[0];
     let body = document.getElementsByTagName('body')[0];

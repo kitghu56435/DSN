@@ -6,13 +6,13 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>DSN管理後臺-語言管理</title>
+    <title>DSN管理後臺-資源名稱</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/back_end/language.css" rel="stylesheet">
+    <link href="../../css/back_end/resource_supplier.css" rel="stylesheet">
     <link href="../../css/back_end/sidebars.css" rel="stylesheet">
-    <link href="../../css/back_end/data_block_list.css" rel="stylesheet">
+    <link href="../../css/back_end/sidebars2.css" rel="stylesheet">
 </head>
 <body>
     <main class="d-flex flex-nowrap">
@@ -24,10 +24,10 @@
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
                     <img src="../../img/resource.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                     資源管理
                     </button>
-                    <div class="collapse" id="home-collapse">
+                    <div class="collapse show" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
                     </ul>
@@ -60,10 +60,10 @@
                 </li>
                 <li class="mb-1">
                     <img src="../../img/language.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="true">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
                     語言管理
                     </button>
-                    <div class="collapse show" id="language-collapse">
+                    <div class="collapse" id="language-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
                             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
@@ -86,68 +86,58 @@
             
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
+        <div class="sidebars2">
+            <a href="">資源編輯</a>
+            <a href="">資源設定</a>
+            <a href="">資源回饋</a>
+            <a href="" style="background-color: #7B7B7B;color: white;">資源供應商</a>
+            <a href="">刪除資源</a>
+        </div>
         <section>
             <div class="container-breadcrumb my-2">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
                       <a class="link-body-emphasis" href="#">
-                        <img src="../../img/language.png">
+                        <img src="../../img/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">語言管理</a>
-                    </li>
-                    <!-- <li class="breadcrumb-item fs-4">
                         <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
-                    </li> -->
-                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
-                      Data
-                    </li> -->
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">經濟資訊</a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">獎(助)學金</a>
+                    </li>
                   </ol>
                 </nav>
             </div>
+            <div class="btn_area">
+                <button>下架資源</button>
+                <button>查看資源</button>
+            </div>
             <div class="content">
-                <div class="data_block_list">
-                    <div class="data_block"><p>3</p><span>語言數量</span></div>
-                    <div class="data_block"><p>3</p><span>靜態頁面</span></div>
-                    <div class="data_block block_click"><p><img src="../../img/language.png"></p><span>新增語言</span></div>
+                <p class="lable_area">
+                    <span class="number">供應商數量：0</span>
+                </p>
+                <div class="s_table">
+                    <div class="table_title">供應商資訊</div>
+                    <table>
+                        <tr><th style="width:20%">供應商名稱</th><th style="width:20%">供應商電話</th><th style="width:20%">供應商網站</th><th style="width:45%">供應商備註</th></tr>
+                        <tr><td colspan="4">無資料</td></tr>
+                        <!-- <tr><td>供應商1</td><td>0933444333</td><td><a href="https://www.google.com" target="_blank"><img src="../../img/language.png"></a></td><td>備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註備註</td></tr> -->
+                    </table>
                 </div>
-                <div class="data_table">
-                    <div class="d_table">
-                        <div class="table_title">語言清單</div>
-                        <table>
-                            <tr><th>語言名稱</th><th>套用數量</th><th>建立時間</th><th>刪除</th></tr>
-                            <tr><td>中文</td><td>10</td><td>2023年12月12日 12:12:12</td><td><img src="../../img/bin.png"></td></tr>
-                            <tr><td>英文</td><td>10</td><td>2023年12月12日 12:12:12</td><td><img src="../../img/bin.png"></td></tr>
-                            <tr><td>法文</td><td>10</td><td>2023年12月12日 12:12:12</td><td><img src="../../img/bin.png"></td></tr>
-                        </table>
-                    </div>
-                    <div class="t_table">
-                        <div class="table_title">靜態頁面</div>
-                        <table>
-                            <tr><th>網頁名稱</th><th>套用語言</th></tr>
-                            <tr><td>首頁</td><td>
-                                <select>
-                                    <option>英文</option>
-                                    <option>中文</option>
-                                </select>
-                            </td></tr>
-                            <tr><td>關於我們</td><td>
-                                <select>
-                                    <option>英文</option>
-                                    <option>中文</option>
-                                </select>
-                            </td></tr>
-                            <tr><td>新手上路</td><td>
-                                <select>
-                                    <option>英文</option>
-                                    <option>中文</option>
-                                </select>
-                            </td></tr>
-                        </table>
-                    </div>
+                <div class="s_table_p">
+                    <div class="table_title">供應商聯絡人</div>
+                    <table>
+                        <tr><th>供應商名稱</th><th>聯絡人</th><th>聯絡電話</th></tr>
+                        <tr><td colspan="3">無資料</td></tr>
+                        <!-- <tr><td>供應商1</td><td>贓火歌</td><td>d0930030303</td></tr> -->
+                    </table>
                 </div>
             </div>
         </section>
@@ -155,34 +145,35 @@
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
-<script src="../../js/back_end/language.js"></script>
-<script src="../../js/back_end/data_block_list.js"></script>
+<script src="../../js/back_end/resource.js"></script>
 <script>
-    setData_block(0,5);
-    setData_block(1,4);
-    setLanguage({
-        "Language":[{
-            "L_Name" : "中文",
-            "L_Use" : 2,
-            "L_Date" : '2023年12月12月 12:12:12',
-        },
-        {
-            "L_Name" : "英文",
-            "L_Use" : 4,
-            "L_Date" : '2023年12月12月 12:12:12',
-        }],
-        "Static":[{
-            "Static_Name" : "首頁",
-            "Static_Use" : ["中文","英文"],
-        },
-        {
-            "Static_Name" : "新手上路",
-            "Static_Use" : ["中文","英文"],
-        },
-        {
-            "Static_Name" : "關於我們",
-            "Static_Use" : ["中文","英文"],
-        }]
-    });
+    setResource_supplier({
+        "S_Info" : [
+            {
+                "S_Name" : "供應商1",
+                "S_Phone" : "0900222333",
+                "S_Wed" : "https://www.google.com",
+                "S_Remark" : "備註備註備註備註備註備註備註",
+            },
+            {
+                "S_Name" : "供應商2",
+                "S_Phone" : "0900222333",
+                "S_Wed" : "https://www.google.com",
+                "S_Remark" : "備註備註備註備註備註備註備註",
+            },
+        ],
+        "S_Info_p" : [
+            {
+                "S_Name" : "供應商1",
+                "S_Manager" : "火箭浣熊",
+                "S_Manager_phone" : "093344000",
+            },
+            {
+                "S_Name" : "供應商2",
+                "S_Manager" : "火箭浣熊",
+                "S_Manager_phone" : "093344000",
+            },
+        ]
+    })
 </script>
 </html>

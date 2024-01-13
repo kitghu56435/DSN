@@ -91,6 +91,7 @@
             <a href="" >資源編輯</a>
             <a href="">資源設定</a>
             <a href="" style="background-color: #7B7B7B;color: white;">資源回饋</a>
+            <a href="">資源供應商</a>
             <a href="">刪除資源</a>
         </div>
         <section>
@@ -122,7 +123,6 @@
                 <button>下架資源</button>
                 <button>查看資源</button>
             </div>
-            <!-- 繼續做動畫 -->
             <div class="content">
                 <p class="lable_area">
                     <span>回饋數量：3</span>
@@ -159,4 +159,23 @@
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/resource.js"></script>
+<script>
+    setResource_feedback({
+        "feedback":[
+            {
+                "RF_ID" : "RD00000001",
+                "RF_Content" : "內容內容內容內容內容內容內容內容內容內容",
+                "RF_Date" : "2023年12月12日 12:12:12"
+            },{
+                "RF_ID" : "RD00000002",
+                "RF_Content" : "內容內容內容內容內容內容內容內容內容內容",
+                "RF_Date" : "2023年12月12日 12:12:12"
+            },{
+                "RF_ID" : "RD00000003",
+                "RF_Content" : "內容內容內容內容內容內容內容內容內容內容",
+                "RF_Date" : "2023年12月12日 12:12:12"
+            }
+        ]})
+</script>
 </html>

@@ -121,13 +121,16 @@
                 <button>預覽模板</button>
             </div>
             <div class="content">
+                <p class="lable_area">
+                    <span class="number">套用數量：0</span>
+                </p>
                 <div class="r_table">
                     <div class="table_title">套用資源</div>
                     <table>
-                        <tr><th>資源名稱</th><th>需求名稱</th><th>上架數量</th><th>下架數量</th></tr>
-                        <tr><td>中/低收入戶</td><td>經濟資源</td><td>3</td><td>7</td></tr>
-                        <tr><td>急難救助</td><td>經濟資源</td><td>3</td><td>7</td></tr>
-                        <tr><td>獎(助)學金</td><td>經濟資源</td><td>3</td><td>7</td></tr>
+                        <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>
+                        <tr><td>中/低收入戶</td><td>經濟資源</td><td><img src="../../img/language.png"></td></tr>
+                        <tr><td>急難救助</td><td>經濟資源</td><td><img src="../../img/language.png"></td></tr>
+                        <tr><td>獎(助)學金</td><td>經濟資源</td><td><img src="../../img/language.png"></td></tr>
                     </table>
                 </div>
             </div>
@@ -136,4 +139,16 @@
 </body>
 <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/back_end/sidebars.js"></script>
+<script src="../../js/back_end/template.js"></script>
+<script>
+    setTemplate_r({
+        "resource" : [
+            {
+                "R_ID" : "R000000001",
+                "R_Name" : "資源名稱",
+                "D_Name" : "需求名稱",
+            }
+        ]
+    })
+</script>
 </html>
