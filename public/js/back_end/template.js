@@ -31,13 +31,13 @@ function setTemplate(data){
                     R_value_array.push(data.template[i].T_Resource[j]);
                 }
                 
-                str += `<tr><td>${data.template[i].T_Name}</td><td>${data.template[i].T_Use}</td><td><img src="../../img/download.png"></td><td>
+                str += `<tr><td>${data.template[i].T_Name}</td><td>${data.template[i].T_Use}</td><td><a href="../../html/template/${data.template[i].T_Path}" download="${data.template[i].T_Path}"><img src="../../img/download.png"></a></td><td>
                 <select>
                     ${Select_Option_HTML('',R_value_array,R_value_array)}
                 </select>
                 </td><td><img src="../../img/bin.png"></td></tr>`;
             }
-            console.log(str)
+            
             t_table.innerHTML = str;
         }
         

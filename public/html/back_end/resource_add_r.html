@@ -28,13 +28,19 @@
                     </button>
                     <div class="collapse show" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                        <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                        <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
                 </li>
@@ -77,7 +83,7 @@
                     </button>
                     <div class="collapse" id="account-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                            <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
                         </ul>
                     </div>
                 </li>
@@ -90,16 +96,16 @@
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                      <a class="link-body-emphasis" href="#">
+                      <a class="link-body-emphasis" href="/backend/resource">
                         <img src="../../img/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource">資源管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">新增資源</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource/add_r">新增資源</a>
                     </li>
                     <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
                       Data
@@ -157,10 +163,22 @@
 <script src="../../js/back_end/sidebars.js"></script>
 <script src="../../js/header.js"></script>
 <script src="../../js/back_end/resource.js"></script>
-<script>
-    setResource_Add_t({
-        "template" : ["模板一","模板二"],
-        "demand" :["經濟資訊","法律資訊"],
+<!-- <script>
+    setResource_Add_r({
+        "template" : [{
+            "T_ID" : "T000000001",
+            "T_Name" : "模板1"
+        },{
+            "T_ID" : "T000000002",
+            "T_Name" : "模板2"
+        }],
+        "demand" :[{
+            "D_ID" : "D000000001",
+            "D_Name" : "經濟資訊"
+        },{
+            "D_ID" : "D000000002",
+            "D_Name" : "緊急資訊"
+        }],
         "supplier" :[{
             "S_ID" : "S000000001",
             "S_Name" : "供應商1"
@@ -169,5 +187,5 @@
             "S_Name" : "供應商2"
         }]
     });
-</script>
+</script> -->
 </html>

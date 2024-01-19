@@ -29,13 +29,19 @@
                     </button>
                     <div class="collapse show" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                        <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                        <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
                 </li>
@@ -78,7 +84,7 @@
                     </button>
                     <div class="collapse" id="account-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                            <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
                         </ul>
                     </div>
                 </li>
@@ -91,25 +97,24 @@
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                      <a class="link-body-emphasis" href="#">
+                      <a class="link-body-emphasis" href="/backend/resource">
                         <img src="../../img/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource">資源管理</a>
                     </li>
                   </ol>
                 </nav>
             </div>
             <div class="content">
                 <div class="data_block_list">
+                    <div class="data_block"><p>2</p><span>需求數量</span></div>
                     <div class="data_block"><p>12</p><span>總資源數量</span></div>
-                    <div class="data_block"><p>10</p><span>上架數量</span></div>
-                    <div class="data_block"><p>2</p><span>下架數量</span></div>
                     <div class="data_block"><p>5</p><span>模板數量</span></div>
-                    <div class="data_block block_click" onclick="url('')"><p><img src="../../img/resource.png"></p><span>新增需求</span></div>
-                    <div class="data_block block_click" onclick="url('')"><p><img src="../../img/resource.png"></p><span>新增模板</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/resource/add_d')"><p><img src="../../img/resource.png"></p><span>新增需求</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/resource/add_t')"><p><img src="../../img/resource.png"></p><span>新增模板</span></div>
                 </div>
                 <div class="data_table">
                     <div class="d_table">
@@ -135,32 +140,35 @@
 <script src="../../js/back_end/sidebars.js"></script>
 <script src="../../js/back_end/resource.js"></script>
 <script src="../../js/back_end/data_block_list.js"></script>
-<script>
+<!-- <script>
     setData_block(0,5);
     setData_block(1,4);
     setData_block(2,3);
-    setData_block(3,2);
     setResource({
         "Demand":[{
+            "D_ID" : "D000000001",
             "D_Name" : "經濟資源",
             "D_Resource" : 10,
             "R_On_Shelf" : 5,
             "R_Down_Shelf" : 5
         },
         {
+            "D_ID" : "D000000001",
             "D_Name" : "緊急資源",
             "D_Resource" : 8,
             "R_On_Shelf" : 3,
             "R_Down_Shelf" : 5
         }],
         "Template":[{
+            "T_ID" : "T000000001",
             "T_Name" : "模板1",
             "T_Use" : 2,
         },
         {
+            "T_ID" : "T000000001",
             "T_Name" : "模板2",
             "T_Use" : 1,
         }]
     });
-</script>
+</script> -->
 </html>

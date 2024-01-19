@@ -6,41 +6,47 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>DSN管理後臺-模板名稱</title>
+    <title>DSN管理後臺-資源名稱</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/back_end/template_edit.css" rel="stylesheet">
-    <link href="../../css/back_end/sidebars.css" rel="stylesheet">
-    <link href="../../css/back_end/sidebars2.css" rel="stylesheet">
+    <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/back_end/resource_edit.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars2.css" rel="stylesheet">
 </head>
 <body>
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="./" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../img/resource.png" style="margin-right:5%">
+            <img src="../../../img/resource.png" style="margin-right:5%">
             <span class="fs-2 fw-semibold">DSN管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
-                    <img src="../../img/resource.png">
+                    <img src="../../../img/resource.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                     資源管理
                     </button>
                     <div class="collapse show" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                        <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/monitor.png">
+                    <img src="../../../img/monitor.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                     監控管理
                     </button>
@@ -53,13 +59,13 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/supplier.png">
+                    <img src="../../../img/supplier.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                     供應商管理
                     </button>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/language.png">
+                    <img src="../../../img/language.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
                     語言管理
                     </button>
@@ -72,13 +78,13 @@
                 </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
-                    <img src="../../img/member.png">
+                    <img src="../../../img/member.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                     管理員
                     </button>
                     <div class="collapse" id="account-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                            <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
                         </ul>
                     </div>
                 </li>
@@ -87,48 +93,47 @@
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
         <div class="sidebars2">
-            <a href="" style="background-color: #7B7B7B;color: white;">模板標籤</a>
-            <a href="">模板設定</a>
-            <a href="">使用資源</a>
-            <a href="">刪除模板</a>
+            <a href="" style="background-color: #7B7B7B;color: white;">資源編輯</a>
+            <a href="">資源設定</a>
+            <a href="">資源回饋</a>
+            <a href="">資源供應商</a>
+            <a href="">刪除資源</a>
         </div>
         <section>
             <div class="container-breadcrumb my-2">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                      <a class="link-body-emphasis" href="#">
-                        <img src="../../img/resource.png">
+                      <a class="link-body-emphasis" href="/backend/resource">
+                        <img src="../../../img/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource">資源管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">模板管理</a>
+                        <a id="D_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">經濟資訊</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">模板1</a>
+                        <a id="R_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">獎(助)學金</a>
                     </li>
-                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
-                      Data
-                    </li> -->
                   </ol>
                 </nav>
             </div>
             <div class="btn_area">
-                <button>預覽模板</button>
+                <button>儲存</button>
+                <button>下架資源</button>
+                <button>查看資源</button>
+                <button>預覽資源</button>
+                <select class="lang">
+                    <option>中文</option>
+                </select>
+                <label>選擇語言</label>
             </div>
             <div class="content">
-                <p class="lable_area">
-                    <span>標籤數量：3</span>
-                    <span>文字標籤：0</span>
-                    <span>照片標籤：2</span>
-                    <span>連結標籤：1</span>
-                </p>
                 <div class="html_area">
-                    <div class="container2_title">
+                    <!-- <div class="container2_title">
                         <div class="item">
                             <div class="item_title">項目ID(標題)</div>
                             <div class="item_label">
@@ -160,18 +165,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="item_title">項目ID(照片)</div>
-                            <div class="item_label">
-                                <span>項目提示：.....</span>
-                            </div>
-                            <div class="item_content">
-                                <img src="../../img/plus.png" title="上傳照片">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container2">
-                        <div class="item">
-                            <div class="item_title">項目ID(文字)</div>
+                            <div class="item_title">項目ID(連結)</div>
                             <div class="item_label">
                                 <span>項目提示：.....</span>
                             </div>
@@ -180,29 +174,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="item_title">項目ID(照片)</div>
-                            <div class="item_label">
-                                <span>項目提示：.....</span>
-                            </div>
-                            <div class="item_content">
-                                <img src="../../img/plus.png" title="上傳照片">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container2_title">
-                        <div class="item">
-                            <div class="item_title">項目ID(標題)</div>
-                            <div class="item_label">
-                                <span>項目提示：.....</span>
-                            </div>
-                            <div class="item_content">
-                                <input placeholder="請輸入標題">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container2">
-                        <div class="item">
-                            <div class="item_title">項目ID(文字)</div>
+                            <div class="item_title">項目ID(連結)</div>
                             <div class="item_label">
                                 <span>項目提示：.....</span>
                             </div>
@@ -210,22 +182,33 @@
                                 <textarea placeholder="請輸入文字內容"></textarea>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+                    
                 </div>
             </div>
         </section>
     </main>
 </body>
-<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../js/back_end/sidebars.js"></script>
-<script src="../../js/back_end/template.js"></script>
-<script>
-
-    setTemplate_edit({
-        "all_label" : 4,
-        "text_label" : 2,
-        "img_label" : 1,
-        "url_label" : 1,
+<script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/back_end/sidebars.js"></script>
+<script src="../../../js/back_end/resource.js"></script>
+<!-- <script>
+    setResource_edit({
+        "resource" : {
+            "D_Name" : "經濟資源",
+            "D_ID" : "D000000001",
+            "R_Name" : "獎(助)學金",
+            "R_ID" : "R000000001"
+        },
+        "leng" : [{
+                "L_Name" : "中文",
+                "L_ID" : "L000000001"
+            },
+            {
+                "L_Name" : "英文",
+                "L_ID" : "L000000002"
+            }
+        ],
         "container" : [
             {
                 "type" : "title",
@@ -260,8 +243,6 @@
                 "content" :["p1.jpg","p1.jpg","",""]
             },
         ]
-    })    
-</script>
+    })
+</script> -->
 </html>
-
-

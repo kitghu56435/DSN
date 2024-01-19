@@ -9,10 +9,10 @@
     <title>DSN弱勢支援網</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/index.css" rel="stylesheet">
-    <link href="../css/header.css" rel="stylesheet">
-    <link href="../assets/dist/css/carousel.css" rel="stylesheet">
+    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/index.css" rel="stylesheet">
+    <link href="../../css/header.css" rel="stylesheet">
+    <link href="../../assets/dist/css/carousel.css" rel="stylesheet">
 </head>
 <body>
     <header data-bs-theme="light">
@@ -167,11 +167,23 @@
             </div>
     </header>
     <main>
-        <div id="container" style="padding-left:20%;padding-right:20%;">
+        <div>
+            <div class="container2">
+                <div class="container2-title" dsnid="0" dsnnote="dsn提示">高冠宏</div>
+            </div>
             <div style="height: 300px;background-color: blue;" class="container2">
-                qwewqeqweqweqweqewqeqweqwewqeqwewqeqw
-                qwewqeqweqweqweqewqeqweqwewqeqwewqeqw
-                qwewqeqweqweqweqewqeqweqwewqeqwewqeqw
+                <div class="container2-img" dsnid="1" dsnnote="dsn提示"></div>
+                <div class="container2-text" dsnid="2"></div>
+                <div class="container2-text" dsnid="3" dsnnote="dsn提示"></div>
+            </div>
+            <div style="height: 300px;background-color: blue;" class="container2">
+                <div class="container2-img" dsnnote="dsn提示"></div>
+                <div class="container2-text" dsnid="5" dsnnote="dsn提示"></div>
+                <div class="container2-text" dsnid="6" dsnnote="dsn提示"></div>
+            </div>
+            <div style="height: 300px;background-color: blue;" class="container2">
+                <div class="container2-url" dsnid="5"></div>
+                <div class="container2-text" dsnid="5"></div>
             </div>
         </div>
         <div class="footer_div">
@@ -231,8 +243,8 @@
             </footer>
         </div>                
     </main> 
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/header.js"></script>
+    <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/header.js"></script>
     <script>
         header_nav_check();
         cookie_msg()   //cookie 後端設置

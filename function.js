@@ -138,6 +138,75 @@ function addID(ID_Type,Now_ID){
 }
 
 
+function setMsgbox(msg){
+    if(msg == ''){
+        return '';
+    }else{
+        return `msgbox(1,'${msg}');`;
+    }
+}
+
+function find(str,content){    //簡單文字爬蟲 回傳布林值
+    let count = 0;
+    let match_num = str.length;
+    let founded = false;
+    if(content == null){
+        return founded;
+    }
+    for(k = 0;k<content.length;k++){
+        if(founded){
+            break;
+        }else{
+            for(j = 0;j<str.length;j++){
+                if(content[k+j] == str[j]){
+                    count++;
+                    if(count == match_num){
+                        founded = true;   
+                        break;                                                      
+                    }
+                }else{
+                    count = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    return founded;
+}
+
+
+function find_Count(str,content){    //連續文字爬蟲  返回數字
+    let count = 0;
+    let match_num = str.length;
+    let founded = false;
+    if(content == null){
+        return founded;
+    }
+    for(k = 0;k<content.length;k++){
+        if(founded){
+            break;
+        }else{
+            for(j = 0;j<str.length;j++){
+                if(content[k+j] == str[j]){
+                    count++;
+                    if(count == match_num){
+                        console.log('找到了');   
+                        count = 0;     
+                        break;
+                    }
+                }else{
+                    count = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    return founded;
+}
+
+
 
 
 module.exports = {
@@ -147,5 +216,8 @@ module.exports = {
     create_Sessionid,
     CheckSessionRepeat,
     delete_Sessionid,
-    Administrator_verafication
+    Administrator_verafication,
+    setMsgbox,
+    find,
+    find_Count
 }

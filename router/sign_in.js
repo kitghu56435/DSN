@@ -6,7 +6,33 @@ const db = require('../db');
 const cookie_time = 1000 * 60 * 60 * 4 //四小時
 
 
+const check_sign_in = (req,res,next) => {
+    
+    if(req.session == null || req.session.Session_ID == undefined){
+        next();
+    }else{
+        db.execute(`SELECT AD_Session_ID FROM Administrator WHERE AD_Session_ID = ?;`,[req.session.Session_ID],(err,result)=>{
+            if(err){
+                console.log(err);
+                next();
+            }else{
+                if(result.length != 0){
+                    if(result[0].AD_Session_ID == req.session.Session_ID){
+                        res.writeHead(303,{Location:'/backend/resource/'});
+                        res.end();
+                    }else{
+                        next();
+                    }
+                }else{
+                    next();
+                }
+            }
+        })
+    }
+}
 
+
+router.use(check_sign_in);
 
 router.get('/',(req,res)=>{
     let html = readFileSync('./public/html/back_end/sign_in.html','utf-8');
@@ -19,8 +45,6 @@ router.get('/',(req,res)=>{
     }
     res.end(html)
 })
-
-
 
 router.post('/data',(req,res)=>{  
     let Userid = req.body.Userid;

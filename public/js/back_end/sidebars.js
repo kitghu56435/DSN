@@ -7,7 +7,9 @@
   })
 })()
 
-
+function url(path){                      //轉送函數
+  location.href = path;
+}
 
 
 

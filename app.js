@@ -8,7 +8,9 @@ const cookie_time = 1000 * 60 * 60 * 4 //四小時
 
 
 const sign_in = require('./router/sign_in');
+const sign_out = require('./router/sign_out');
 const resource = require('./router/resource');
+
 
 
 app.use(express.static('public'));
@@ -23,6 +25,7 @@ app.use(cookieSession({
 }));
 
 app.use('/sign_in',sign_in);
+app.use('/sign_out',sign_out);
 app.use('/backend/resource',resource);
 
 

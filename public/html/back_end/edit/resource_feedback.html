@@ -9,39 +9,45 @@
     <title>DSN管理後臺-資源名稱</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/back_end/resource_feedback.css" rel="stylesheet">
-    <link href="../../css/back_end/sidebars.css" rel="stylesheet">
-    <link href="../../css/back_end/sidebars2.css" rel="stylesheet">
-    <script src="../../js/back_end/resource.js"></script>
+    <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/back_end/resource_feedback.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars2.css" rel="stylesheet">
+    <script src="../../../js/back_end/resource.js"></script>
 </head>
 <body>
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="./" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../img/resource.png" style="margin-right:5%">
+            <img src="../../../img/resource.png" style="margin-right:5%">
             <span class="fs-2 fw-semibold">DSN管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
-                    <img src="../../img/resource.png">
+                    <img src="../../../img/resource.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                     資源管理
                     </button>
                     <div class="collapse show" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                    </ul>
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
                     </ul>
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                        <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/monitor.png">
+                    <img src="../../../img/monitor.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                     監控管理
                     </button>
@@ -54,13 +60,13 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/supplier.png">
+                    <img src="../../../img/supplier.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
                     供應商管理
                     </button>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/language.png">
+                    <img src="../../../img/language.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
                     語言管理
                     </button>
@@ -73,13 +79,13 @@
                 </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
-                    <img src="../../img/member.png">
+                    <img src="../../../img/member.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                     管理員
                     </button>
                     <div class="collapse" id="account-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                            <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
                         </ul>
                     </div>
                 </li>
@@ -100,7 +106,7 @@
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
                       <a class="link-body-emphasis" href="#">
-                        <img src="../../img/resource.png">
+                        <img src="../../../img/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
@@ -108,10 +114,10 @@
                         <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">經濟資訊</a>
+                        <a id="D_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">經濟資訊</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">獎(助)學金</a>
+                        <a id="R_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">獎(助)學金</a>
                     </li>
                     <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
                       Data
@@ -124,44 +130,36 @@
                 <button>查看資源</button>
             </div>
             <div class="content">
-                <p class="lable_area">
+                <!-- <p class="lable_area">
                     <span>回饋數量：3</span>
-                </p>
-                <div class="container_msg">  
+                </p> -->
+                <!-- <div class="container_msg">  
                     <div class="msg_title"  onclick="show_feedback(0)">
                         <span>2023年12月12日 12:12:12</span>
                         <span class="text">使用者回饋部分....</span>
-                        <img src="../../img/bin.png">
+                        <img src="../../../img/bin.png">
                     </div>
                     <div class="msg_text">
                         <div>
                             123123123
                         </div>
                     </div>
-                </div>
-                <div class="container_msg">  
-                    <div class="msg_title"  onclick="show_feedback(1)">
-                        <span>2023年12月12日 12:12:12</span>
-                        <span class="text">使用者回饋部分....</span>
-                        <img src="../../img/bin.png">
-                    </div>
-                    <div class="msg_text">
-                        <div>
-                            1231231231231231231321313123213131311231313123113123123123123123
-                            12123123123123123123高高高高高高高高高高高高高高高高高高高高高高高高
-                            高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高高
-                        </div>
-                    </div>
-                </div>
+                </div> -->
             </div>
         </section>
     </main>
 </body>
-<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../js/back_end/sidebars.js"></script>
-<script src="../../js/back_end/resource.js"></script>
-<script>
+<script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/back_end/sidebars.js"></script>
+<script src="../../../js/back_end/resource.js"></script>
+<!-- <script>
     setResource_feedback({
+        "resource" : {
+            "D_Name" : "經濟資源",
+            "D_ID" : "D000000001",
+            "R_Name" : "獎(助)學金",
+            "R_ID" : "R000000001"
+        },
         "feedback":[
             {
                 "RF_ID" : "RD00000001",
@@ -177,5 +175,5 @@
                 "RF_Date" : "2023年12月12日 12:12:12"
             }
         ]})
-</script>
+</script> -->
 </html>
