@@ -811,6 +811,7 @@ router.get('/template',(req,res)=>{
                 all_t = 1;       //模板總數
 
                 data.template.push({
+                    "T_ID" : results[0].T_ID,
                     "T_Name" : results[0].T_Name,
                     "T_Use" : 0,
                     "T_Path" : results[0].T_Path,
@@ -822,6 +823,7 @@ router.get('/template',(req,res)=>{
                         now_template = results[i].T_ID;
                         all_t += 1; 
                         data.template.push({
+                            "T_ID" : results[i].T_ID,
                             "T_Name" : results[i].T_Name,
                             "T_Use" : T_Use(results[i].R_Name),
                             "T_Path" : results[i].T_Path,
@@ -853,52 +855,29 @@ router.get('/template',(req,res)=>{
 
 router.get('/template/edit',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/template_edit.html','utf-8');
-    let R_ID = req.query.R_ID;
+    let T_ID = req.query.T_ID;
     let T_Path = '';
     let msgbox = '';
     let data = {
-        "resource" : {
-            "D_Name" : "",
-            "D_ID" : "",
-            "R_Name" : "",
-            "R_ID" : ""
+        "template": {
+            "T_ID" : T_ID,
+            "T_Name" : ""
         },
-        "leng" : [],
+        "all_label" : 0,
+        "text_label" : 0,
+        "img_label" : 0,
+        "url_label" : 0,
         "container" : []
     }
 
 
-    db.execute(`SELECT R_ID,R_Name,Resources.D_ID,D_Name,T_Path FROM Resources,Demand,Template 
-    WHERE Resources.D_ID = Demand.D_ID AND Template.T_ID = Resources.T_ID AND R_Delete = 0 AND R_ID = ?;`,[R_ID],(err,results)=>{
+    db.execute(`SELECT T_Path,T_Name FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
+            data.template.T_Name = results[0].T_Name;
             T_Path = results[0].T_Path;
-            data.resource.D_Name = results[0].D_Name;
-            data.resource.D_ID = results[0].D_ID;
-            data.resource.R_Name = results[0].R_Name;
-            data.resource.R_ID = results[0].R_ID;
-        }
-    })
-    db.execute(`SELECT L_ID,L_Name FROM Languages;`,(err,results)=>{
-        if(err){
-            console.log(err);
-            msgbox += '資料庫錯誤<br>';
-        }else{
-            for(i = 0;i<results.length;i++){
-                data.leng.push({
-                    "L_Name" : results[i].L_Name,
-                    "L_ID" : results[i].L_ID,
-                })
-            }
-        }
-    })
-    db.execute(`SELECT * FROM Resource_data WHERE R_ID = ? AND L_ID = 'L000000001';`,[R_ID],(err,results)=>{
-        if(err){
-            console.log(err);
-            msgbox += '資料庫錯誤<br>';
-        }else{
             try{
                 let template_html = readFileSync('./public/html/template/' + T_Path,'utf-8');
                 let content = template_html;
@@ -1152,38 +1131,133 @@ router.get('/template/edit',(req,res)=>{
     
     
     
-                for(i = 0;i<results.length;i++){
-                    for(j = 0;j<data.container.length;j++){
-                        for(k = 0;k<data.container[j].item;k++){
-                            if(data.container[j].id[k] == results[i].RD_Template_ID){
-                                data.container[j].content[k] = results[i].RD_Content;
-                            }
-                        }
-                    }
-                }
                 
                 for(j = 0;j<data.container.length;j++){
                     for(k = 0;k<data.container[j].item;k++){
-                        if(data.container[j].id[k] == ''){
-                            data.container[j].id[k] = '系統ID讀取錯誤';
+                        data.all_label += 1;
+                        switch(data.container[j].item_type[k]){
+                            case 'text' : data.text_label += 1; break;
+                            case 'img' : data.img_label += 1; break;
+                            case 'url' : data.url_label += 1; break;
                         }
+                        
                     }
-                }             
+                }    
+                          
             }catch(e){
                 console.log(e)
                 msgbox += '模板讀取錯誤<br>';
             }
         }
-
         html += `<script>
         ${setMsgbox(msgbox)}
-        setResource_edit(${JSON.stringify(data)})
+        setTemplate_edit(${JSON.stringify(data)})
         </script>
         `;
         res.end(html)
     })
-
 })
+
+
+
+router.get('/template/setting',(req,res)=>{
+    let html = readFileSync('./public/html/back_end/edit/template_setting.html','utf-8');
+    let T_ID = req.query.T_ID;
+    let msgbox = '';
+    let data = {
+        "T_ID" : T_ID,
+        "T_Name" : ""
+    }
+    
+    db.execute(`SELECT T_Name FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            msgbox += '資料庫錯誤<br>';
+        }else{
+            data.T_Name = results[0].T_Name;
+        }
+
+        html += `<script>
+        ${setMsgbox(msgbox)}
+        setTemplate_setting(${JSON.stringify(data)})
+        </script>
+        `;
+        res.end(html)
+    })
+})
+
+
+router.get('/template/use',(req,res)=>{
+    let html = readFileSync('./public/html/back_end/edit/template_r.html','utf-8');
+    let T_ID = req.query.T_ID;
+    let msgbox = '';
+    let data = {
+        "template": {
+            "T_ID" : T_ID,
+            "T_Name" : ""
+        },
+        "resource" : []
+    }
+    
+    db.execute(`SELECT T_Name FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            msgbox += '資料庫錯誤<br>';
+        }else{
+            data.template.T_Name = results[0].T_Name;
+        }
+    })
+    db.execute(`SELECT Resources.R_ID,R_Name,D_Name FROM Template,Resources,Demand WHERE Template.T_ID = Resources.T_ID 
+    AND Demand.D_ID = Resources.D_ID AND Template.T_ID = ?;`,[T_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            msgbox += '資料庫錯誤<br>';
+        }else{
+            if(results.length != 0){
+                let now_template = results[0].T_ID;
+                all_t = 1;       //模板總數
+
+                data.template.push({
+                    "T_ID" : results[0].T_ID,
+                    "T_Name" : results[0].T_Name,
+                    "T_Use" : 0,
+                    "T_Path" : results[0].T_Path,
+                    "T_Resource" : [results[0].R_Name],
+                })
+
+                for(i = 1;i<results.length;i++){
+                    if(results[i].T_ID != now_template){
+                        now_template = results[i].T_ID;
+                        all_t += 1; 
+                        data.template.push({
+                            "T_ID" : results[i].T_ID,
+                            "T_Name" : results[i].T_Name,
+                            "T_Use" : T_Use(results[i].R_Name),
+                            "T_Path" : results[i].T_Path,
+                            "T_Resource" : [results[i].R_Name],
+                        })
+                    }else{
+                        data.template[data.template.length-1].T_Use += 1;
+                        data.template[data.template.length-1].T_Resource.push(results[i].R_Name);
+                    }
+                }
+            }
+        }
+
+        html += `<script>
+        ${setMsgbox(msgbox)}
+        setTemplate_r(${JSON.stringify(data)})
+        </script>
+        `;
+        res.end(html)
+    })
+})
+
+
+
+
+
+
 
 
 

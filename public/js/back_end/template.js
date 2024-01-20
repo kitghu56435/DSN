@@ -31,11 +31,11 @@ function setTemplate(data){
                     R_value_array.push(data.template[i].T_Resource[j]);
                 }
                 
-                str += `<tr><td>${data.template[i].T_Name}</td><td>${data.template[i].T_Use}</td><td><a href="../../html/template/${data.template[i].T_Path}" download="${data.template[i].T_Path}"><img src="../../img/download.png"></a></td><td>
-                <select>
+                str += `<tr onclick="url('/backend/resource/template/edit?T_ID=${data.template[i].T_ID}')"><td>${data.template[i].T_Name}</td><td>${data.template[i].T_Use}</td><td><a onclick="handleChildClick(event)" href="../../html/template/${data.template[i].T_Path}" download="${data.template[i].T_Path}"><img src="../../img/download.png"></a></td><td>
+                <select onclick="handleChildClick(event)">
                     ${Select_Option_HTML('',R_value_array,R_value_array)}
                 </select>
-                </td><td><img src="../../img/bin.png"></td></tr>`;
+                </td><td><img onclick="handleChildClick(event)" src="../../img/bin.png"></td></tr>`;
             }
             
             t_table.innerHTML = str;
@@ -50,11 +50,20 @@ function setTemplate_edit(data){
     let lable_area = document.getElementsByClassName('lable_area')[0];
     let span = lable_area.getElementsByTagName('span');
     let html_area = document.getElementsByClassName('html_area')[0];
+    let T_Name_Bar = document.getElementById('T_Name_Bar');
+    let sidebars2 = document.getElementsByClassName('sidebars2')[0];
+    let sidebars2_a = sidebars2.getElementsByTagName('a');
 
     span[0].innerHTML = '標籤數量：' + data.all_label;
     span[1].innerHTML = '文字標籤：' + data.text_label;
     span[2].innerHTML = '照片標籤：' + data.img_label;
     span[3].innerHTML = '連結標籤：' + data.url_label;
+    T_Name_Bar.innerHTML = data.template.T_Name;
+    T_Name_Bar.setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
+
+    sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
+    sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.template.T_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.template.T_ID);
 
     html_area.innerHTML = '';
     for(i = 0;i< data.container.length;i++){
@@ -133,6 +142,9 @@ function setTemplate_r(data){
     let r_table_div = document.getElementsByClassName('r_table')[0];
     let r_table = r_table_div.getElementsByTagName('table')[0];
     let number = document.getElementsByClassName('number')[0];
+    let T_Name_Bar = document.getElementById('T_Name_Bar');
+    let sidebars2 = document.getElementsByClassName('sidebars2')[0];
+    let sidebars2_a = sidebars2.getElementsByTagName('a');
     let str = '';
 
     if(data == undefined){
@@ -145,11 +157,16 @@ function setTemplate_r(data){
             <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>
             <tr><td colspan="4">無資料</td></tr>`;
         }else{
+            T_Name_Bar.innerHTML = data.template.T_Name;
+            T_Name_Bar.setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
+            sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
+            sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.template.T_ID);
+            sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.template.T_ID);
             number.innerHTML = '套用數量：' + data.resource.length;
             str = `
             <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>`;
             for(i = 0;i<data.resource.length;i++){
-                str += `<tr><td>${data.resource[i].R_Name}</td><td>${data.resource[i].D_Name}</td><td><img src="../../img/language.png"></td></tr>`
+                str += `<tr><td>${data.resource[i].R_Name}</td><td>${data.resource[i].D_Name}</td><td><img src="../../../img/language.png"></td></tr>`
             }  //這邊要加上href
             r_table.innerHTML = str;
         }
@@ -159,10 +176,17 @@ function setTemplate_r(data){
 
 function setTemplate_setting(data){
     let T_Name = document.getElementsByName('T_Name')[0];
-    
+    let T_Name_Bar = document.getElementById('T_Name_Bar');
+    let sidebars2 = document.getElementsByClassName('sidebars2')[0];
+    let sidebars2_a = sidebars2.getElementsByTagName('a');
 
     if(data != undefined){
         T_Name.setAttribute('value',data.T_Name);
+        T_Name_Bar.innerHTML = data.T_Name;
+        T_Name_Bar.setAttribute('href','/backend/resource/template/edit?T_ID=' + data.T_ID);
+        sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.T_ID);
+        sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.T_ID);
+        sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.T_ID);
     }
 }
 
@@ -183,8 +207,11 @@ function Select_Option_HTML(value,value_array,id_array){
 }
 function container_img(img_name){
     if(img_name == ''){
-        return '../../img/plus.png';
+        return '../../../img/plus.png';
     }else{
-        return '../../img/' + img_name;
+        return '../../../img/' + img_name;
     }
 }
+function handleChildClick(event) {
+    event.stopPropagation();
+  } 

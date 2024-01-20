@@ -71,6 +71,9 @@ section{
     cursor: pointer;
     transform: scale(1.1);
 }
+.t_table > table  img:hover ~ td ~ tr,.t_table  select:hover ~ td ~ tr{
+    pointer-events: none;
+}
 
 
 

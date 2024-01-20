@@ -23,23 +23,15 @@
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
                     <img src="../../img/resource.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
                     資源管理
                     </button>
-                    <div class="collapse show" id="home-collapse">
+                    <div class="collapse" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                         <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
@@ -51,6 +43,7 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">客流數據</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">網站監視器</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增監視器</a></li>
@@ -59,9 +52,15 @@
                 </li>
                 <li class="mb-1">
                     <img src="../../img/supplier.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
                     供應商管理
                     </button>
+                    <div class="collapse" id="supplier-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">供應商管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增供應商</a></li>
+                    </ul>
+                    </div>
                 </li>
                 <li class="mb-1">
                     <img src="../../img/language.png">
@@ -70,7 +69,8 @@
                     </button>
                     <div class="collapse show" id="language-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
+                            <li><a href="/backend/language" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">語言管理</a></li>
+                            <li><a href="/backend/language/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
                             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
                         </ul>
                     </div>
@@ -96,20 +96,17 @@
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                      <a class="link-body-emphasis" href="#">
+                      <a class="link-body-emphasis" href="/backend/language">
                         <img src="../../img/language.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">語言管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language">語言管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">新增語言</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language/add">新增語言</a>
                     </li>
-                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
-                      Data
-                    </li> -->
                   </ol>
                 </nav>
             </div>

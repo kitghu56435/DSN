@@ -29,18 +29,10 @@
                     </button>
                     <div class="collapse show" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                         <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
@@ -52,6 +44,7 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">客流數據</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">網站監視器</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增監視器</a></li>
@@ -60,9 +53,15 @@
                 </li>
                 <li class="mb-1">
                     <img src="../../img/supplier.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
                     供應商管理
                     </button>
+                    <div class="collapse" id="supplier-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">供應商管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增供應商</a></li>
+                    </ul>
+                    </div>
                 </li>
                 <li class="mb-1">
                     <img src="../../img/language.png">
@@ -71,6 +70,7 @@
                     </button>
                     <div class="collapse" id="language-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/backend/language" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">語言管理</a></li>
                             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
                             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
                         </ul>
@@ -143,23 +143,26 @@
 <script src="../../js/back_end/sidebars.js"></script>
 <script src="../../js/back_end/template.js"></script>
 <script src="../../js/back_end/data_block_list.js"></script>
-<!-- <script>
+<script>
     setData_block(0,5);
     setTemplate({
         "template" : [
             {
+                "T_ID" : "T000000001",
                 "T_Name" : "模板1",
                 "T_Use" : 2,
                 "T_Path" : 'T1.html',
                 "T_Resource" : ["資源1","資源2","資源3"],
             },
             {
+                "T_ID" : "T000000002",
                 "T_Name" : "模板2",
                 "T_Use" : 1,
                 "T_Path" : 'T1.html',
                 "T_Resource" : ["資源1","資源2","資源3"],
             },
             {
+                "T_ID" : "T000000003",
                 "T_Name" : "模板3",
                 "T_Use" : 4,
                 "T_Path" : 'T1.html',
@@ -167,5 +170,5 @@
             },
         ]
     })
-</script> -->
+</script>
 </html>

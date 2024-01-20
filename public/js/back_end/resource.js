@@ -62,7 +62,7 @@ function setResource(data){
             str = `
             <tr><th>模板名稱</th><th>使用數量</th></tr>`;
             for(i = 0;i<data.Template.length;i++){
-                str += `<tr><td>${data.Template[i].T_Name}</td><td>${data.Template[i].T_Use}</td></tr>`
+                str += `<tr onclick="url('/backend/resource/template/edit?T_ID=${data.Template[i].T_ID}')"><td>${data.Template[i].T_Name}</td><td>${data.Template[i].T_Use}</td></tr>`
             }
             t_table.innerHTML = str;
         }

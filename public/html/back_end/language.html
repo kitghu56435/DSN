@@ -24,23 +24,15 @@
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
                     <img src="../../img/resource.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
                     資源管理
                     </button>
-                    <div class="collapse show" id="home-collapse">
+                    <div class="collapse" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="/backend/resource/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                         <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
-                    </ul>
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
                     </ul>
                     </div>
@@ -52,6 +44,7 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">客流數據</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">網站監視器</a></li>
                         <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增監視器</a></li>
@@ -60,9 +53,15 @@
                 </li>
                 <li class="mb-1">
                     <img src="../../img/supplier.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
                     供應商管理
                     </button>
+                    <div class="collapse" id="supplier-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">供應商管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增供應商</a></li>
+                    </ul>
+                    </div>
                 </li>
                 <li class="mb-1">
                     <img src="../../img/language.png">
@@ -71,7 +70,8 @@
                     </button>
                     <div class="collapse show" id="language-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
+                            <li><a href="/backend/language" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">語言管理</a></li>
+                            <li><a href="/backend/language/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
                             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
                         </ul>
                     </div>
@@ -97,28 +97,22 @@
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                      <a class="link-body-emphasis" href="#">
+                      <a class="link-body-emphasis" href="/backend/language">
                         <img src="../../img/language.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">語言管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language">語言管理</a>
                     </li>
-                    <!-- <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
-                    </li> -->
-                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
-                      Data
-                    </li> -->
                   </ol>
                 </nav>
             </div>
             <div class="content">
                 <div class="data_block_list">
-                    <div class="data_block"><p>3</p><span>語言數量</span></div>
-                    <div class="data_block"><p>3</p><span>靜態頁面</span></div>
-                    <div class="data_block block_click"><p><img src="../../img/language.png"></p><span>新增語言</span></div>
+                    <div class="data_block"><p>0</p><span>語言數量</span></div>
+                    <div class="data_block"><p>0</p><span>靜態頁面</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/language/add')"><p><img src="../../img/language.png"></p><span>新增語言</span></div>
                 </div>
                 <div class="data_table">
                     <div class="d_table">
@@ -168,24 +162,29 @@
     setData_block(1,4);
     setLanguage({
         "Language":[{
+            "L_ID" : "L000000001",
             "L_Name" : "中文",
             "L_Use" : 2,
             "L_Date" : '2023年12月12月 12:12:12',
         },
         {
+            "L_ID" : "L000000002",
             "L_Name" : "英文",
             "L_Use" : 4,
             "L_Date" : '2023年12月12月 12:12:12',
         }],
         "Static":[{
+            "SP_ID" : "SP00000001",
             "Static_Name" : "首頁",
             "Static_Use" : ["中文","英文"],
         },
         {
+            "SP_ID" : "SP00000002",
             "Static_Name" : "新手上路",
             "Static_Use" : ["中文","英文"],
         },
         {
+            "SP_ID" : "SP00000003",
             "Static_Name" : "關於我們",
             "Static_Use" : ["中文","英文"],
         }]
