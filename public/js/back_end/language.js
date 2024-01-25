@@ -40,8 +40,8 @@ function setLanguage(data){
             <tr><th>網頁名稱</th><th>套用語言</th></tr>`;
             for(i = 0;i<data.Static.length;i++){
                 str += `
-                <tr><td>${data.Static[i].Static_Name}</td><td>
-                    <select>
+                <tr onclick="url('/backend/language/static/edit?SP_ID=${data.Static[i].SP_ID}')"><td>${data.Static[i].Static_Name}</td><td>
+                    <select onclick="handleChildClick(event)">
                         ${Select_Option_HTML('',data.Static[i].Static_Use,data.Static[i].Static_Use)}
                     </select>
                 </td></tr>
@@ -60,18 +60,26 @@ function setLanguage_edit(data){
     let lang = document.getElementsByClassName('lang')[0]; 
     let static = document.getElementsByClassName('static')[0];   
     let html_area = document.getElementsByClassName('html_area')[0];
-    
-    let str = '';
-    for(i = 0;i < data.leng.length;i++){
-        str += `<option>${data.leng[i]}</option>`;
-    }
-    lang.innerHTML = str;
+    let SP_Name_Bar = document.getElementById('SP_Name_Bar');
+    SP_Name_Bar.innerHTML = data.static_page.SP_Name;
+    SP_Name_Bar.setAttribute('href','/backend/language/static/edit?SP_ID=' + data.static_page.SP_ID);
 
-    str = '';
-    for(i = 0;i < data.static.length;i++){
-        str += `<option>${data.static[i]}</option>`;
+
+    let L_Name_array = [];
+    let L_ID_array = [];
+    for(i = 0;i < data.leng.length;i++){
+        L_Name_array.push(data.leng[i].L_Name);
+        L_ID_array.push(data.leng[i].L_ID);
     }
-    static.innerHTML = str;
+    lang.innerHTML = Select_Option_HTML('',L_Name_array,L_ID_array);
+
+    let SP_Name_array = [];
+    let SP_ID_array = [];
+    for(i = 0;i < data.static_list.length;i++){
+        SP_Name_array.push(data.static_list[i].SP_Name);
+        SP_ID_array.push(data.static_list[i].SP_ID);
+    }
+    static.innerHTML = Select_Option_HTML('',SP_Name_array,SP_ID_array);
 
     html_area.innerHTML = '';
     for(i = 0;i< data.container.length;i++){
@@ -145,6 +153,38 @@ function setLanguage_edit(data){
 }
 
 
+function setStatic(data){
+    let r_table_div = document.getElementsByClassName('r_table')[0];
+    let r_table = r_table_div.getElementsByTagName('table')[0];
+    let str = '';
+
+    if(data == undefined){
+        r_table.innerHTML = `
+        <tr><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>
+        <tr><td colspan="3">無資料</td></tr>`;
+    }else{
+        if(data.Static.length == 0){
+            r_table.innerHTML = `
+            <tr><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>
+            <tr><td colspan="3">無資料</td></tr>`;
+        }else{
+            str = `
+            <tr><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>`;
+            for(i = 0;i<data.Static.length;i++){
+                str += `
+                <tr onclick="url('/backend/language/static/edit?SP_ID=${data.Static[i].SP_ID}')"><td>${data.Static[i].Static_Name}</td><td>
+                    <select onclick="handleChildClick(event)">
+                        ${Select_Option_HTML('',data.Static[i].Static_Use,data.Static[i].Static_Use)}
+                    </select>
+                </td><td>${data.Static[i].SP_File}</td></tr>
+                `
+            }
+            r_table.innerHTML = str;
+        }
+        
+    }
+}
+
 
 
 function Select_Option_HTML(value,value_array,id_array){
@@ -159,14 +199,16 @@ function Select_Option_HTML(value,value_array,id_array){
     
     return str;
 }
-
 function container_img(img_name){
     if(img_name == ''){
-        return '../../img/plus.png';
+        return '../../../img/plus.png';
     }else{
-        return '../../img/' + img_name;
+        return '../../../img/' + img_name;
     }
 }
+function handleChildClick(event) {
+    event.stopPropagation();
+} 
 
 
 

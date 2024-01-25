@@ -214,4 +214,4 @@ function container_img(img_name){
 }
 function handleChildClick(event) {
     event.stopPropagation();
-  } 
+} 
