@@ -11,8 +11,6 @@ function url(path){                      //轉送函數
   location.href = path;
 }
 
-
-
 function msgbox(mode,str,func){
   let msgbox = document.getElementsByClassName('msgbox')[0];
     let body = document.getElementsByTagName('body')[0];
@@ -22,7 +20,7 @@ function msgbox(mode,str,func){
       let msg = document.createElement('div');
       msg.setAttribute('class','msgbox');
       msg.innerHTML = `
-      <div class="title" style="text-align: center">系統通知<img onclick="msgbox()" src="../../img/X.png"></div>
+      <div class="title" style="text-align: center">系統通知<img onclick="msgbox()" src="/img/X.png"></div>
       <hr>
       <p>${str}</p>
       <hr>
@@ -33,7 +31,7 @@ function msgbox(mode,str,func){
       let msg = document.createElement('div');
         msg.setAttribute('class','msgbox');
         msg.innerHTML = `
-        <div class="title" style="text-align: center">系統通知<img onclick="msgbox()" src="../../img/X.png"></div>
+        <div class="title" style="text-align: center">系統通知<img onclick="msgbox()" src="/img/X.png"></div>
         <hr>
         <p>${str}</p>
         <hr>
@@ -42,3 +40,6 @@ function msgbox(mode,str,func){
         body.appendChild(msg);
     }
 }
+
+
+

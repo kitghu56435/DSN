@@ -89,10 +89,16 @@ router.get('/add',(req,res)=>{
 })
 
 
-//這邊繼續
 router.get('/static',(req,res)=>{
     let html = readFileSync('./public/html/back_end/static.html','utf-8');
-    db.execute(`SELECT SP_ID,SP_Name,L_Name,Languages.L_ID,COUNT(L_Name) L_Name_Count FROM Static_page LEFT JOIN Resource_data 
+    let all_s = 0;
+    let msgbox = '';
+    let data = {  
+        "Static":[]
+    }
+
+
+    db.execute(`SELECT SP_ID,SP_Name,SP_File,L_Name,Languages.L_ID,COUNT(L_Name) L_Name_Count FROM Static_page LEFT JOIN Resource_data 
     ON Static_page.SP_ID = Resource_data.R_ID LEFT JOIN Languages ON Resource_data.L_ID = Languages.L_ID 
     GROUP BY Languages.L_ID,SP_ID  ORDER BY Languages.L_ID,SP_ID;`,(err,results)=>{
         if(err){
@@ -106,6 +112,7 @@ router.get('/static',(req,res)=>{
                 data.Static.push({
                     "SP_ID" : results[0].SP_ID,
                     "Static_Name" : results[0].SP_Name,
+                    "SP_File" : results[0].SP_File,
                     "Static_Use" : [results[0].L_Name],
                 })
 
@@ -116,6 +123,7 @@ router.get('/static',(req,res)=>{
                         data.Static.push({
                             "SP_ID" : results[i].SP_ID,
                             "Static_Name" : results[i].SP_Name,
+                            "SP_File" : results[i].SP_File,
                             "Static_Use" : [results[i].L_Name],
                         })
                     }else{
@@ -128,8 +136,8 @@ router.get('/static',(req,res)=>{
 
         html += `<script>
         ${setMsgbox(msgbox)}
-        setData_block(0,${all_l});
-        setLanguage(${JSON.stringify(data)})
+        setData_block(0,${all_s});
+        setStatic(${JSON.stringify(data)})
         </script>
         `;
         res.end(html)

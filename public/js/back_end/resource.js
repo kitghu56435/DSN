@@ -133,7 +133,7 @@ function setResource_Add_r(data){
         
         str = '<tr><th>供應商序號</th><th>供應商名稱</th><th>勾選</th></tr>';
         for(i = 0;i<data.supplier.length;i++){
-            str += `<tr onclick="checkbox('c${i}')"><td>${data.supplier[i].S_ID}</td><td>${data.supplier[i].S_Name}</td><td><input id="c${i}" type="checkbox"></td></tr>`;
+            str += `<tr onclick="checkbox('c${i}')"><td>${data.supplier[i].S_ID}</td><td>${data.supplier[i].S_Name}</td><td><input value="${data.supplier[i].S_ID}" name="S_ID" id="c${i}" type="checkbox"></td></tr>`;
         }
         supplier_table.innerHTML = str;
     }

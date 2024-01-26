@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,readFile} = require('fs');
+const {readFileSync,writeFile} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox,find_Count} = require('../function');
+const {Administrator_verafication,setMsgbox,checkData,NextID} = require('../function');
 
 
 router.use(Administrator_verafication);
@@ -714,12 +714,19 @@ router.get('/demand/supplier',(req,res)=>{
 
 router.get('/add_r',(req,res)=>{
     let html = readFileSync('./public/html/back_end/resource_add_r.html','utf-8');
+    let msg = req.query.data;
     let msgbox = '';
     let data = {
         "template" : [],
         "demand" :[],
         "supplier" :[]
     }
+    
+    switch(msg){
+        case 'err' : msgbox = '資料輸入錯誤';break;
+        case 'create_err' : msgbox = '新增模組錯誤';break;
+    }
+    
     
     db.execute(`SELECT * FROM Template;`,(err,results)=>{
         if(err){
@@ -773,21 +780,89 @@ router.get('/add_r',(req,res)=>{
     
     
 })
+router.post('/add_r/data',(req,res)=>{
+    console.log(req.body);
+    if(checkData(req.body.R_Name) && checkData(req.body.T_ID) && checkData(req.body.D_ID)){
+        new Promise((resolve,reject)=>{
+            resolve();
+        }).then(()=>{
+            res.writeHead(303,{Location:'/backend/resource/demand?D_ID=' + req.body.D_ID});
+            res.end();
+        }).catch(()=>{
+            res.writeHead(303,{Location:'/backend/resource/add_r?data=create_err'});
+            res.end();
+        })
+    }else{
+        res.writeHead(303,{Location:'/backend/resource/add_r?data=err'});
+        res.end();
+    }
+})
 
 
 router.get('/add_t',(req,res)=>{
     let html = readFileSync('./public/html/back_end/resource_add_t.html','utf-8');
-
+    let data = req.query.data;
+    let msgbox = '';
+    switch(data){
+        case 'err' : msgbox = '資料輸入錯誤';break;
+        case 'create_err' : msgbox = '新增模組錯誤';break;
+    }
     
-    res.end(html);
+    html += `<script>
+    ${setMsgbox(msgbox)}
+    </script>
+    `;
+    res.end(html)
+})
+router.post('/add_t/data',(req,res)=>{
+    if(checkData(req.body.T_Name) && checkData(req.body.T_base64)){
+        new Promise((resolve,reject)=>{
+            resolve(create_Template(req.body));
+        }).then(()=>{
+            res.writeHead(303,{Location:'/backend/resource/template'});
+            res.end();
+        }).catch(()=>{
+            res.writeHead(303,{Location:'/backend/resource/add_t?data=create_err'});
+            res.end();
+        })
+    }else{
+        res.writeHead(303,{Location:'/backend/resource/add_t?data=err'});
+        res.end();
+    }
 })
 
 
 router.get('/add_d',(req,res)=>{
     let html = readFileSync('./public/html/back_end/resource_add_d.html','utf-8');
-
+    let data = req.query.data;
+    let msgbox = '';
+    switch(data){
+        case 'err' : msgbox = '資料輸入錯誤';break;
+        case 'create_err' : msgbox = '新增模組錯誤';break;
+    }
     
-    res.end(html);
+    html += `<script>
+    ${setMsgbox(msgbox)}
+    </script>
+    `;
+    res.end(html)
+})
+router.post('/add_d/data',(req,res)=>{
+    let D_Name = req.body.D_Name;
+    if(checkData(D_Name)){
+        new Promise((resolve,reject)=>{
+            resolve(create_Demand(D_Name));
+        }).then(()=>{
+            res.writeHead(303,{Location:'/backend/resource/'});
+            res.end();
+        }).catch(()=>{
+            res.writeHead(303,{Location:'/backend/resource/add_d?data=create_err'});
+            res.end();
+        })
+    }else{
+        res.writeHead(303,{Location:'/backend/resource/add_d?data=err'});
+        res.end();
+    }
 })
 
 
@@ -1190,6 +1265,7 @@ router.get('/template/setting',(req,res)=>{
 router.get('/template/use',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/template_r.html','utf-8');
     let T_ID = req.query.T_ID;
+    let all_t = 0;
     let msgbox = '';
     let data = {
         "template": {
@@ -1213,34 +1289,12 @@ router.get('/template/use',(req,res)=>{
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
-            if(results.length != 0){
-                let now_template = results[0].T_ID;
-                all_t = 1;       //模板總數
-
-                data.template.push({
-                    "T_ID" : results[0].T_ID,
-                    "T_Name" : results[0].T_Name,
-                    "T_Use" : 0,
-                    "T_Path" : results[0].T_Path,
-                    "T_Resource" : [results[0].R_Name],
+            for(i = 0;i<results.length;i++){
+                data.resource.push({
+                    "R_ID" : results[i].R_ID,
+                    "R_Name" : results[i].R_Name,
+                    "D_Name" : results[i].D_Name,
                 })
-
-                for(i = 1;i<results.length;i++){
-                    if(results[i].T_ID != now_template){
-                        now_template = results[i].T_ID;
-                        all_t += 1; 
-                        data.template.push({
-                            "T_ID" : results[i].T_ID,
-                            "T_Name" : results[i].T_Name,
-                            "T_Use" : T_Use(results[i].R_Name),
-                            "T_Path" : results[i].T_Path,
-                            "T_Resource" : [results[i].R_Name],
-                        })
-                    }else{
-                        data.template[data.template.length-1].T_Use += 1;
-                        data.template[data.template.length-1].T_Resource.push(results[i].R_Name);
-                    }
-                }
             }
         }
 
@@ -1260,7 +1314,80 @@ router.get('/template/use',(req,res)=>{
 
 
 
+async function create_Demand(D_Name){
+    let D_ID = await NextID('Demand','D_ID','D');
+    return new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Demand VALUES(?,?);`,[D_ID,D_Name],(err)=>{
+            if(err){
+                console.log(err)
+                reject();
+            }else{
+                resolve();
+            }
+        })
+    })
+}
 
+async function create_Template(data){
+    let T_ID = await NextID('Template','T_ID','T');
+    let T_Number = Number(T_ID.substring(1));
+    
+    return new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Template VALUES(?,?,'T${T_Number}.html');`,[T_ID,data.T_Name],(err)=>{
+            if(err){
+                console.log(err)
+                reject();
+            }
+
+        })
+        let base64Data = data.T_base64.replace(/^data:text\/\html+;base64,/, "");
+        let new_file = __dirname + `/../public/html/template/T${T_Number}.html`;
+        var dataBuffer = Buffer.from(base64Data, 'base64');
+        writeFile(new_file, dataBuffer, function(err) {
+            if(err){
+                reject();
+                console.log(err)
+            }else{
+                resolve();
+            }
+        }); 
+    })
+}
+async function create_Resource(data){
+    let R_ID = await NextID('Resources','R_ID','R');
+    let R_Name = data.R_Name;
+    let T_ID = data.T_ID;
+    let D_ID = data.D_ID;
+    let S_ID = data.S_ID;
+    //寫到這邊 要加上台灣時間
+    
+    return new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Resources VALUES('R000000001','D000000001','T000000001','中/低收入戶1',1,'2024-12-12 12:12:12','2024-12-12 12:12:12',0,0);`,[T_ID,data.T_Name],(err)=>{
+            if(err){
+                console.log(err)
+                reject();
+            }
+
+        })
+        let base64Data = data.T_base64.replace(/^data:text\/\html+;base64,/, "");
+        let new_file = __dirname + `/../public/html/template/T${T_Number}.html`;
+        var dataBuffer = Buffer.from(base64Data, 'base64');
+        writeFile(new_file, dataBuffer, function(err) {
+            if(err){
+                reject();
+                console.log(err)
+            }else{
+                resolve();
+            }
+        }); 
+    })
+}
+
+
+
+
+
+ 
 
 function T_Use(str){
     if(str == 'null' || str == null){

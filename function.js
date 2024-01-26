@@ -207,6 +207,31 @@ function find_Count(str,content){    //連續文字爬蟲  返回數字
 }
 
 
+function checkData(data){
+    if(typeof data == 'string'){
+        switch(data){
+            case "" :
+            case null : 
+            case 'null' :
+            case undefined : 
+            case "undefined" : return false;
+            default : return true;
+        }
+    }else if(typeof data == 'array'){
+        for(u = 0;u<data.length;u++){
+            switch(data){
+                case "" :
+                case null : 
+                case 'null' :
+                case undefined : 
+                case "undefined" : return false;
+            }
+        }
+        return true;
+    }
+}
+
+
 
 
 module.exports = {
@@ -219,5 +244,6 @@ module.exports = {
     Administrator_verafication,
     setMsgbox,
     find,
-    find_Count
+    find_Count,
+    checkData
 }

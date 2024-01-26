@@ -70,8 +70,8 @@
                     <div class="collapse" id="language-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="/backend/language" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">語言管理</a></li>
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
-                            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
+                            <li><a href="/backend/language/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
+                            <li><a href="/backend/language/static" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
                         </ul>
                     </div>
                 </li>
@@ -107,55 +107,51 @@
                     <li class="breadcrumb-item fs-4">
                         <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource/add_r">新增資源</a>
                     </li>
-                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
-                      Data
-                    </li> -->
                   </ol>
                 </nav>
             </div>
-            <div class="btn_area">
-                <button class="save">新增資源</button>
-            </div>
-            <div class="content">
-                <div class="data_area">
-                    <table>
-                        <tr><th>資源名稱</th><td><input type="text" placeholder="請輸入資源名稱"></td></tr>
-                        <tr><th>選擇模組</th><td>
-                            <select class="t">
-                                <option>模組1</option>
-                                <option>模組2</option>
-                            </select>
-                        </td></tr>
-                        <tr><th>資源需求</th><td>
-                            <select class="d">
-                                <option>經濟資訊</option>
-                                <option>法律資訊</option>
-                                <option>緊急資訊</option>
-                            </select>
-                        </td></tr>
-                    </table>
+            <form method="post" action="/backend/resource/add_r/data">
+                <div class="btn_area">
+                    <button class="save">新增資源</button>
                 </div>
-                <div class="supplier_area">
-                    <div class="s_table">
-                        <div class="table_title">綁定供應商</div>
-                        <div class="scroll">
-                            <table class="supplier_table">
-                                <tr><th>供應商序號</th><th>供應商名稱</th><th>勾選</th></tr>
-                                <tr onclick="checkbox('c1')"><td>S000000001</td><td>供應商1</td><td><input id="c1" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c2')"><td>S000000001</td><td>供應商1</td><td><input id="c2" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c3')"><td>S000000001</td><td>供應商1</td><td><input id="c3" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c4')"><td>S000000001</td><td>供應商1</td><td><input id="c4" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c5')"><td>S000000001</td><td>供應商1</td><td><input id="c5" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c6')"><td>S000000001</td><td>供應商1</td><td><input id="c6" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c7')"><td>S000000001</td><td>供應商1</td><td><input id="c7" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c8')"><td>S000000001</td><td>供應商1</td><td><input id="c8" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c9')"><td>S000000001</td><td>供應商1</td><td><input id="c9" type="checkbox"></td></tr>
-                                <tr onclick="checkbox('c10')"><td>S000000001</td><td>供應商1</td><td><input id="c10" type="checkbox"></td></tr>
-                            </table>
+                <div class="content" >
+                    <div class="data_area">
+                        <table>
+                            <tr><th>資源名稱</th><td><input type="text" name="R_Name" placeholder="請輸入資源名稱"></td></tr>
+                            <tr><th>選擇模組</th><td>
+                                <select class="t" name="T_ID">
+                                    <!-- <option>模組1</option> -->
+                                </select>
+                            </td></tr>
+                            <tr><th>資源需求</th><td>
+                                <select class="d" name="D_ID">
+                                    <!-- <option>經濟資訊</option> -->
+                                </select>
+                            </td></tr>
+                        </table>
+                    </div>
+                    <div class="supplier_area">
+                        <div class="s_table">
+                            <div class="table_title">綁定供應商</div>
+                            <div class="scroll">
+                                <table class="supplier_table">
+                                    <tr><th>供應商序號</th><th>供應商名稱</th><th>勾選</th></tr>
+                                    <tr onclick="checkbox('c1')"><td>S000000001</td><td>供應商1</td><td><input id="c1" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c2')"><td>S000000001</td><td>供應商1</td><td><input id="c2" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c3')"><td>S000000001</td><td>供應商1</td><td><input id="c3" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c4')"><td>S000000001</td><td>供應商1</td><td><input id="c4" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c5')"><td>S000000001</td><td>供應商1</td><td><input id="c5" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c6')"><td>S000000001</td><td>供應商1</td><td><input id="c6" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c7')"><td>S000000001</td><td>供應商1</td><td><input id="c7" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c8')"><td>S000000001</td><td>供應商1</td><td><input id="c8" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c9')"><td>S000000001</td><td>供應商1</td><td><input id="c9" type="checkbox"></td></tr>
+                                    <tr onclick="checkbox('c10')"><td>S000000001</td><td>供應商1</td><td><input id="c10" type="checkbox"></td></tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </section>
     </main>
 </body>
