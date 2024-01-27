@@ -217,7 +217,7 @@ function checkData(data){
             case "undefined" : return false;
             default : return true;
         }
-    }else if(typeof data == 'array'){
+    }else if(typeof data == 'object'){
         for(u = 0;u<data.length;u++){
             switch(data){
                 case "" :

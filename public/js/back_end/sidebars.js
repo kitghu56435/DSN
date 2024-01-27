@@ -12,7 +12,7 @@ function url(path){                      //轉送函數
 }
 
 function msgbox(mode,str,func){
-  let msgbox = document.getElementsByClassName('msgbox')[0];
+    let msgbox = document.getElementsByClassName('msgbox')[0];
     let body = document.getElementsByTagName('body')[0];
     if(msgbox != undefined){
       msgbox.parentElement.removeChild(msgbox);

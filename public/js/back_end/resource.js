@@ -48,7 +48,7 @@ function setResource(data){
             str = `
             <tr><th>需求名稱</th><th>需求資源數</th><th>上架數量</th><th>下架數量</th><th>刪除</th></tr>`;
             for(i = 0;i<data.Demand.length;i++){
-                str += `<tr onclick="url('/backend/resource/demand?D_ID=${data.Demand[i].D_ID}')"><td>${data.Demand[i].D_Name}</td><td>${data.Demand[i].D_Resource}</td><td>${data.Demand[i].R_On_Shelf}</td><td>${data.Demand[i].R_Down_Shelf}</td><td><img src="../../img/bin.png"></td></tr>`
+                str += `<tr onclick="url('/backend/resource/demand?D_ID=${data.Demand[i].D_ID}')"><td>${data.Demand[i].D_Name}</td><td>${data.Demand[i].D_Resource}</td><td>${data.Demand[i].R_On_Shelf}</td><td>${data.Demand[i].R_Down_Shelf}</td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除${data.Demand[i].D_Name}','deleteDemand(` + '`' + data.Demand[i].D_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`
             }
             d_table.innerHTML = str;
         }
@@ -68,6 +68,36 @@ function setResource(data){
         }
         
     }
+}
+
+function deleteDemand(D_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'deleteerr'){
+                    msgbox(1,'此需求還有資源資料，無法刪除');
+                }else if(jsonResponse.msg == 'success'){
+                    setData_block(0,jsonResponse.all_d);
+                    setData_block(1,jsonResponse.all_r);
+                    setResource(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('D_ID='+D_ID);
 }
 
 
@@ -94,11 +124,42 @@ function setDemand(data){
             str = `
             <tr><th style="width:30%">資源名稱</th><th style="width:15%">套用模板</th><th style="width:15%">資源狀態</th><th style="width:30%">上次更新</th><th style="width:10%">刪除</th></tr>`;
             for(i = 0;i<data.resource.length;i++){
-                str += `<tr onclick="url('/backend/resource/demand/edit?R_ID=${data.resource[i].R_ID}')"><td>${data.resource[i].R_Name}</td><td>${data.resource[i].T_Name}</td><td>${Shelf(data.resource[i].R_Shelf)}</td><td>${data.resource[i].R_Update}</td><td><img src="../../img/bin.png"></td></tr>`
+                str += `<tr onclick="url('/backend/resource/demand/edit?R_ID=${data.resource[i].R_ID}')"><td>${data.resource[i].R_Name}</td><td>${data.resource[i].T_Name}</td><td>${Shelf(data.resource[i].R_Shelf)}</td><td>${data.resource[i].R_Update}</td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.resource[i].R_Name}」資源','deleteResource(` + '`' + data.resource[i].R_ID + '`' + `,` + '`' + data.demand.D_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`
             }
             r_table.innerHTML = str;
         }
     }
+}
+
+function deleteResource(R_ID,D_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'deleteerr'){
+                    msgbox(1,'此需求還有資源資料，無法刪除');
+                }else if(jsonResponse.msg == 'success'){
+                    setData_block(0,jsonResponse.all_r);
+                    setData_block(1,jsonResponse.On_Shelf);
+                    setData_block(2,jsonResponse.Down_Shelf);
+                    setDemand(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID='+ R_ID + '&D_ID=' + D_ID);
 }
 
 
@@ -246,7 +307,14 @@ function setResource_feedback(data){
     let R_Name_bar = document.getElementById('R_Name_bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
-
+    sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+    sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
+    sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+    D_Name_bar.innerHTML = data.resource.D_Name;
+    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
+    R_Name_bar.innerHTML = data.resource.R_Name;
+    R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
     let str = '';
     
 
@@ -261,16 +329,6 @@ function setResource_feedback(data){
         <span>回饋數量：0</span>
         </p>`;
     }else{
-        D_Name_bar.innerHTML = data.resource.D_Name;
-        D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
-        R_Name_bar.innerHTML = data.resource.R_Name;
-        R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-        sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-        sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
-        sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
-        sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
-
-        
         str += `
         <p class="lable_area">
         <span>回饋數量：${data.feedback.length}</span>
@@ -368,8 +426,15 @@ function setResource_supplier(data){
     let R_Name_bar = document.getElementById('R_Name_bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+    sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
+    sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+    D_Name_bar.innerHTML = data.resource.D_Name;
+    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
+    R_Name_bar.innerHTML = data.resource.R_Name;
+    R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
     let str = '';
-   
 
     if(data == undefined){
         number.innerHTML = '供應商數量：0';
@@ -379,14 +444,8 @@ function setResource_supplier(data){
     }else{
 
         number.innerHTML = '供應商數量：' + data.S_Info.length;
-        D_Name_bar.innerHTML = data.resource.D_Name;
-        D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
-        R_Name_bar.innerHTML = data.resource.R_Name;
-        R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-        sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-        sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
-        sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
-        sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+        
+        
 
 
         str = '<tr><th style="width:20%">供應商名稱</th><th style="width:20%">供應商電話</th><th style="width:20%">供應商網站</th><th style="width:45%">供應商備註</th></tr>';
@@ -439,6 +498,9 @@ function container_img(img_name){
         return '../../../img/' + img_name;
     }
 }
+function handleChildClick(event) {
+    event.stopPropagation();
+} 
 
 
 

@@ -190,7 +190,36 @@ function setTemplate_setting(data){
     }
 }
 
+function deleteTemplate(T_ID){
+    let httpRequest = new XMLHttpRequest();
 
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'deleteerr'){
+                    msgbox(1,'此需求還有資源資料，無法刪除');
+                }else if(jsonResponse.msg == 'success'){
+                    setData_block(0,jsonResponse.all_r);
+                    setData_block(1,jsonResponse.On_Shelf);
+                    setData_block(2,jsonResponse.Down_Shelf);
+                    setDemand(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/template/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('T_ID='+ T_ID);
+}
 
 
 function Select_Option_HTML(value,value_array,id_array){

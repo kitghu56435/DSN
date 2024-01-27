@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync,readFile} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox} = require('../function');
-
+const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
+const moment = require('moment-timezone');
 
 router.use(Administrator_verafication);
 
@@ -85,7 +85,36 @@ router.get('/',(req,res)=>{
 
 router.get('/add',(req,res)=>{
     let html = readFileSync('./public/html/back_end/language_add.html','utf-8');
+    let data = req.query.data;
+    let msgbox = '';
+    switch(data){
+        case 'err' : msgbox = '資料輸入錯誤';break;
+        case 'create_err' : msgbox = '新增模組錯誤';break;
+    }
+    
+    html += `<script>
+    ${setMsgbox(msgbox)}
+    </script>
+    `;
     res.end(html)
+})
+
+router.post('/add/data',(req,res)=>{
+    let L_Name = req.body.L_Name;
+    if(checkData(L_Name)){
+        new Promise((resolve,reject)=>{
+            resolve(create_Language(L_Name));
+        }).then(()=>{
+            res.writeHead(303,{Location:'/backend/language'});
+            res.end();
+        }).catch(()=>{
+            res.writeHead(303,{Location:'/backend/language/add?data=create_err'});
+            res.end();
+        })
+    }else{
+        res.writeHead(303,{Location:'/backend/language/add?data=err'});
+        res.end();
+    }
 })
 
 
@@ -474,7 +503,21 @@ router.get('/static/edit',(req,res)=>{
 
 
 
+async function create_Language(L_Name){
+    let L_ID = await NextID('Languages','L_ID','L');
+    let L_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
 
+    return new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Languages VALUES(?,?,?)`,[L_ID,L_Name,L_Date],(err)=>{
+            if(err){
+                console.log(err)
+                reject();
+            }else{
+                resolve();
+            }
+        })
+    })
+}
 
 
 module.exports = router;

@@ -3,6 +3,7 @@ const router = express.Router();
 const {readFileSync,writeFile} = require('fs');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,checkData,NextID} = require('../function');
+const moment = require('moment-timezone');
 
 
 router.use(Administrator_verafication);
@@ -123,6 +124,8 @@ router.get('/demand',(req,res)=>{
         "resource" : []
     }
     
+
+
     db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ?;`,[D_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -132,7 +135,7 @@ router.get('/demand',(req,res)=>{
             data.demand.D_ID = results[0].D_ID;
         }
     })
-    db.execute(`SELECT R_ID,R_Name,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update FROM Resources,Template WHERE Resources.T_ID = Template.T_ID AND D_ID = ?;`,[D_ID],(err,results)=>{
+    db.execute(`SELECT R_ID,R_Name,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update FROM Resources,Template WHERE Resources.T_ID = Template.T_ID AND R_Delete = 0 AND D_ID = ?;`,[D_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -170,8 +173,6 @@ router.get('/demand',(req,res)=>{
     
     
 })
-
-
 router.get('/demand/edit',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_edit.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -505,8 +506,6 @@ router.get('/demand/edit',(req,res)=>{
     })
 
 })
-
-
 router.get('/demand/setting',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_setting.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -606,8 +605,6 @@ router.get('/demand/setting',(req,res)=>{
         res.end(html)
     })
 })
-
-
 router.get('/demand/feedback',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_feedback.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -655,8 +652,6 @@ router.get('/demand/feedback',(req,res)=>{
         res.end(html)
     })
 })
-
-
 router.get('/demand/supplier',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_supplier.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -710,6 +705,151 @@ router.get('/demand/supplier',(req,res)=>{
         res.end(html)
     })
 })
+router.post('/demand/delete',(req,res)=>{
+    let D_ID = req.body.D_ID;
+    let data = {
+        "all_d" : 0,   //需求數量
+        "all_r" : 0,   //資源數量
+        "msg" : "success",
+        "Demand" : [],
+    }
+
+    if(checkData(D_ID)){
+        db.execute(`SELECT COUNT(R_ID) R_Count FROM Resources WHERE D_ID = ?;`,[D_ID],(err,results)=>{
+            if(err){
+                res.json({"msg" : "dberr"});
+                console.log(err);
+            }else if(results[0].R_Count != 0){
+                res.json({"msg" : "deleteerr"});
+            }else{
+                db.execute(`DELETE FROM Demand WHERE D_ID = ?;`,[D_ID],(err)=>{
+                    if(err){
+                        res.json({"msg" : "dberr"});
+                        console.log(err);
+                    }else{
+                        db.execute('SELECT * FROM Demand ORDER BY D_ID;',(err,results)=>{
+                            if(err){
+                                console.log(err);
+                                res.json({"msg" : "dberr"});
+                            }else{
+                                data.all_d = results.length;
+                                for(i = 0;i<results.length;i++){
+                                    data.Demand.push({
+                                        "D_ID" : results[i].D_ID,
+                                        "D_Name" : results[i].D_Name,
+                                        "D_Resource" : 0,
+                                        "R_On_Shelf" : 0,
+                                        "R_Down_Shelf" : 0
+                                    });
+                                }
+                            }
+                        })
+                        db.execute('SELECT Resources.D_ID,COUNT(R_ID) R_Num FROM Resources WHERE R_Delete = 0 GROUP BY D_ID ORDER BY D_ID;',(err,results)=>{
+                            if(err){
+                                console.log(err);
+                                res.json({"msg" : "dberr"});
+                            }else{
+                                for(i = 0;i<results.length;i++){
+                                    for(j = 0;j<data.Demand.length;j++){
+                                        if(results[i].D_ID == data.Demand[j].D_ID){
+                                            data.Demand[j].D_Resource = results[i].R_Num;
+                                            data.all_r += Number(results[i].R_Num);
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                        db.execute('SELECT Resources.D_ID,COUNT(R_ID) R_Num FROM Resources WHERE R_Delete = 0 AND R_Shelf = 1 GROUP BY D_ID ORDER BY D_ID;',(err,results)=>{
+                            if(err){
+                                console.log(err);
+                                res.json({"msg" : "dberr"});
+                            }else{
+                                for(i = 0;i<results.length;i++){
+                                    for(j = 0;j<data.Demand.length;j++){
+                                        if(results[i].D_ID == data.Demand[j].D_ID){
+                                            data.Demand[j].R_On_Shelf = results[i].R_Num;
+                                            data.Demand[j].R_Down_Shelf = data.Demand[j].D_Resource - results[i].R_Num;
+                                        }
+                                    }
+                                }
+        
+                                res.json(data);
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"});
+    }
+    
+})
+router.post('/delete',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    let D_ID = req.body.D_ID;
+    let data = {
+        "msg" : "success",
+        "all_r" : 0,        //資源數量
+        "On_Shelf" : 0,     //總上架數量
+        "Down_Shelf" : 0,   //總下架數量
+        "demand" : {
+            "D_Name" : "",
+            "D_ID" : ""
+        },
+        "resource" : []
+    }
+    
+
+    if(checkData(R_ID)){
+        db.execute(`UPDATE Resources SET R_Delete = 1 WHERE R_ID = ?`,[R_ID],(err)=>{
+            if(err){
+                res.json({"msg" : "dberr"});
+                console.log(err);
+            }else{
+                db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ?;`,[D_ID],(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        msgbox += '資料庫錯誤<br>';
+                    }else{
+                        data.demand.D_Name = results[0].D_Name;
+                        data.demand.D_ID = results[0].D_ID;
+                    }
+                })
+                db.execute(`SELECT R_ID,R_Name,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update FROM Resources,Template WHERE Resources.T_ID = Template.T_ID AND R_Delete = 0 AND D_ID = ?;`,[D_ID],(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        msgbox += '資料庫錯誤<br>';
+                    }else{
+                        data.all_r = results.length;
+                        for(i = 0;i<results.length;i++){
+                            if(results[i].R_Shelf == 1){
+                                data.On_Shelf++;
+                            }else{
+                                data.Down_Shelf++;
+                            }
+            
+                            data.resource.push({ 
+                                "R_ID" : results[i].R_ID, 
+                                "R_Name" : results[i].R_Name,
+                                "T_Name" : results[i].T_Name,
+                                "R_Shelf" : results[i].R_Shelf,
+                                "R_Update" : results[i].R_Update
+                            });
+                        }
+                    }
+            
+                    
+                    res.json(data)
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"});
+    }
+    
+})
+
 
 
 router.get('/add_r',(req,res)=>{
@@ -781,10 +921,9 @@ router.get('/add_r',(req,res)=>{
     
 })
 router.post('/add_r/data',(req,res)=>{
-    console.log(req.body);
     if(checkData(req.body.R_Name) && checkData(req.body.T_ID) && checkData(req.body.D_ID)){
         new Promise((resolve,reject)=>{
-            resolve();
+            resolve(create_Resource(req.body));
         }).then(()=>{
             res.writeHead(303,{Location:'/backend/resource/demand?D_ID=' + req.body.D_ID});
             res.end();
@@ -926,8 +1065,6 @@ router.get('/template',(req,res)=>{
     
     
 })
-
-
 router.get('/template/edit',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/template_edit.html','utf-8');
     let T_ID = req.query.T_ID;
@@ -1235,6 +1372,7 @@ router.get('/template/edit',(req,res)=>{
 
 
 
+
 router.get('/template/setting',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/template_setting.html','utf-8');
     let T_ID = req.query.T_ID;
@@ -1260,8 +1398,6 @@ router.get('/template/setting',(req,res)=>{
         res.end(html)
     })
 })
-
-
 router.get('/template/use',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/template_r.html','utf-8');
     let T_ID = req.query.T_ID;
@@ -1308,6 +1444,66 @@ router.get('/template/use',(req,res)=>{
 })
 
 
+//這邊繼續
+router.get('/template/delete',(req,res)=>{
+    let T_ID = req.body.T_ID;
+    let data = {
+        "msg" : "success",
+        "all_t" : 0,        //模板數量
+        "template" : []
+    }
+    
+
+    if(checkData(T_ID)){
+        db.execute(`UPDATE Resources SET R_Delete = 1 WHERE R_ID = ?`,[R_ID],(err)=>{
+            if(err){
+                res.json({"msg" : "dberr"});
+                console.log(err);
+            }else{
+                db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ?;`,[D_ID],(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        msgbox += '資料庫錯誤<br>';
+                    }else{
+                        data.demand.D_Name = results[0].D_Name;
+                        data.demand.D_ID = results[0].D_ID;
+                    }
+                })
+                db.execute(`SELECT R_ID,R_Name,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update FROM Resources,Template WHERE Resources.T_ID = Template.T_ID AND R_Delete = 0 AND D_ID = ?;`,[D_ID],(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        msgbox += '資料庫錯誤<br>';
+                    }else{
+                        data.all_r = results.length;
+                        for(i = 0;i<results.length;i++){
+                            if(results[i].R_Shelf == 1){
+                                data.On_Shelf++;
+                            }else{
+                                data.Down_Shelf++;
+                            }
+            
+                            data.resource.push({ 
+                                "R_ID" : results[i].R_ID, 
+                                "R_Name" : results[i].R_Name,
+                                "T_Name" : results[i].T_Name,
+                                "R_Shelf" : results[i].R_Shelf,
+                                "R_Update" : results[i].R_Update
+                            });
+                        }
+                    }
+            
+                    
+                    res.json(data)
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"});
+    }
+})
+
+
+
 
 
 
@@ -1327,7 +1523,6 @@ async function create_Demand(D_Name){
         })
     })
 }
-
 async function create_Template(data){
     let T_ID = await NextID('Template','T_ID','T');
     let T_Number = Number(T_ID.substring(1));
@@ -1355,33 +1550,52 @@ async function create_Template(data){
 }
 async function create_Resource(data){
     let R_ID = await NextID('Resources','R_ID','R');
+    let R_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let R_Name = data.R_Name;
     let T_ID = data.T_ID;
     let D_ID = data.D_ID;
     let S_ID = data.S_ID;
-    //寫到這邊 要加上台灣時間
-    
-    return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Resources VALUES('R000000001','D000000001','T000000001','中/低收入戶1',1,'2024-12-12 12:12:12','2024-12-12 12:12:12',0,0);`,[T_ID,data.T_Name],(err)=>{
-            if(err){
-                console.log(err)
-                reject();
-            }
 
-        })
-        let base64Data = data.T_base64.replace(/^data:text\/\html+;base64,/, "");
-        let new_file = __dirname + `/../public/html/template/T${T_Number}.html`;
-        var dataBuffer = Buffer.from(base64Data, 'base64');
-        writeFile(new_file, dataBuffer, function(err) {
+    if(checkData(S_ID)){
+        if(typeof S_ID == 'object'){
+            for(c = 0;c<S_ID.length;c++){
+                await create_Supplier_binding(R_ID,S_ID[c]);
+            }
+        }else{
+            await create_Supplier_binding(R_ID,S_ID);
+        }
+    } 
+
+   
+    return new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Resources VALUES(?,?,?,?,1,?,?,0,0);`,
+        [R_ID,D_ID,T_ID,R_Name,R_Date,R_Date],(err)=>{
             if(err){
-                reject();
                 console.log(err)
+                reject();
+            }else{
+                resolve();  
+            }
+        })
+    })
+}
+async function create_Supplier_binding(R_ID,S_ID){
+    let SB_ID = await NextID('Supplier_binding','SB_ID','SB');
+
+    new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Supplier_binding VALUES(?,?,?);`,[SB_ID,R_ID,S_ID],(err)=>{
+            if(err){
+                console.log(err);
+                reject();
             }else{
                 resolve();
             }
-        }); 
+        })
     })
 }
+
+
+
 
 
 

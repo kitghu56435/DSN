@@ -88,7 +88,6 @@
                     </div>
                 </li>
             </ul>
-            
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
         <section>
@@ -110,14 +109,16 @@
                   </ol>
                 </nav>
             </div>
-            <div class="btn_area">
-                <button>新增語言</button>
-            </div>
-            <div class="content">
-                <table>
-                    <tr><th>語言名稱</th><td><input type="text" placeholder="請輸入語言名稱"></td></tr>
-                </table>
-            </div>
+            <form method="post" action="/backend/language/add/data">
+                <div class="btn_area">
+                    <button>新增語言</button>
+                </div>
+                <div class="content">
+                    <table>
+                        <tr><th>語言名稱</th><td><input type="text" name="L_Name" placeholder="請輸入語言名稱"></td></tr>
+                    </table>
+                </div>
+            </form>
         </section>
     </main>
 </body>
