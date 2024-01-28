@@ -1,3 +1,16 @@
+@media(max-width:1600px){  
+
+}
+@media(max-width:1280px){ 
+
+}
+@media(max-width:740px){  
+
+}
+@media(max-width:560px){  
+
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -45,17 +58,24 @@ body {
     margin-left: 0.8em;
 }
 .welcome_to_use{
-    margin-top:2em;
-    text-align: left;
+    height:100%;
+    width: 100%;
+    position: relative;
+    display: flex;
 }
 .welcome_to_use h3{
     font-size: 2.2em;
-    margin-left: 0.8em;
 }
 .welcome_to_use p{
     font-size: 1.2em;
 }
-
+.content{
+    margin-top: 3%;
+    margin-left: 2%;
+    position: absolute;
+    text-align: left;
+    color: white; 
+}
 .que_pic{
     margin-top: 2em;;
     padding-left: 20%;
@@ -73,4 +93,7 @@ body {
 }
 .que_pic .q2{
     display: inline-block;
+}
+.b2{
+    background-color: gray;
 }
