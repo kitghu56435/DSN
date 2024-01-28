@@ -58,7 +58,6 @@ body {
 
 .que_pic{
     margin-top: 2em;;
-    display: inline-block;
     padding-left: 20%;
     padding-right: 20%;
 }
@@ -68,4 +67,10 @@ body {
 .pic{
     width: 30%;
     height: 30%;
+}
+.que_pic .q1{
+    display: inline-block;
+}
+.que_pic .q2{
+    display: inline-block;
 }
