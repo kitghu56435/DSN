@@ -8,20 +8,31 @@ body {
     position: relative;
     text-align: center;
 }
+.title{
+    font-size: 5em;
+    font-weight: bold;
+}
 .pic1{
     width:100%;
     position: relative;
     text-align: center;
 }
 .container {
+    margin-top: 3%;
     text-align: center;
     width: 100%;
     height: 100%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+.letterp{
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 .bottom-left {
     position: absolute;
-    bottom: 8px;
-    left: 16px;
+    top: 25%;
+    left: 13%;
 }
 .bg{
     height:300px;
@@ -37,12 +48,57 @@ body {
 .imgs_container{
     padding-left: 20px;
     padding-right: 20px;
+    margin-bottom: 3%;
 }
-.row{
+.modrow{
     display: flex;
     justify-content: center;
+}
+.sponser{
+    margin-bottom: 3%;
 }
 .column{
     padding: 10px; 
     max-width: 300px;   
+}
+@media(max-width:1600px){  
+
+}
+@media(max-width:1280px){ 
+    .bottom-left {
+        position: absolute;
+        top: 25%;
+        left: 9%;
+    }
+    .letterp{
+        margin-top: 2%;
+    }
+    .imgs_container{
+        padding-top: 3%;
+        padding-left: 20%;
+    }
+}
+@media(max-width:740px){  
+    .bottom-left{
+        top:30%;
+    }
+    .title{
+        font-size: 2em;
+    }
+    .letterp{
+        margin-top: 2%;
+    }
+    .imgs_container{
+        padding-top: 3%;
+        margin-bottom: 3%;
+    }
+}
+@media(max-width:560px){  
+    .title{
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .lettert{
+        margin-left: 10%;
+    }
 }
