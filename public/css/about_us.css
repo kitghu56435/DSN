@@ -8,20 +8,31 @@ body {
     position: relative;
     text-align: center;
 }
+.title{
+    font-size: 5em;
+    font-weight: bold;
+}
 .pic1{
     width:100%;
     position: relative;
     text-align: center;
 }
 .container {
+    margin-top: 3%;
     text-align: center;
     width: 100%;
     height: 100%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+.letterp{
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 .bottom-left {
     position: absolute;
-    bottom: 8px;
-    left: 16px;
+    top: 25%;
+    left: 13%;
 }
 .bg{
     height:300px;
@@ -37,27 +48,16 @@ body {
 .imgs_container{
     padding-left: 20px;
     padding-right: 20px;
+    margin-bottom: 3%;
 }
-.modrow{
+.modmodrow{
     display: flex;
     justify-content: center;
+}
+.sponser{
+    margin-bottom: 3%;
 }
 .column{
     padding: 10px; 
     max-width: 300px;   
-}
-
-@media (max-width:1600px){   
-    .bottom-left {
-        left: 10%;
-    }
-}
-@media (max-width:1280px){  
-
-}
-@media (max-width:740px){   
-
-}
-@media (max-width:560px){  
-
 }
