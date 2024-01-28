@@ -95,6 +95,9 @@ section{
     transition: 0.3s;
     cursor: pointer;;
 }
+.container2 > .item > .item_content > input{
+    display: none;
+}
 .container2 > .item > .item_content > img:hover{
     transform: scale(1.05);
 }

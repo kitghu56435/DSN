@@ -208,6 +208,8 @@ function setResource_edit(data){
     let R_Name_bar = document.getElementById('R_Name_bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
 
     D_Name_bar.innerHTML = data.resource.D_Name;
     D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
@@ -218,6 +220,14 @@ function setResource_edit(data){
     sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
     sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
     sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+
+    if(data.resource.R_Shelf){
+        btn[1].innerHTML = '下架資源';
+    }else{
+        btn[1].innerHTML = '上架資源';
+    }
+    btn[0].setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
+    btn[1].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
     
     let L_Name_array = [];
     let L_ID_array = [];
@@ -232,7 +242,7 @@ function setResource_edit(data){
     html_area.innerHTML = '';
     for(i = 0;i< data.container.length;i++){
         let div = document.createElement('div');
-        let str = '';
+        let str = '<input type="hidden" id="L_ID" name="L_ID" value="L000000001">';
 
         if(data.container[i].type == 'title'){
             div.setAttribute('class','container2_title');
@@ -243,7 +253,7 @@ function setResource_edit(data){
                     <span>項目提示：${data.container[i].note[0]}</span>
                 </div>
                 <div class="item_content">
-                    <input placeholder="請輸入標題" value="${data.container[i].content[0]}">
+                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
                 </div>
             </div>
             `;
@@ -261,7 +271,7 @@ function setResource_edit(data){
                             <span>項目提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
-                            <textarea placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
+                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
                         </div>
                     </div>                    
                     `;
@@ -273,7 +283,7 @@ function setResource_edit(data){
                             <span>項目提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
-                            <textarea placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
+                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
                         </div>
                     </div> 
                     `;
@@ -285,7 +295,9 @@ function setResource_edit(data){
                             <span>項目提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
-                            <img src="${container_img(data.container[i].content[j])}" title="上傳照片">
+                            <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
+                            <input type="file" onchange="setContainer2_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_input_file" accept="image/*">
+                            <input type="hidden" name="${data.container[i].id[j]}" value="">
                         </div>
                     </div>                    
                     `;
@@ -299,6 +311,105 @@ function setResource_edit(data){
         html_area.appendChild(div);
     }
 }
+
+function shelfResource(R_ID){
+    let httpRequest = new XMLHttpRequest();
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'nodata'){
+                    msgbox(1,'查無資源，請嘗試重新整理頁面');
+                }else if(jsonResponse.msg == 'success'){
+                    if(jsonResponse.shelf){
+                        btn[1].innerHTML = '下架資源';
+                    }else{
+                        btn[1].innerHTML = '上架資源';
+                    }
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/edit/shelf');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID='+R_ID);
+}
+function saveResource_data(R_ID){
+    let form = document.getElementsByClassName('html_area')[0];
+    let formData = new FormData(form);
+    let formObject = {};
+    let id_array = [];
+
+    formData.forEach(function(value, key){
+        formObject[key] = value;
+        id_array.push(key);
+    });
+    formObject.R_ID = R_ID;
+
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'nodata'){
+                    msgbox(1,'查無資源，請嘗試重新整理頁面');
+                }else if(jsonResponse.msg == 'err'){
+                    msgbox(1,'更新錯誤');
+                }else if(jsonResponse.msg == 'success'){
+                    if(jsonResponse.shelf){
+                        btn[1].innerHTML = '下架資源';
+                    }else{
+                        btn[1].innerHTML = '上架資源';
+                    }
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/edit/data');
+    httpRequest.setRequestHeader('Content-Type','application/json');
+    httpRequest.send(JSON.stringify(formObject));
+}
+function click_file_img(RD_ID){
+    let img = document.getElementById( RD_ID + '_input_file');
+    img.click();
+}
+function setContainer2_img(RD_ID){
+    let file_input = document.getElementById( RD_ID + '_input_file');
+    let img = document.getElementById( RD_ID + '_img');
+    let hidden_input = document.getElementsByName(RD_ID)[0];
+
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file_input.files[0]);
+    reader.onload = (e) =>{
+        img.setAttribute('src',e.currentTarget.result);
+        hidden_input.setAttribute('value',e.currentTarget.result);
+    }
+    
+}
+
+
+
 
 
 function setResource_feedback(data){

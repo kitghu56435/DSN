@@ -35,7 +35,7 @@ function setTemplate(data){
                 <select onclick="handleChildClick(event)">
                     ${Select_Option_HTML('',R_value_array,R_value_array)}
                 </select>
-                </td><td><img onclick="handleChildClick(event)" src="../../img/bin.png"></td></tr>`;
+                </td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.template[i].T_Name}」模板','deleteTemplate(` + '`' + data.template[i].T_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`;
             }
             
             t_table.innerHTML = str;
@@ -202,13 +202,13 @@ function deleteTemplate(T_ID){
                     msgbox(1,'伺服器錯誤');
                 }else if(jsonResponse.msg == 'dataerr'){
                     msgbox(1,'資料缺失');
-                }else if(jsonResponse.msg == 'deleteerr'){
-                    msgbox(1,'此需求還有資源資料，無法刪除');
+                }else if(jsonResponse.msg == 'rerr'){
+                    msgbox(1,'此模板還有資源資料在使用，無法刪除');
                 }else if(jsonResponse.msg == 'success'){
-                    setData_block(0,jsonResponse.all_r);
-                    setData_block(1,jsonResponse.On_Shelf);
-                    setData_block(2,jsonResponse.Down_Shelf);
-                    setDemand(jsonResponse);
+                    setData_block(0,jsonResponse.all_t);
+                    setTemplate(jsonResponse);
+                }else{
+                    msgbox(1,'伺服器無回應，請稍後再嘗試');
                 }
             }else{
                 alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');

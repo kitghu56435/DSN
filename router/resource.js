@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,writeFile} = require('fs');
+const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,checkData,NextID} = require('../function');
 const moment = require('moment-timezone');
@@ -173,6 +173,8 @@ router.get('/demand',(req,res)=>{
     
     
 })
+
+
 router.get('/demand/edit',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_edit.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -183,14 +185,15 @@ router.get('/demand/edit',(req,res)=>{
             "D_Name" : "",
             "D_ID" : "",
             "R_Name" : "",
-            "R_ID" : ""
+            "R_ID" : "",
+            "R_Shelf" : 1
         },
         "leng" : [],
         "container" : []
     }
 
 
-    db.execute(`SELECT R_ID,R_Name,Resources.D_ID,D_Name,T_Path FROM Resources,Demand,Template 
+    db.execute(`SELECT R_ID,R_Name,R_Shelf,Resources.D_ID,D_Name,T_Path FROM Resources,Demand,Template 
     WHERE Resources.D_ID = Demand.D_ID AND Template.T_ID = Resources.T_ID AND R_Delete = 0 AND R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -201,6 +204,7 @@ router.get('/demand/edit',(req,res)=>{
             data.resource.D_ID = results[0].D_ID;
             data.resource.R_Name = results[0].R_Name;
             data.resource.R_ID = results[0].R_ID;
+            data.resource.R_Shelf = results[0].R_Shelf;
         }
     })
     db.execute(`SELECT L_ID,L_Name FROM Languages;`,(err,results)=>{
@@ -506,6 +510,68 @@ router.get('/demand/edit',(req,res)=>{
     })
 
 })
+router.post('/demand/edit/shelf',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    
+    if(checkData(R_ID)){
+        db.execute(`SELECT R_Shelf FROM Resources WHERE R_ID = ?;`,[R_ID],(err,results)=>{
+            if(err){
+                res.json({"msg" : "dberr"});
+            }else if(results[0].length == 0){
+                res.json({"msg" : "nodata"});
+            }else{
+                db.execute(`UPDATE Resources SET R_Shelf = ? WHERE R_ID = ?`,[!results[0].R_Shelf,R_ID],(err)=>{
+                    if(err){
+                        res.json({"msg" : "dberr"});
+                    }else{
+                        res.json({"msg" : "success","shelf" : !results[0].R_Shelf});
+                    }
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"});
+    }
+    
+})
+router.post('/demand/edit/data',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    let L_ID = req.body.L_ID;
+    
+    if(checkData(R_ID) && checkData(L_ID)){
+        db.execute(`SELECT L_ID FROM Languages WHERE L_ID = ?;`,[L_ID],(err,results)=>{  //確認是否有此語言續號
+            if(err){
+                console.log(err);
+                res.json({"msg" : "dberr"})
+            }else if(results.length == 0){
+                res.json({"msg" : "nodata"});
+            }else{
+                db.execute(`SELECT T_ID FROM Resources WHERE R_ID = ?;`,[R_ID],(err,results)=>{  //確認是否有此資源
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "dberr"});
+                    }else if(results.length == 0){
+                        res.json({"msg" : "nodata"});
+                    }else{
+                        
+                        new Promise((resolve,reject)=>{
+
+                            resolve(update_Resource_data(req.body));
+                        }).then((result)=>{
+                            res.json({"msg" : "dberr"})
+                        })
+                        
+                    }
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"})
+    }
+})
+
+
+
 router.get('/demand/setting',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_setting.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -715,7 +781,7 @@ router.post('/demand/delete',(req,res)=>{
     }
 
     if(checkData(D_ID)){
-        db.execute(`SELECT COUNT(R_ID) R_Count FROM Resources WHERE D_ID = ?;`,[D_ID],(err,results)=>{
+        db.execute(`SELECT COUNT(R_ID) R_Count FROM Resources WHERE R_Delete = 0 AND D_ID = ?;`,[D_ID],(err,results)=>{
             if(err){
                 res.json({"msg" : "dberr"});
                 console.log(err);
@@ -802,7 +868,7 @@ router.post('/delete',(req,res)=>{
     
 
     if(checkData(R_ID)){
-        db.execute(`UPDATE Resources SET R_Delete = 1 WHERE R_ID = ?`,[R_ID],(err)=>{
+        db.execute(`UPDATE Resources SET R_Delete = 1 WHERE R_ID = ? AND R_Delete = 0`,[R_ID],(err)=>{
             if(err){
                 res.json({"msg" : "dberr"});
                 console.log(err);
@@ -1015,7 +1081,7 @@ router.get('/template',(req,res)=>{
     }
     
 
-    db.execute(`SELECT Template.*,Resources.R_Name FROM Template LEFT JOIN Resources ON Template.T_ID = Resources.T_ID;`,(err,results)=>{
+    db.execute(`SELECT Template.*,Resources.R_Name FROM Template LEFT JOIN Resources ON Template.T_ID = Resources.T_ID AND R_Delete = 0;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -1420,7 +1486,7 @@ router.get('/template/use',(req,res)=>{
         }
     })
     db.execute(`SELECT Resources.R_ID,R_Name,D_Name FROM Template,Resources,Demand WHERE Template.T_ID = Resources.T_ID 
-    AND Demand.D_ID = Resources.D_ID AND Template.T_ID = ?;`,[T_ID],(err,results)=>{
+    AND Demand.D_ID = Resources.D_ID AND R_Delete = 0 AND Template.T_ID = ?;`,[T_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -1444,9 +1510,10 @@ router.get('/template/use',(req,res)=>{
 })
 
 
-//這邊繼續
-router.get('/template/delete',(req,res)=>{
+
+router.post('/template/delete',(req,res)=>{
     let T_ID = req.body.T_ID;
+    let T_Number = Number(T_ID.substring(1));
     let data = {
         "msg" : "success",
         "all_t" : 0,        //模板數量
@@ -1455,45 +1522,62 @@ router.get('/template/delete',(req,res)=>{
     
 
     if(checkData(T_ID)){
-        db.execute(`UPDATE Resources SET R_Delete = 1 WHERE R_ID = ?`,[R_ID],(err)=>{
+        db.execute(`SELECT COUNT(*) T_Count FROM Resources WHERE R_Delete = 0 AND T_ID = ?;`,[T_ID],(err,results)=>{
             if(err){
                 res.json({"msg" : "dberr"});
                 console.log(err);
+            }else if(results[0].T_Count != 0){  //還有資源再使用
+                res.json({"msg" : "rerr"});
             }else{
-                db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ?;`,[D_ID],(err,results)=>{
+                unlink(`./public/html/template/T${T_Number}.html`,(err)=>{
                     if(err){
                         console.log(err);
-                        msgbox += '資料庫錯誤<br>';
-                    }else{
-                        data.demand.D_Name = results[0].D_Name;
-                        data.demand.D_ID = results[0].D_ID;
                     }
                 })
-                db.execute(`SELECT R_ID,R_Name,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update FROM Resources,Template WHERE Resources.T_ID = Template.T_ID AND R_Delete = 0 AND D_ID = ?;`,[D_ID],(err,results)=>{
+                db.execute(`DELETE FROM Template WHERE T_ID = ?;`,[T_ID],(err)=>{
                     if(err){
                         console.log(err);
-                        msgbox += '資料庫錯誤<br>';
+                        res.json({"msg" : "dberr"});
+                    }
+                })
+                db.execute(`SELECT Template.*,Resources.R_Name FROM Template LEFT JOIN Resources ON Template.T_ID = Resources.T_ID AND R_Delete = 0;`,(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "dberr"});
                     }else{
-                        data.all_r = results.length;
-                        for(i = 0;i<results.length;i++){
-                            if(results[i].R_Shelf == 1){
-                                data.On_Shelf++;
-                            }else{
-                                data.Down_Shelf++;
-                            }
+                        if(results.length != 0){
+                            let now_template = results[0].T_ID;
+                            data.all_t = 1;       //模板總數
             
-                            data.resource.push({ 
-                                "R_ID" : results[i].R_ID, 
-                                "R_Name" : results[i].R_Name,
-                                "T_Name" : results[i].T_Name,
-                                "R_Shelf" : results[i].R_Shelf,
-                                "R_Update" : results[i].R_Update
-                            });
+                            data.template.push({
+                                "T_ID" : results[0].T_ID,
+                                "T_Name" : results[0].T_Name,
+                                "T_Use" : 0,
+                                "T_Path" : results[0].T_Path,
+                                "T_Resource" : [results[0].R_Name],
+                            })
+            
+                            for(i = 1;i<results.length;i++){
+                                if(results[i].T_ID != now_template){
+                                    now_template = results[i].T_ID;
+                                    data.all_t += 1; 
+                                    data.template.push({
+                                        "T_ID" : results[i].T_ID,
+                                        "T_Name" : results[i].T_Name,
+                                        "T_Use" : T_Use(results[i].R_Name),
+                                        "T_Path" : results[i].T_Path,
+                                        "T_Resource" : [results[i].R_Name],
+                                    })
+                                }else{
+                                    data.template[data.template.length-1].T_Use += 1;
+                                    data.template[data.template.length-1].T_Resource.push(results[i].R_Name);
+                                }
+                            }
                         }
+                        
                     }
             
-                    
-                    res.json(data)
+                    res.json(data);
                 })
             }
         })
@@ -1593,7 +1677,25 @@ async function create_Supplier_binding(R_ID,S_ID){
         })
     })
 }
+//寫到這邊
+async function update_Resource_data(data){
+    
 
+}
+async function create_Resource_data(R_ID,L_ID,Template_ID,Content){
+    let RD_ID = await NextID('Resource_data','RD_ID','RD');
+
+    return new Promise((resolve,reject)=>{
+        db.execute(`INSERT INTO Resource_data VALUES(?,?,?,?,1,?);`,[RD_ID,R_ID,L_ID,Template_ID,Content],(err)=>{
+            if(err){
+                console.log(err)
+                reject();
+            }else{
+                resolve();
+            }
+        })
+    })
+}
 
 
 

@@ -14,7 +14,7 @@ const language = require('./router/language');
 
 
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:false,limit:'250kb'}));
+app.use(express.urlencoded({extended:false,limit:'350kb'}));
 app.use(bodyParser.json());
 app.use(cookieSession({
     name:'session',

@@ -99,6 +99,57 @@ router.get('/add',(req,res)=>{
     res.end(html)
 })
 
+router.post('/delete',(req,res)=>{
+    let L_ID = req.body.L_ID;
+    let data = {
+        "msg" : "success",
+        "all_l" : 0,        //語言數量
+        "Language":[]
+    }
+    
+
+    if(checkData(L_ID)){
+        db.execute(`SELECT COUNT(*) L_Count FROM Resource_data WHERE L_ID = ?;`,[L_ID],(err,results)=>{
+            if(err){
+                res.json({"msg" : "dberr"});
+                console.log(err);
+            }else if(results[0].L_Count != 0){
+                res.json({"msg" : "rerr"});   //還有資源在使用
+            }else{
+                db.execute(`DELETE FROM Languages WHERE L_ID = ?;`,[L_ID],(err)=>{
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "dberr"});
+                    }
+                })
+                db.execute(`SELECT Languages.L_ID,L_Name,(COUNT(Languages.L_ID)-1) L_Use,DATE_FORMAT(L_Date,'%Y年%m月%d日 %H:%i:%s') L_Date_f FROM Languages 
+                LEFT JOIN Resource_data ON Resource_data.L_ID = Languages.L_ID GROUP BY Languages.L_ID;`,(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "dberr"});
+                    }else{
+                        data.all_l = results.length;
+                        for(i = 0;i<results.length;i++){
+                            data.Language.push({
+                                "L_ID" : results[i].L_ID,
+                                "L_Name" : results[i].L_Name,
+                                "L_Use" : results[i].L_Use,
+                                "L_Date" : results[i].L_Date_f
+                            });
+                        }
+
+                        res.json(data);
+                    }
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"});
+    }
+    
+})
+
+
 router.post('/add/data',(req,res)=>{
     let L_Name = req.body.L_Name;
     if(checkData(L_Name)){
@@ -116,6 +167,8 @@ router.post('/add/data',(req,res)=>{
         res.end();
     }
 })
+
+
 
 
 router.get('/static',(req,res)=>{
@@ -173,7 +226,7 @@ router.get('/static',(req,res)=>{
     })
 })
 
-//這邊繼續
+
 router.get('/static/edit',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/language_edit.html','utf-8');
 
@@ -500,6 +553,10 @@ router.get('/static/edit',(req,res)=>{
         res.end(html)
     })
 })
+
+
+
+
 
 
 

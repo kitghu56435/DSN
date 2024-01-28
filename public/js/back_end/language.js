@@ -25,7 +25,8 @@ function setLanguage(data){
             str = `
             <tr><th>語言名稱</th><th>套用數量</th><th>建立時間</th><th>刪除</th></tr>`;
             for(i = 0;i<data.Language.length;i++){
-                str += `<tr><td>${data.Language[i].L_Name}</td><td>${data.Language[i].L_Use}</td><td>${data.Language[i].L_Date}</td><td><img src="../../img/bin.png"></td></tr>`
+                str += `<tr><td>${data.Language[i].L_Name}</td><td>${data.Language[i].L_Use}</td><td>${data.Language[i].L_Date}</td>
+                <td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.Language[i].L_Name}」語言','deleteLanguage(` + '`' + data.Language[i].L_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`
             }
             d_table.innerHTML = str;
         }
@@ -54,7 +55,36 @@ function setLanguage(data){
 }
 
 
+function deleteLanguage(L_ID){
+    let httpRequest = new XMLHttpRequest();
 
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'rerr'){
+                    msgbox(1,'此語言還有資源資料在使用，無法刪除');
+                }else if(jsonResponse.msg == 'success'){
+                    setData_block(0,jsonResponse.all_l);
+                    setLanguage(jsonResponse);
+                }else{
+                    msgbox(1,'伺服器無回應，請稍後再嘗試');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/language/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('L_ID='+ L_ID);
+}
 
 function setLanguage_edit(data){
     let lang = document.getElementsByClassName('lang')[0]; 
