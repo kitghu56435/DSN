@@ -21,7 +21,12 @@ body {
   height: 100%;
   object-fit: cover;
 }
-
+.pic2{
+    background-image: url(../img/aboutus_pic.png);
+    width:100%;
+    height: 450px;
+    background-repeat: round;
+}
 .middle_text {
   position: absolute;
   text-align: center;
@@ -52,14 +57,14 @@ body {
   /* align-items: center; */
 }
 .welcome_to_use h3 {
+    padding-top: 3%;
   font-size: 3em;
 }
 .welcome_to_use p {
   font-size: 1.2em;
 }
 .content {
-  margin-top: 3%;
-  margin-left: 2%;
+  margin-top: 8%;
   width: 100%;
   position: absolute;
   text-align: center;
@@ -102,8 +107,18 @@ h3 {
 }
 /* 200% */
 @media (max-width: 740px) {
+    .content{
+        margin-top: 5%;
+    }
+    .pic2{
+        background-image: url(../img/test4.png);
+        width:100%;
+        height: 400px;
+        padding-bottom: 3%;
+    }
   .flow_pic h3 {
     font-size: 1.6em;
+    padding-right: 6%;
   }
   .welcome_to_use h3 {
     font-size: 1.6em;

@@ -3,20 +3,25 @@ body {
     padding: 0;
 }
 .container1{
-    height:100%;
+    height: 450px;
     width: 100%;
     position: relative;
     text-align: center;
+    background-image: url(../img/aboutus_pic.png);
+    background-repeat: round;
+    object-fit:fill;
 }
 .title{
     font-size: 5em;
     font-weight: bold;
 }
-.pic1{
+/* .pic1{
     width:100%;
+    height: %;
     position: relative;
     text-align: center;
-}
+    background-image: url(../img/aboutus_pic.png);
+} */
 .container {
     margin-top: 3%;
     text-align: center;
@@ -72,6 +77,17 @@ body {
 }
 /* 125% 1170px */
 @media(max-width:1280px){ 
+/*     
+    .container1{
+        height: 450px;
+        width: 100%;
+        position: relative;
+        text-align: center;
+        background-image: url(../img/test1.png);
+        background-repeat: round;
+        object-fit: fill;
+    } */
+
     .container{
         padding-left:2%;
     }
@@ -94,11 +110,11 @@ body {
     }
     .modrow1{
         flex-direction: column;
-        padding-left: 4%;
+        padding-right: 13%;
     }
     .modrow{
         flex-direction: column;
-        padding-left: 20%;
+        padding-left: 12%;
     }
     .bottom-left{
         top:30%;
