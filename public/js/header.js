@@ -1,9 +1,17 @@
-window.onresize = header_nav_check;
+//window.onresize = header_nav_check;
+
+window.addEventListener('resize', function() {
+    header_nav_check();
+});
+
 
 function header_nav_check(){
     let nav_item = document.getElementsByClassName('nav-item');
-    if(window.innerWidth >= 768){
-        for(i = 0;i<3;i++){
+    let navbar_brand = document.getElementsByClassName('navbar-brand')[0];
+    
+    
+    if(window.innerWidth > 768){
+        for(i = 0;i<7;i++){
             let a = nav_item[i].getElementsByTagName('a')[0];
             let ul = nav_item[i].getElementsByTagName('ul')[0];
             let ul_a = ul.getElementsByTagName('a');
@@ -11,15 +19,23 @@ function header_nav_check(){
             a.setAttribute('class','nav-link nav-link-hover');
             ul.setAttribute('class','nav-link-hover-menu');
 
+            
+            navbar_brand.innerHTML = '<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">弱勢資源網DSN';
+            
+
             for(j=0;j<ul_a.length;j++){
                 ul_a[j].setAttribute('class','dropdown-hover-item');
             }
         }
     }else{
-        for(i = 0;i<3;i++){
+        for(i = 0;i<7;i++){
             let a = nav_item[i].getElementsByTagName('a')[0];
             let ul = nav_item[i].getElementsByTagName('ul')[0];
             let ul_a = ul.getElementsByTagName('a');
+
+            if(window.innerWidth > 560){
+            navbar_brand.innerHTML = '<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">';
+            }
 
             a.setAttribute('class','nav-link dropdown-toggle');
             ul.setAttribute('class','dropdown-menu');

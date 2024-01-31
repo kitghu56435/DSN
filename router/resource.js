@@ -176,18 +176,32 @@ router.get('/demand',(req,res)=>{
 
 
 router.get('/demand/edit',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/resource_edit.html','utf-8');
     let R_ID = req.query.R_ID;
+    let L_ID = req.query.L_ID;
+    let html = readFileSync('./public/html/back_end/edit/resource_edit.html','utf-8');
+
+    if(L_ID == undefined) L_ID = 'L000000001';
+
+    html += `
+    <script>
+    getResource_data('${R_ID}','${L_ID}');
+    </script>`
+    res.end(html);
+})
+router.post('/demand/edit/data',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    let L_ID = req.body.L_ID;
     let T_Path = '';
-    let msgbox = '';
     let data = {
         "resource" : {
             "D_Name" : "",
             "D_ID" : "",
             "R_Name" : "",
             "R_ID" : "",
-            "R_Shelf" : 1
+            "R_Shelf" : 1,
+            "L_ID" : L_ID,
         },
+        "msgbox": "",
         "leng" : [],
         "container" : []
     }
@@ -197,7 +211,7 @@ router.get('/demand/edit',(req,res)=>{
     WHERE Resources.D_ID = Demand.D_ID AND Template.T_ID = Resources.T_ID AND R_Delete = 0 AND R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             T_Path = results[0].T_Path;
             data.resource.D_Name = results[0].D_Name;
@@ -210,7 +224,7 @@ router.get('/demand/edit',(req,res)=>{
     db.execute(`SELECT L_ID,L_Name FROM Languages;`,(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             for(i = 0;i<results.length;i++){
                 data.leng.push({
@@ -220,10 +234,10 @@ router.get('/demand/edit',(req,res)=>{
             }
         }
     })
-    db.execute(`SELECT * FROM Resource_data WHERE R_ID = ? AND L_ID = 'L000000001';`,[R_ID],(err,results)=>{
+    db.execute(`SELECT * FROM Resource_data WHERE R_ID = ? AND L_ID = ?;`,[R_ID,L_ID],(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             try{
                 let template_html = readFileSync('./public/html/template/' + T_Path,'utf-8');
@@ -497,18 +511,12 @@ router.get('/demand/edit',(req,res)=>{
                 }             
             }catch(e){
                 console.log(e)
-                msgbox += '模板讀取錯誤<br>';
+                data.msgbox += '模板讀取錯誤<br>';
             }
         }
 
-        html += `<script>
-        ${setMsgbox(msgbox)}
-        setResource_edit(${JSON.stringify(data)})
-        </script>
-        `;
-        res.end(html)
+        res.json(data);
     })
-
 })
 router.post('/demand/edit/shelf',(req,res)=>{
     let R_ID = req.body.R_ID;
@@ -534,7 +542,7 @@ router.post('/demand/edit/shelf',(req,res)=>{
     }
     
 })
-router.post('/demand/edit/data',(req,res)=>{
+router.post('/demand/edit/save',(req,res)=>{
     let R_ID = req.body.R_ID;
     let L_ID = req.body.L_ID;
     
@@ -553,14 +561,11 @@ router.post('/demand/edit/data',(req,res)=>{
                     }else if(results.length == 0){
                         res.json({"msg" : "nodata"});
                     }else{
-                        
                         new Promise((resolve,reject)=>{
-
                             resolve(update_Resource_data(req.body));
                         }).then((result)=>{
-                            res.json({"msg" : "dberr"})
+                            res.json({"msg" : "success"})
                         })
-                        
                     }
                 })
             }
@@ -572,23 +577,32 @@ router.post('/demand/edit/data',(req,res)=>{
 
 
 
+
 router.get('/demand/setting',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_setting.html','utf-8');
     let R_ID = req.query.R_ID;
-    let msgbox = '';
+    let L_ID = req.query.L_ID;
+    
+})
+//寫到這邊
+router.post('/demand/setting/data',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    let L_ID = req.body.L_ID;
     let data = {
         "leng" : [],
         "R_ID" : R_ID,
+        "L_ID" : L_ID,
         "R_Name" : "",
         "T_ID" : "",
         "D_Name" : "",
         "D_ID" : "",
         "T_List" : [],
         "D_List" : [],
-        "S_List" : []
+        "S_List" : [],
+        "msgbox" : ""
     }
 
-
+    //寫到這邊
     db.execute(`SELECT R_Name,Resources.D_ID,D_Name,T_ID FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID AND R_Delete = 0 AND R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -671,6 +685,8 @@ router.get('/demand/setting',(req,res)=>{
         res.end(html)
     })
 })
+
+
 router.get('/demand/feedback',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/resource_feedback.html','utf-8');
     let R_ID = req.query.R_ID;
@@ -1677,24 +1693,73 @@ async function create_Supplier_binding(R_ID,S_ID){
         })
     })
 }
-//寫到這邊
 async function update_Resource_data(data){
-    
+    let R_ID = data.R_ID;
+    let L_ID = data.L_ID;
 
+    for(x = 0;x<data.Template_ID.length;x++){
+        await create_Resource_data(R_ID,L_ID,data.Template_ID[x],data[data.Template_ID[x]]);
+    }
+
+    return new Promise((resolve)=>{
+        resolve();
+    })
 }
 async function create_Resource_data(R_ID,L_ID,Template_ID,Content){
     let RD_ID = await NextID('Resource_data','RD_ID','RD');
 
+    await delete_Resource_data(R_ID,L_ID,Template_ID,Content);  //先刪除原來的資料
+
     return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Resource_data VALUES(?,?,?,?,1,?);`,[RD_ID,R_ID,L_ID,Template_ID,Content],(err)=>{
-            if(err){
-                console.log(err)
-                reject();
-            }else{
-                resolve();
+        if(Content != 'img_no_change'){
+            if(isBase64(Content)){  //是照片
+                let img_name = Template_ID + '_' + R_ID + '_' + L_ID + '.png';
+                let base64Data = Content.replace(/^data:image\/\w+;base64,/, "");
+                let new_file = __dirname + `../../public/img/resource/${img_name}`;
+                var dataBuffer = Buffer.from(base64Data, 'base64');
+                writeFile(new_file, dataBuffer, function(err) {
+                    if(err){
+                        console.log(err)
+                    }
+                });
+    
+                Content = img_name; //資料庫內容換成檔案名稱
             }
-        })
+            db.execute(`INSERT INTO Resource_data VALUES(?,?,?,?,1,?);`,[RD_ID,R_ID,L_ID,Template_ID,Content],(err)=>{
+                if(err){
+                    console.log(err)
+                    reject();
+                }else{
+                    resolve();
+                }
+            })
+        }else{
+            resolve();
+        }
     })
+}
+async function delete_Resource_data(R_ID,L_ID,Template_ID,Content){
+    return new Promise((resolve)=>{
+        if(Content != 'img_no_change'){
+            if(isBase64(Content)){
+                unlink(`./public/img/resource/${Template_ID}_${R_ID}_${L_ID}.png`,(err)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                })
+            }
+            db.execute(`DELETE FROM Resource_data WHERE R_ID = ? AND L_ID = ? AND RD_Template_ID = ?`,[R_ID,L_ID,Template_ID],(err)=>{
+                if(err){
+                    console.log(err)
+                }
+                resolve();
+            })
+        }else{
+            resolve();
+        }        
+    })
+
+    
 }
 
 
@@ -1703,8 +1768,17 @@ async function create_Resource_data(R_ID,L_ID,Template_ID,Content){
 
 
 
- 
-
+function isBase64(str){
+    try {
+        if(str.substring(0,10) == 'data:image'){
+            return true;
+        }else{
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
+}
 function T_Use(str){
     if(str == 'null' || str == null){
         return 0;

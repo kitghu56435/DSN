@@ -235,14 +235,15 @@ function setResource_edit(data){
         L_Name_array.push(data.leng[i].L_Name);
         L_ID_array.push(data.leng[i].L_ID);
     }
-    lang.innerHTML = Select_Option_HTML('',L_Name_array,L_ID_array);
+    lang.innerHTML = Select_Option_HTML(data.resource.L_ID,L_Name_array,L_ID_array);
+    lang.setAttribute('onchange',`getResource_data('${data.resource.R_ID}',this.value)`);
 
 
     
-    html_area.innerHTML = '';
+    html_area.innerHTML = `<input type="hidden" id="L_ID" name="L_ID" value="${data.resource.L_ID}">`;
     for(i = 0;i< data.container.length;i++){
         let div = document.createElement('div');
-        let str = '<input type="hidden" id="L_ID" name="L_ID" value="L000000001">';
+        let str = '';
 
         if(data.container[i].type == 'title'){
             div.setAttribute('class','container2_title');
@@ -297,7 +298,7 @@ function setResource_edit(data){
                         <div class="item_content">
                             <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
                             <input type="file" onchange="setContainer2_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_input_file" accept="image/*">
-                            <input type="hidden" name="${data.container[i].id[j]}" value="">
+                            <input type="hidden" name="${data.container[i].id[j]}" value="img_no_change">
                         </div>
                     </div>                    
                     `;
@@ -353,9 +354,12 @@ function saveResource_data(R_ID){
 
     formData.forEach(function(value, key){
         formObject[key] = value;
-        id_array.push(key);
+        if(key != "L_ID"){
+            id_array.push(key);
+        }
     });
     formObject.R_ID = R_ID;
+    formObject.Template_ID = id_array;
 
     let httpRequest = new XMLHttpRequest();
 
@@ -373,11 +377,32 @@ function saveResource_data(R_ID){
                 }else if(jsonResponse.msg == 'err'){
                     msgbox(1,'更新錯誤');
                 }else if(jsonResponse.msg == 'success'){
-                    if(jsonResponse.shelf){
-                        btn[1].innerHTML = '下架資源';
-                    }else{
-                        btn[1].innerHTML = '上架資源';
-                    }
+                    msgbox(1,'更新完成');
+                }else{
+                    msgbox(1,'伺服器無法反應，請稍後再嘗試');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/edit/save');
+    httpRequest.setRequestHeader('Content-Type','application/json');
+    httpRequest.send(JSON.stringify(formObject));
+}
+function getResource_data(R_ID,L_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,jsonResponse.msgbox);
+                }else{
+                    setResource_edit(jsonResponse);
                 }
             }else{
                 alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
@@ -386,8 +411,8 @@ function saveResource_data(R_ID){
     }
     
     httpRequest.open('POST','/backend/resource/demand/edit/data');
-    httpRequest.setRequestHeader('Content-Type','application/json');
-    httpRequest.send(JSON.stringify(formObject));
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID='+R_ID + '&L_ID=' + L_ID);
 }
 function click_file_img(RD_ID){
     let img = document.getElementById( RD_ID + '_input_file');
@@ -595,6 +620,8 @@ function Select_Option_HTML(value,value_array,id_array){
     
     return str;
 }
+
+
 function Checked(bool){
     if(bool){
         return 'checked';
@@ -606,7 +633,7 @@ function container_img(img_name){
     if(img_name == ''){
         return '../../../img/plus.png';
     }else{
-        return '../../../img/' + img_name;
+        return '../../../img/resource/' + img_name;
     }
 }
 function handleChildClick(event) {
