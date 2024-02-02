@@ -31,11 +31,11 @@ function setTemplate(data){
                     R_value_array.push(data.template[i].T_Resource[j]);
                 }
                 
-                str += `<tr onclick="url('/backend/resource/template/edit?T_ID=${data.template[i].T_ID}')"><td>${data.template[i].T_Name}</td><td>${data.template[i].T_Use}</td><td><a onclick="handleChildClick(event)" href="../../html/template/${data.template[i].T_Path}" download="${data.template[i].T_Path}"><img src="../../img/download.png"></a></td><td>
+                str += `<tr onclick="url('/backend/resource/template/edit?T_ID=${data.template[i].T_ID}')"><td>${data.template[i].T_Name}</td><td>${data.template[i].T_Use}</td><td><a onclick="handleChildClick(event)" href="../../html/template/${data.template[i].T_Path}" download="${data.template[i].T_Path}"><img src="../../img/backend/download.png"></a></td><td>
                 <select onclick="handleChildClick(event)">
                     ${Select_Option_HTML('',R_value_array,R_value_array)}
                 </select>
-                </td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.template[i].T_Name}」模板','deleteTemplate(` + '`' + data.template[i].T_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`;
+                </td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.template[i].T_Name}」模板','deleteTemplate(` + '`' + data.template[i].T_ID + '`' + `)')" src="../../img/backend/bin.png"></td></tr>`;
             }
             
             t_table.innerHTML = str;
@@ -166,7 +166,7 @@ function setTemplate_r(data){
             str = `
             <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>`;
             for(i = 0;i<data.resource.length;i++){
-                str += `<tr><td>${data.resource[i].R_Name}</td><td>${data.resource[i].D_Name}</td><td><img src="../../../img/language.png"></td></tr>`
+                str += `<tr><td>${data.resource[i].R_Name}</td><td>${data.resource[i].D_Name}</td><td><img src="../../../img/backend/language.png"></td></tr>`
             }  //這邊要加上href
             r_table.innerHTML = str;
         }
@@ -236,9 +236,9 @@ function Select_Option_HTML(value,value_array,id_array){
 }
 function container_img(img_name){
     if(img_name == ''){
-        return '../../../img/plus.png';
+        return '../../../img/backend/plus.png';
     }else{
-        return '../../../img/' + img_name;
+        return '../../../img/resource/' + img_name;
     }
 }
 function handleChildClick(event) {

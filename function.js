@@ -30,6 +30,24 @@ const Administrator_verafication = (req,res,next) => {
     }
 }
 
+//coolie變數設置
+//leng 語言序號
+//accept 對cookie的接受程度 none/accept/null/delete
+
+const setCookie = (req,res,next) =>{
+    if(req.cookies.leng == undefined){
+        res.cookie('leng', 'L000000001',{
+            httpOnly : true,
+        });
+    }
+    if(req.cookies.accept == undefined){
+        res.cookie('accept', 'null',{
+            httpOnly : true,
+        });
+    }
+    next();
+}
+
 
 async function create_Sessionid(){
     let date = new Date();
@@ -245,5 +263,6 @@ module.exports = {
     setMsgbox,
     find,
     find_Count,
-    checkData
+    checkData,
+    setCookie
 }

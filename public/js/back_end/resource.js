@@ -48,7 +48,7 @@ function setResource(data){
             str = `
             <tr><th>需求名稱</th><th>需求資源數</th><th>上架數量</th><th>下架數量</th><th>刪除</th></tr>`;
             for(i = 0;i<data.Demand.length;i++){
-                str += `<tr onclick="url('/backend/resource/demand?D_ID=${data.Demand[i].D_ID}')"><td>${data.Demand[i].D_Name}</td><td>${data.Demand[i].D_Resource}</td><td>${data.Demand[i].R_On_Shelf}</td><td>${data.Demand[i].R_Down_Shelf}</td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除${data.Demand[i].D_Name}','deleteDemand(` + '`' + data.Demand[i].D_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`
+                str += `<tr onclick="url('/backend/resource/demand?D_ID=${data.Demand[i].D_ID}')"><td>${data.Demand[i].D_Name}</td><td>${data.Demand[i].D_Resource}</td><td>${data.Demand[i].R_On_Shelf}</td><td>${data.Demand[i].R_Down_Shelf}</td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除${data.Demand[i].D_Name}','deleteDemand(` + '`' + data.Demand[i].D_ID + '`' + `)')" src="../../img/backend/bin.png"></td></tr>`
             }
             d_table.innerHTML = str;
         }
@@ -124,7 +124,7 @@ function setDemand(data){
             str = `
             <tr><th style="width:30%">資源名稱</th><th style="width:15%">套用模板</th><th style="width:15%">資源狀態</th><th style="width:30%">上次更新</th><th style="width:10%">刪除</th></tr>`;
             for(i = 0;i<data.resource.length;i++){
-                str += `<tr onclick="url('/backend/resource/demand/edit?R_ID=${data.resource[i].R_ID}')"><td>${data.resource[i].R_Name}</td><td>${data.resource[i].T_Name}</td><td>${Shelf(data.resource[i].R_Shelf)}</td><td>${data.resource[i].R_Update}</td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.resource[i].R_Name}」資源','deleteResource(` + '`' + data.resource[i].R_ID + '`' + `,` + '`' + data.demand.D_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`
+                str += `<tr onclick="url('/backend/resource/demand/edit?R_ID=${data.resource[i].R_ID}')"><td>${data.resource[i].R_Name}</td><td>${data.resource[i].T_Name}</td><td>${Shelf(data.resource[i].R_Shelf)}</td><td>${data.resource[i].R_Update}</td><td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.resource[i].R_Name}」資源','deleteResource(` + '`' + data.resource[i].R_ID + '`' + `,` + '`' + data.demand.D_ID + '`' + `)')" src="../../img/backend/bin.png"></td></tr>`
             }
             r_table.innerHTML = str;
         }
@@ -401,6 +401,7 @@ function getResource_data(R_ID,L_ID){
                 
                 if(jsonResponse.msgbox != ''){
                     msgbox(1,jsonResponse.msgbox);
+                    setResource_edit(jsonResponse);
                 }else{
                     setResource_edit(jsonResponse);
                 }
@@ -413,6 +414,77 @@ function getResource_data(R_ID,L_ID){
     httpRequest.open('POST','/backend/resource/demand/edit/data');
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send('R_ID='+R_ID + '&L_ID=' + L_ID);
+}
+function getResource(R_ID,L_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,jsonResponse.msgbox);
+                    setResource_setting(jsonResponse);
+                }else{
+                    setResource_setting(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/setting/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID='+R_ID + '&L_ID=' + L_ID);
+}
+function saveResource(R_ID){
+    let form = document.getElementsByClassName('content')[0];
+    let formData = new FormData(form);
+    let S_ID = [];
+    let formObject = {};
+    
+
+    formData.forEach(function(value, key){
+        if(key == 'S_ID'){
+            S_ID.push(value);
+        }else{
+            formObject[key] = value;
+        }
+    });
+    formObject.R_ID = R_ID;
+    formObject.S_ID = S_ID;
+
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'nodata'){
+                    msgbox(1,'查無資源，請嘗試重新整理頁面');
+                }else if(jsonResponse.msg == 'err'){
+                    msgbox(1,'更新錯誤');
+                }else if(jsonResponse.msg == 'success'){
+                    msgbox(1,'更新完成');
+                }else{
+                    msgbox(1,'伺服器無法反應，請稍後再嘗試');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/setting/save');
+    httpRequest.setRequestHeader('Content-Type','application/json');
+    httpRequest.send(JSON.stringify(formObject));
 }
 function click_file_img(RD_ID){
     let img = document.getElementById( RD_ID + '_input_file');
@@ -474,7 +546,7 @@ function setResource_feedback(data){
                 <div class="msg_title"  onclick="show_feedback(${i})">
                     <span>${data.feedback[i].RF_Date}</span>
                     <span class="text">${data.feedback[i].RF_Content.substring(0,6)}....</span>
-                    <img src="../../../img/bin.png">
+                    <img src="../../../img/backend/bin.png">
                 </div>
                 <div class="msg_text">
                     <div>
@@ -495,6 +567,9 @@ function setResource_setting(data){
     let R_Name = document.getElementsByName('R_Name')[0];
     let T_ID = document.getElementsByName('T_ID')[0];
     let D_ID = document.getElementsByName('D_ID')[0];
+    let L_ID = document.getElementsByName('L_ID')[0];
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
     let s_table = document.getElementById('s_table');
     let D_Name_bar = document.getElementById('D_Name_bar');
     let R_Name_bar = document.getElementById('R_Name_bar');
@@ -516,6 +591,8 @@ function setResource_setting(data){
     sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.R_ID);
     sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.R_ID);
     sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
+    btn[0].setAttribute('onclick',`saveResource('${data.R_ID}')`);
+    L_ID.setAttribute('value',data.L_ID);
 
     
     let L_Name_array = [];
@@ -524,7 +601,8 @@ function setResource_setting(data){
         L_Name_array.push(data.leng[i].L_Name);
         L_ID_array.push(data.leng[i].L_ID);
     }
-    lang.innerHTML = Select_Option_HTML('',L_Name_array,L_ID_array);
+    lang.innerHTML = Select_Option_HTML(data.L_ID,L_Name_array,L_ID_array);
+    lang.setAttribute('onchange',`getResource('${data.R_ID}',this.value)`);
 
     for(i = 0;i<data.T_List.length;i++){
         T_value_array.push(data.T_List[i].T_Name)
@@ -538,12 +616,13 @@ function setResource_setting(data){
 
     if(data != undefined){
         R_Name.setAttribute('value',data.R_Name);
+        R_Name.value = data.R_Name;
         R_ID.innerHTML = data.R_ID
         T_ID.innerHTML = Select_Option_HTML(data.T_ID,T_value_array,T_id_array);
         D_ID.innerHTML = Select_Option_HTML(data.D_ID,D_value_array,D_id_array);
         
         for(i = 0;i < data.S_List.length;i++){
-            str += `<tr onclick="checkbox('c${i}')"><td>${data.S_List[i].S_ID}</td><td>${data.S_List[i].S_Name}</td><td><input id="c${i}" type="checkbox" ${Checked(data.S_List[i].S_Check)}></td></tr>`
+            str += `<tr onclick="checkbox('c${i}')"><td>${data.S_List[i].S_ID}</td><td>${data.S_List[i].S_Name}</td><td><input value="${data.S_List[i].S_ID}" name="S_ID" id="c${i}" type="checkbox" ${Checked(data.S_List[i].S_Check)}></td></tr>`
         }
         
         s_table.innerHTML = str
@@ -586,7 +665,7 @@ function setResource_supplier(data){
 
         str = '<tr><th style="width:20%">供應商名稱</th><th style="width:20%">供應商電話</th><th style="width:20%">供應商網站</th><th style="width:45%">供應商備註</th></tr>';
         for(i = 0;i<data.S_Info.length;i++){
-            str += `<tr><td>${data.S_Info[i].S_Name}</td><td>${data.S_Info[i].S_Phone}</td><td><a href="${data.S_Info[i].S_Web}" target="_blank"><img src="../../../img/language.png"></a></td><td>${data.S_Info[i].S_Remark}</td></tr>`
+            str += `<tr><td>${data.S_Info[i].S_Name}</td><td>${data.S_Info[i].S_Phone}</td><td><a href="${data.S_Info[i].S_Web}" target="_blank"><img src="../../../img/backend/language.png"></a></td><td>${data.S_Info[i].S_Remark}</td></tr>`
         }
 
         s_table.innerHTML = str;
@@ -620,8 +699,6 @@ function Select_Option_HTML(value,value_array,id_array){
     
     return str;
 }
-
-
 function Checked(bool){
     if(bool){
         return 'checked';
@@ -631,7 +708,7 @@ function Checked(bool){
 }
 function container_img(img_name){
     if(img_name == ''){
-        return '../../../img/plus.png';
+        return '../../../img/backend/plus.png';
     }else{
         return '../../../img/resource/' + img_name;
     }

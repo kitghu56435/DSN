@@ -28,3 +28,5 @@ function index_poster_check(){
         carousel_img[2].setAttribute('src','../img/index/index_poster_1900_3.png');
     }
 }
+
+

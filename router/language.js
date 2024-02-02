@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,readFile} = require('fs');
+const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
 const moment = require('moment-timezone');
@@ -170,7 +170,7 @@ router.post('/add/data',(req,res)=>{
 
 
 
-
+//搞定頁首頁尾的切換語言
 router.get('/static',(req,res)=>{
     let html = readFileSync('./public/html/back_end/static.html','utf-8');
     let all_s = 0;
@@ -228,26 +228,40 @@ router.get('/static',(req,res)=>{
 
 
 router.get('/static/edit',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/language_edit.html','utf-8');
-
+    let html = readFileSync('./public/html/back_end/edit/static_edit.html','utf-8');
     let SP_ID = req.query.SP_ID;
+    let L_ID = req.query.L_ID;
+
+    if(L_ID == undefined) L_ID = 'L000000001';
+
+    html += `
+    <script>
+    getStatic_data('${SP_ID}','${L_ID}');
+    </script>`
+    res.end(html);
+})
+router.post('/static/edit/data',(req,res)=>{
+    let L_ID = req.body.L_ID;
+    let SP_ID = req.body.SP_ID;
+    
     let SP_File = '';
-    let msgbox = '';
     let data = {
+        "L_ID" : L_ID,
         "static_page" : {
             "SP_Name" : "",
             "SP_ID" : SP_ID,
         },
         "leng" : [],
         "static_list" : [],
-        "container" : []
+        "container" : [],
+        "msgbox" : ""
     }
 
 
     db.execute(`SELECT * FROM Static_page WHERE SP_ID = ?;`,[SP_ID],(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             SP_File = results[0].SP_File;
             data.static_page.SP_Name = results[0].SP_Name;
@@ -257,7 +271,7 @@ router.get('/static/edit',(req,res)=>{
     db.execute(`SELECT L_ID,L_Name FROM Languages;`,(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             for(i = 0;i<results.length;i++){
                 data.leng.push({
@@ -270,7 +284,7 @@ router.get('/static/edit',(req,res)=>{
     db.execute(`SELECT SP_ID,SP_Name FROM Static_page;`,(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             for(i = 0;i<results.length;i++){
                 data.static_list.push({
@@ -278,6 +292,13 @@ router.get('/static/edit',(req,res)=>{
                     "SP_ID" : results[i].SP_ID,
                 })
             }
+        }
+    })
+    db.execute(`SELECT * FROM Resource_data WHERE R_ID = ? AND L_ID = ? AND RD_Type = 1;`,[SP_ID,L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            data.msgbox += '資料庫錯誤<br>';
+        }else{
             try{
                 let static_page_html = readFileSync('./public/html/' + SP_File,'utf-8');
                 let content = static_page_html;
@@ -310,6 +331,12 @@ router.get('/static/edit',(req,res)=>{
                             count++;
                             if(count == container2.length){  //找到container2
                                 if(container != null){
+                                    if(container.note.length < (container.item)){
+                                        container.note.push("");
+                                    }
+                                    if(container.id.length < (container.item)){
+                                        container.id.push("");
+                                    }
                                     data.container.push(container);
                                     
                                     container = null;
@@ -525,7 +552,29 @@ router.get('/static/edit',(req,res)=>{
                         label_state = '';
                     }             
                 }
+                if(container != null){
+                    if(container.note.length < (container.item)){
+                        container.note.push("");
+                    }
+                    if(container.id.length < (container.item)){
+                        container.id.push("");
+                    }
+                }
                 data.container.push(container);
+
+
+                if(container != null){
+                    for(i = 0;i<results.length;i++){
+                        for(j = 0;j<data.container.length;j++){
+                            for(k = 0;k<data.container[j].item;k++){
+                                if(data.container[j].id[k] == results[i].RD_Template_ID){
+                                    data.container[j].content[k] = results[i].RD_Content;
+                                }
+                            }
+                        }
+                    }
+                }
+                
     
                 if(container2_bool){
                     for(j = 0;j<data.container.length;j++){
@@ -536,24 +585,51 @@ router.get('/static/edit',(req,res)=>{
                         }
                     }  
                 }else{
-                    msgbox += `${data.static_page.SP_Name}(${SP_ID})無模板特徵<br>`;
+                    data.msgbox += `${data.static_page.SP_Name}(${SP_ID})無模板特徵<br>`;
                 }
                            
             }catch(e){
                 console.log(e)
-                msgbox += '模板讀取錯誤<br>';
+                data.msgbox += '模板讀取錯誤<br>';
             }
         }
-
-        html += `<script>
-        ${setMsgbox(msgbox)}
-        setLanguage_edit(${JSON.stringify(data)})
-        </script>
-        `;
-        res.end(html)
+        res.json(data);
     })
 })
+router.post('/static/edit/save',(req,res)=>{
+    let SP_ID = req.body.SP_ID;
+    let L_ID = req.body.L_ID;
 
+    
+    
+    if(checkData(SP_ID) && checkData(L_ID)){
+        db.execute(`SELECT L_ID FROM Languages WHERE L_ID = ?;`,[L_ID],(err,results)=>{  //確認是否有此語言續號
+            if(err){
+                console.log(err);
+                res.json({"msg" : "dberr"})
+            }else if(results.length == 0){
+                res.json({"msg" : "nodata"});
+            }else{
+                db.execute(`SELECT * FROM Static_page WHERE SP_ID = ?;`,[SP_ID],(err,results)=>{  //確認是否有此靜態網頁
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "dberr"});
+                    }else if(results.length == 0){
+                        res.json({"msg" : "nodata"});
+                    }else{
+                        new Promise((resolve,reject)=>{
+                            resolve(update_Static_data(req.body));
+                        }).then((result)=>{
+                            res.json({"msg" : "success"})
+                        })
+                    }
+                })
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"})
+    }
+})
 
 
 
@@ -574,6 +650,88 @@ async function create_Language(L_Name){
             }
         })
     })
+}
+async function update_Static_data(data){
+    let SP_ID = data.SP_ID;
+    let L_ID = data.L_ID;
+
+    for(x = 0;x<data.Template_ID.length;x++){
+        await create_Static_data(SP_ID,L_ID,data.Template_ID[x],data[data.Template_ID[x]]);
+    }
+
+    return new Promise((resolve)=>{
+        resolve();
+    })
+}
+async function create_Static_data(SP_ID,L_ID,Template_ID,Content){
+    let RD_ID = await NextID('Resource_data','RD_ID','RD');
+
+    await delete_Static_data(SP_ID,L_ID,Template_ID,Content);  //先刪除原來的資料
+
+    return new Promise((resolve,reject)=>{
+        if(Content != 'img_no_change'){
+            if(isBase64(Content)){  //是照片
+                let img_name = Template_ID + '_' + SP_ID + '_' + L_ID + '.png';
+                let base64Data = Content.replace(/^data:image\/\w+;base64,/, "");
+                let new_file = __dirname + `../../public/img/resource/${img_name}`;
+                var dataBuffer = Buffer.from(base64Data, 'base64');
+                writeFile(new_file, dataBuffer, function(err) {
+                    if(err){
+                        console.log(err)
+                    }
+                });
+    
+                Content = img_name; //資料庫內容換成檔案名稱
+            }
+            db.execute(`INSERT INTO Resource_data VALUES(?,?,?,?,1,?);`,[RD_ID,SP_ID,L_ID,Template_ID,Content],(err)=>{
+                if(err){
+                    console.log(err)
+                    reject();
+                }else{
+                    resolve();
+                }
+            })
+        }else{
+            resolve();
+        }
+    })
+}
+async function delete_Static_data(SP_ID,L_ID,Template_ID,Content){
+    return new Promise((resolve)=>{
+        if(Content != 'img_no_change'){
+            if(isBase64(Content)){
+                unlink(`./public/img/resource/${Template_ID}_${SP_ID}_${L_ID}.png`,(err)=>{
+                    if(err){
+                        console.log(err);
+                    }
+                })
+            }
+            db.execute(`DELETE FROM Resource_data WHERE R_ID = ? AND L_ID = ? AND RD_Template_ID = ?`,[SP_ID,L_ID,Template_ID],(err)=>{
+                if(err){
+                    console.log(err)
+                }
+                resolve();
+            })
+        }else{
+            resolve();
+        }        
+    })
+
+    
+}
+
+
+
+function isBase64(str){
+    try {
+        if(str.substring(0,10) == 'data:image'){
+            return true;
+        }else{
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
 }
 
 

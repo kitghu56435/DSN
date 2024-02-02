@@ -18,12 +18,12 @@
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="./" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../../img/resource.png" style="margin-right:5%">
+            <img src="../../../img/backend/resource.png" style="margin-right:5%">
             <span class="fs-2 fw-semibold">DSN管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
-                    <img src="../../../img/resource.png">
+                    <img src="../../../img/backend/resource.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                     資源管理
                     </button>
@@ -38,7 +38,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../../img/monitor.png">
+                    <img src="../../../img/backend/monitor.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                     監控管理
                     </button>
@@ -52,7 +52,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../../img/supplier.png">
+                    <img src="../../../img/backend/supplier.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
                     供應商管理
                     </button>
@@ -64,7 +64,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../../img/language.png">
+                    <img src="../../../img/backend/language.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
                     語言管理
                     </button>
@@ -78,7 +78,7 @@
                 </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
-                    <img src="../../../img/member.png">
+                    <img src="../../../img/backend/member.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                     管理員
                     </button>
@@ -97,7 +97,7 @@
             <a href="" style="background-color: #7B7B7B;color: white;">資源設定</a>
             <a href="">資源回饋</a>
             <a href="">資源供應商</a>
-            <a href="">刪除資源</a>
+           
         </div>
         <section>
             <div class="container-breadcrumb my-2">
@@ -105,7 +105,7 @@
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
                       <a class="link-body-emphasis" href="#">
-                        <img src="../../../img/resource.png">
+                        <img src="../../../img/backend/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
@@ -125,7 +125,7 @@
                 </nav>
             </div>
             <div class="btn_area">
-                <button>儲存</button>
+                <button onclick="saveResource('')">儲存</button>
                 <button>下架資源</button>
                 <button>查看資源</button>
                 <select class="lang">
@@ -133,9 +133,10 @@
                 </select>
                 <label>選擇語言</label>
             </div>
-            <div class="content">
+            <form class="content">
                 <div class="data_area">
                     <table>
+                        <input name="L_ID" type="hidden" value="">
                         <tr><th>資源序號</th><td class="R_ID"></td></tr>
                         <tr><th>資源名稱</th><td><input name="R_Name" type="text" placeholder="請輸入資源名稱"></td></tr>
                         <tr><th>選擇模組</th><td>
@@ -164,7 +165,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </section>
     </main>
 </body>

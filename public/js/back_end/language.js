@@ -26,7 +26,7 @@ function setLanguage(data){
             <tr><th>語言名稱</th><th>套用數量</th><th>建立時間</th><th>刪除</th></tr>`;
             for(i = 0;i<data.Language.length;i++){
                 str += `<tr><td>${data.Language[i].L_Name}</td><td>${data.Language[i].L_Use}</td><td>${data.Language[i].L_Date}</td>
-                <td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.Language[i].L_Name}」語言','deleteLanguage(` + '`' + data.Language[i].L_ID + '`' + `)')" src="../../img/bin.png"></td></tr>`
+                <td><img onclick="handleChildClick(event),msgbox(2,'即將刪除「${data.Language[i].L_Name}」語言','deleteLanguage(` + '`' + data.Language[i].L_ID + '`' + `)')" src="../../img/backend/bin.png"></td></tr>`
             }
             d_table.innerHTML = str;
         }
@@ -86,10 +86,12 @@ function deleteLanguage(L_ID){
     httpRequest.send('L_ID='+ L_ID);
 }
 
-function setLanguage_edit(data){
+function setStatic_edit(data){
     let lang = document.getElementsByClassName('lang')[0]; 
     let static = document.getElementsByClassName('static')[0];   
     let html_area = document.getElementsByClassName('html_area')[0];
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
     let SP_Name_Bar = document.getElementById('SP_Name_Bar');
     SP_Name_Bar.innerHTML = data.static_page.SP_Name;
     SP_Name_Bar.setAttribute('href','/backend/language/static/edit?SP_ID=' + data.static_page.SP_ID);
@@ -101,7 +103,8 @@ function setLanguage_edit(data){
         L_Name_array.push(data.leng[i].L_Name);
         L_ID_array.push(data.leng[i].L_ID);
     }
-    lang.innerHTML = Select_Option_HTML('',L_Name_array,L_ID_array);
+    lang.innerHTML = Select_Option_HTML(data.L_ID,L_Name_array,L_ID_array);
+    lang.setAttribute('onchange',`getStatic_data('${data.static_page.SP_ID}',this.value)`);
 
     let SP_Name_array = [];
     let SP_ID_array = [];
@@ -109,9 +112,13 @@ function setLanguage_edit(data){
         SP_Name_array.push(data.static_list[i].SP_Name);
         SP_ID_array.push(data.static_list[i].SP_ID);
     }
-    static.innerHTML = Select_Option_HTML('',SP_Name_array,SP_ID_array);
+    static.innerHTML = Select_Option_HTML(data.static_page.SP_ID,SP_Name_array,SP_ID_array);
+    static.setAttribute('onchange',`getStatic_data(this.value,'L000000001')`);
 
-    html_area.innerHTML = '';
+    btn[0].setAttribute('onclick',`saveStatic_data('${data.static_page.SP_ID}')`);
+
+
+    html_area.innerHTML = `<input type="hidden" name="L_ID" value="${data.L_ID}">`;
     for(i = 0;i< data.container.length;i++){
         let div = document.createElement('div');
         let str = '';
@@ -125,7 +132,7 @@ function setLanguage_edit(data){
                     <span>項目提示：${data.container[i].note[0]}</span>
                 </div>
                 <div class="item_content">
-                    <input placeholder="請輸入標題" value="${data.container[i].content[0]}">
+                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
                 </div>
             </div>
             `;
@@ -143,7 +150,7 @@ function setLanguage_edit(data){
                             <span>項目提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
-                            <textarea placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
+                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
                         </div>
                     </div>                    
                     `;
@@ -155,7 +162,7 @@ function setLanguage_edit(data){
                             <span>項目提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
-                            <textarea placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
+                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
                         </div>
                     </div> 
                     `;
@@ -167,7 +174,9 @@ function setLanguage_edit(data){
                             <span>項目提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
-                            <img src="${container_img(data.container[i].content[j])}" title="上傳照片">
+                        <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
+                            <input type="file" onchange="setContainer2_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_input_file" accept="image/*">
+                            <input type="hidden" name="${data.container[i].id[j]}" value="img_no_change">
                         </div>
                     </div>                    
                     `;
@@ -181,8 +190,75 @@ function setLanguage_edit(data){
         html_area.appendChild(div);
     }
 }
+function getStatic_data(SP_ID,L_ID){
+    let httpRequest = new XMLHttpRequest();
 
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,jsonResponse.msgbox);
+                    setStatic_edit(jsonResponse);
+                }else{
+                    setStatic_edit(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/language/static/edit/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('SP_ID='+SP_ID + '&L_ID=' + L_ID);
+}
+function saveStatic_data(SP_ID){
+    let form = document.getElementsByClassName('html_area')[0];
+    let formData = new FormData(form);
+    let formObject = {};
+    let id_array = [];
 
+    formData.forEach(function(value, key){
+        formObject[key] = value;
+        if(key != "L_ID"){
+            id_array.push(key);
+        }
+    });
+    formObject.SP_ID = SP_ID;
+    formObject.Template_ID = id_array;
+    console.log(formObject)
+
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'nodata'){
+                    msgbox(1,'查無資源，請嘗試重新整理頁面');
+                }else if(jsonResponse.msg == 'err'){
+                    msgbox(1,'更新錯誤');
+                }else if(jsonResponse.msg == 'success'){
+                    msgbox(1,'更新完成');
+                }else{
+                    msgbox(1,'伺服器無法反應，請稍後再嘗試');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/language/static/edit/save');
+    httpRequest.setRequestHeader('Content-Type','application/json');
+    httpRequest.send(JSON.stringify(formObject));
+}
 function setStatic(data){
     let r_table_div = document.getElementsByClassName('r_table')[0];
     let r_table = r_table_div.getElementsByTagName('table')[0];
@@ -231,10 +307,28 @@ function Select_Option_HTML(value,value_array,id_array){
 }
 function container_img(img_name){
     if(img_name == ''){
-        return '../../../img/plus.png';
+        return '../../../img/backend/plus.png';
     }else{
-        return '../../../img/' + img_name;
+        return '../../../img/resource/' + img_name;
     }
+}
+function setContainer2_img(RD_ID){
+    let file_input = document.getElementById( RD_ID + '_input_file');
+    let img = document.getElementById( RD_ID + '_img');
+    let hidden_input = document.getElementsByName(RD_ID)[0];
+
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file_input.files[0]);
+    reader.onload = (e) =>{
+        img.setAttribute('src',e.currentTarget.result);
+        hidden_input.setAttribute('value',e.currentTarget.result);
+    }
+    
+}
+function click_file_img(RD_ID){
+    let img = document.getElementById( RD_ID + '_input_file');
+    img.click();
 }
 function handleChildClick(event) {
     event.stopPropagation();

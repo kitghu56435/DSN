@@ -57,9 +57,9 @@ function cookie_msg(){
         let msg = document.createElement('div');
         msg.setAttribute('class','cookie_msg');
         msg.innerHTML = `
-        <div style="text-align: right;margin-bottom:1%"><img onclick="cookie_msg()" src="../img/X.png"></div>
+        <div style="text-align: right;margin-bottom:1%"><img onclick="setCookie('delete'),cookie_msg()" src="../img/X.png"></div>
         <p>我們使用Cookie技術提供個人化的服務，提升您的使用體驗，詳細請閱讀我們的<a href="#">《Cookie政策及條款》</a></p>
-        <div><button class="no" onclick="cookie_msg()">拒絕</button><button class="yes" onclick="cookie_msg()">酷，我接受!</button></div>
+        <div><button class="no" onclick="setCookie('none'),cookie_msg()">拒絕</button><button class="yes" onclick="setCookie('accept'),cookie_msg()">酷，我接受!</button></div>
         `
         body.appendChild(msg);
     }
@@ -78,5 +78,22 @@ function Shelf(n){
     }else{
         return '下架中'
     }
+}
+
+
+function setCookie(accept){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status != 200){
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/cookie');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('accept=' + accept);
 }
 
