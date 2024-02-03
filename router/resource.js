@@ -247,20 +247,20 @@ router.post('/demand/edit/data',(req,res)=>{
             try{
                 let template_html = readFileSync('./public/html/template/' + T_Path,'utf-8');
                 let content = template_html;
-                let container2 = '"container2"';   //container標籤
+                let container2 = 'container2';   //container標籤
                 let container2_bool = false;
                 let count = 0;
                 let label_state = '';
     
                 let dnsid = '';
                 let dsnnote = '';
-                let title_str = '"container2-title"';
+                let title_str = 'T-title';
                 let title_count = 0;   //計數
-                let img_str = '"container2-img"';
+                let img_str = 'T-img';
                 let img_count = 0;     //計數
-                let text_str = '"container2-text"';
+                let text_str = 'T-text';
                 let text_count = 0;    //計數
-                let url_str = '"container2-url"';
+                let url_str = 'T-url';
                 let url_count = 0;     //計數
                 let dsnid_str = 'dsnid="';
                 let dsnid_count = 0;     //計數
@@ -1245,20 +1245,20 @@ router.get('/template/edit',(req,res)=>{
             try{
                 let template_html = readFileSync('./public/html/template/' + T_Path,'utf-8');
                 let content = template_html;
-                let container2 = '"container2"';   //container標籤
+                let container2 = 'container2';   //container標籤
                 let container2_bool = false;
                 let count = 0;
                 let label_state = '';
     
                 let dnsid = '';
                 let dsnnote = '';
-                let title_str = '"container2-title"';
+                let title_str = 'T-title';
                 let title_count = 0;   //計數
-                let img_str = '"container2-img"';
+                let img_str = 'T-img';
                 let img_count = 0;     //計數
-                let text_str = '"container2-text"';
+                let text_str = 'T-text';
                 let text_count = 0;    //計數
-                let url_str = '"container2-url"';
+                let url_str = 'T-url';
                 let url_count = 0;     //計數
                 let dsnid_str = 'dsnid="';
                 let dsnid_count = 0;     //計數

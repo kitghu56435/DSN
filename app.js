@@ -74,6 +74,15 @@ app.post('/cookie',(req,res)=>{
     
     res.end();
 })
+app.post('/leng',(req,res)=>{
+    let L_ID = req.body.L_ID;
+    res.cookie('leng', L_ID,{
+        httpOnly : true,
+        maxAge : 1000 * 60 * 60 * 24 * 356   //一年
+    });
+    
+    res.end();
+})
 
 
 

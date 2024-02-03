@@ -7,9 +7,30 @@ const moment = require('moment-timezone');
 
 
 
+//這個API是為了開發測試header語言切換而再的
+router.get('/header',(req,res)=>{
+    let html = readFileSync('./public/html/header.html');
+    res.end(html);
+})
 
-router.get('/',(req,res)=>{
-    let ID = req.query.ID;    //可能是
+
+router.post('/header_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000003';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+    
 })
 
 

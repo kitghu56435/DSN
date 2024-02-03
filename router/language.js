@@ -170,7 +170,7 @@ router.post('/add/data',(req,res)=>{
 
 
 
-//搞定頁首頁尾的切換語言
+
 router.get('/static',(req,res)=>{
     let html = readFileSync('./public/html/back_end/static.html','utf-8');
     let all_s = 0;
@@ -182,7 +182,7 @@ router.get('/static',(req,res)=>{
 
     db.execute(`SELECT SP_ID,SP_Name,SP_File,L_Name,Languages.L_ID,COUNT(L_Name) L_Name_Count FROM Static_page LEFT JOIN Resource_data 
     ON Static_page.SP_ID = Resource_data.R_ID LEFT JOIN Languages ON Resource_data.L_ID = Languages.L_ID 
-    GROUP BY Languages.L_ID,SP_ID  ORDER BY Languages.L_ID,SP_ID;`,(err,results)=>{
+    GROUP BY SP_ID,Languages.L_ID  ORDER BY SP_ID,Languages.L_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -302,20 +302,20 @@ router.post('/static/edit/data',(req,res)=>{
             try{
                 let static_page_html = readFileSync('./public/html/' + SP_File,'utf-8');
                 let content = static_page_html;
-                let container2 = '"container2"';   //container標籤
+                let container2 = 'container2';   //container標籤
                 let container2_bool = false;
                 let count = 0;
                 let label_state = '';
     
                 let dnsid = '';
                 let dsnnote = '';
-                let title_str = '"container2-title"';
+                let title_str = 'T-title';
                 let title_count = 0;   //計數
-                let img_str = '"container2-img"';
+                let img_str = 'T-img';
                 let img_count = 0;     //計數
-                let text_str = '"container2-text"';
+                let text_str = 'T-text';
                 let text_count = 0;    //計數
-                let url_str = '"container2-url"';
+                let url_str = 'T-url';
                 let url_count = 0;     //計數
                 let dsnid_str = 'dsnid="';
                 let dsnid_count = 0;     //計數
@@ -561,6 +561,7 @@ router.post('/static/edit/data',(req,res)=>{
                     }
                 }
                 data.container.push(container);
+                console.log(data.container);
 
 
                 if(container != null){

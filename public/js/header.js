@@ -16,15 +16,16 @@ function header_nav_check(){
             let ul = nav_item[i].getElementsByTagName('ul')[0];
             let ul_a = ul.getElementsByTagName('a');
 
-            a.setAttribute('class','nav-link nav-link-hover');
-            ul.setAttribute('class','nav-link-hover-menu');
+            a.setAttribute('class','nav-link nav-link-hover T-title');
+            ul.setAttribute('class','nav-link-hover-menu container2');
 
             
-            navbar_brand.innerHTML = '<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">弱勢資源網DSN';
+            navbar_brand.innerHTML = `<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+            <span class="T-title" dsnid="h000" dsnnote="網頁名稱">DSN弱勢支援網</span>`;
             
 
             for(j=0;j<ul_a.length;j++){
-                ul_a[j].setAttribute('class','dropdown-hover-item');
+                ul_a[j].setAttribute('class','dropdown-hover-item T-text');
             }
         }
     }else{
@@ -37,16 +38,68 @@ function header_nav_check(){
             navbar_brand.innerHTML = '<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">';
             }
 
-            a.setAttribute('class','nav-link dropdown-toggle');
-            ul.setAttribute('class','dropdown-menu');
+            a.setAttribute('class','nav-link dropdown-toggle T-title');
+            ul.setAttribute('class','dropdown-menu container2');
 
             for(j=0;j<ul_a.length;j++){
-                ul_a[j].setAttribute('class','dropdown-item');
+                ul_a[j].setAttribute('class','dropdown-item T-text');
             }
         }
     }
 }
 
+function getHeader_data(){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('header資料錯誤');
+                }else{
+                    setHeader_data(jsonResponse.data,jsonResponse.L_ID);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/static/header_data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send(null);
+}
+function setHeader_data(data,L_ID){
+    let language = document.getElementById('language');
+    let L_Name = '';
+    switch(L_ID){
+        case "L000000001" : L_Name = '繁體中文'; break;
+        case "L000000002" : L_Name = 'English'; break;
+    }
+    language.innerHTML = L_Name;
+    let T_title = document.getElementsByClassName('T-title');
+    let T_text = document.getElementsByClassName('T-text');
+    for(i = 0;i<T_title.length;i++){
+        let dsnid = T_title[i].getAttribute('dsnid');
+        for(j = 0;j<data.length;j++){
+            if(dsnid == data[j].RD_Template_ID){
+                T_title[i].innerHTML = data[j].RD_Content;
+            }
+        }
+    }
+    for(i = 0;i<T_text.length;i++){
+        let dsnid = T_text[i].getAttribute('dsnid');
+        for(j = 0;j<data.length;j++){
+            if(dsnid == data[j].RD_Template_ID){
+                if(dsnid == 'h050' || dsnid == 'h079'){
+                    T_text[i].setAttribute('placeholder',data[j].RD_Content);
+                }
+                T_text[i].innerHTML = data[j].RD_Content;
+            }
+        }
+    }
+}
 
 function cookie_msg(){
     let cookie_msg = document.getElementsByClassName('cookie_msg')[0];
@@ -96,4 +149,32 @@ function setCookie(accept){
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send('accept=' + accept);
 }
+
+
+function setLanguage(L_ID){
+    let language = document.getElementById('language');
+    let L_Name = '';
+    switch(L_ID){
+        case "L000000001" : L_Name = '繁體中文'; break;
+        case "L000000002" : L_Name = 'English'; break;
+    }
+    language.innerHTML = L_Name;
+
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status != 200){
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }else{
+                getHeader_data();
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/leng');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('L_ID=' + L_ID);
+}
+
+
 
