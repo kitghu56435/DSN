@@ -8,6 +8,7 @@ window.addEventListener('resize', function() {
 function header_nav_check(){
     let nav_item = document.getElementsByClassName('nav-item');
     let navbar_brand = document.getElementsByClassName('navbar-brand')[0];
+    let logo_name = document.getElementsByTagName('span')[0];
     
     
     if(window.innerWidth > 768){
@@ -20,8 +21,7 @@ function header_nav_check(){
             ul.setAttribute('class','nav-link-hover-menu container2');
 
             
-            navbar_brand.innerHTML = `<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
-            <span class="T-title" dsnid="h000" dsnnote="網頁名稱">DSN弱勢支援網</span>`;
+            logo_name.style['display'] = 'inline';
             
 
             for(j=0;j<ul_a.length;j++){
@@ -35,7 +35,7 @@ function header_nav_check(){
             let ul_a = ul.getElementsByTagName('a');
 
             if(window.innerWidth > 560){
-            navbar_brand.innerHTML = '<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">';
+                logo_name.style['display'] = 'none';
             }
 
             a.setAttribute('class','nav-link dropdown-toggle T-title');
@@ -171,6 +171,7 @@ function setLanguage(L_ID,Page){
                     case "index" : getIndex_data();
                     case "guideline" : getGuideline_data();
                     case "about_us" : getAbout_us_data();
+                    case "cookie_policy" : getCookie_policy_data();
                 }
             }
         }

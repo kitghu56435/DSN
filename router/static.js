@@ -112,6 +112,34 @@ router.post('/about_us_data',(req,res)=>{
 })
 
 
+router.get('/cookie_policy',(req,res)=>{
+    let html = readFileSync('./public/html/cookie_policy.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    res.end(html);
+})
+
+
+router.post('/cookie_policy_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000005';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
 
 
 
