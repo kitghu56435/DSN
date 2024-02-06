@@ -1,0 +1,24 @@
+
+
+.container{
+    margin-top:2%;
+}
+
+.section1,.section2,.section3,.section4{
+    margin-top:2%;
+    margin-bottom: 2%;
+}
+
+.container  .section1,.container  .section4{
+    display: flex;
+}
+
+.section4 div{
+    padding-left:2%;
+}
+
+.section5 > button{
+    float: right;
+    width:10%;
+    margin-left:2%;
+}

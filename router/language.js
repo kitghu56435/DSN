@@ -37,7 +37,7 @@ router.get('/',(req,res)=>{
     })
     db.execute(`SELECT SP_ID,SP_Name,L_Name,Languages.L_ID,COUNT(L_Name) L_Name_Count FROM Static_page LEFT JOIN Resource_data 
     ON Static_page.SP_ID = Resource_data.R_ID LEFT JOIN Languages ON Resource_data.L_ID = Languages.L_ID 
-    GROUP BY Languages.L_ID,SP_ID  ORDER BY Languages.L_ID,SP_ID;`,(err,results)=>{
+    GROUP BY SP_ID,Languages.L_ID  ORDER BY SP_ID,Languages.L_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -561,7 +561,6 @@ router.post('/static/edit/data',(req,res)=>{
                     }
                 }
                 data.container.push(container);
-                console.log(data.container);
 
 
                 if(container != null){

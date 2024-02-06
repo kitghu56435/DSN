@@ -151,7 +151,7 @@ function setCookie(accept){
 }
 
 
-function setLanguage(L_ID){
+function setLanguage(L_ID,Page){
     let language = document.getElementById('language');
     let L_Name = '';
     switch(L_ID){
@@ -167,6 +167,11 @@ function setLanguage(L_ID){
                 alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
             }else{
                 getHeader_data();
+                switch(Page){
+                    case "index" : getIndex_data();
+                    case "guideline" : getGuideline_data();
+                    case "about_us" : getAbout_us_data();
+                }
             }
         }
     }

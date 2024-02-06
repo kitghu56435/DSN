@@ -10,10 +10,9 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/index.css" rel="stylesheet">
+    <link href="../css/cookie_policy.css" rel="stylesheet">
     <link href="../css/header.css" rel="stylesheet">
     <link href="../assets/dist/css/carousel.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/guideline.css">
 </head>
 <body>
     <header data-bs-theme="light">
@@ -145,8 +144,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="language" data-bs-toggle="dropdown" aria-expanded="false">繁體中文</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" onclick="setLanguage('L000000001','guideline')">繁體中文</a></li>
-                                <li><a class="dropdown-item" onclick="setLanguage('L000000002','guideline')">English</a></li>
+                                <li><a class="dropdown-item" onclick="setLanguage('L000000001','')">繁體中文</a></li>
+                                <li><a class="dropdown-item" onclick="setLanguage('L000000002','')">English</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -168,69 +167,56 @@
             </div>
     </header>
     <main>
-        <div class="container_fullscreen">
-            <img class="pic1 carousel_img" src="../img/index/index_poster_1900_2.png">
-            <div class="middle_text container2">
-                <h1 class="T-text" dsnid="1" dsnnote="上方標題">新手指南</h1> 
-                <p class="T-text" dsnid="2" dsnnote="上方標題文字">透過我們的新手指南，讓您從我們的網站上找到更多符合你的資訊</p>
-            </div>
-        </div>
-        <div class = "container container2" id="introduction">
-            <div class="flow_pic">
-                <div style="text-align: center;"><h1 class="T-title" dsnid="3" dsnnote="網站介紹">網站介紹</h1></div>
-                <p class="container2 T-text" dsnid="4">歡迎來到我們的網站！<br>
-                    我們致力於提供一個集結社會弱勢資源的平台，讓您能夠輕鬆找到所需的協助。為了更方便地幫助您，
-                    我們將資源分為七大類別，分別為經濟、法律、緊急、教育、職涯、醫療以及心理。<br><br>
-                    在每個類別下，我們整合了大量的資源，提供了一站式的服務，以便您快速查找所需的幫助。不論您
-                    面臨經濟壓力、法律問題、緊急事件、教育需求、職涯發展、醫療困境，或心理健康挑戰，我們都有
-                    相應的資源可供參考。<br><br>
-                    每個資源頁面都提供了詳盡的說明，包括資源的相關信息、申請流程，以及申請所需文件的教學。
-                    我們希望這樣的設計能夠為您提供清晰而有用的資訊，使您更容易瞭解如何獲得所需的支援。
-                    我們的目標是幫助社會弱勢找到適切的資源，讓您能夠克服生活中的各種困難。如果您有任何疑問或
-                    建議，請隨時與我們聯繫。感謝您使用我們的網站，希望您能夠在這裡找到您所需的幫助！</p>
-            </div>
-            <div class="flow_pic container2" id="disclaimer">
-                <div style="text-align: center;"><h1 class="T-title" dsnid="5" dsnnote="免責申明">免責申明</h1></div>
-                <p class="container2 T-text" dsnid="6">
-                    感謝您使用弱勢資源網（以下簡稱「本網站」）。本網站致力於整合弱勢資源，提供相關資訊和服務。在使用本網站之前，請詳細閱讀以下免責聲明條款。
-                    <br><br><b>資訊準確性</b>： 本網站力求提供正確、完整的資訊，但無法保證所有資訊的準確性、即時性和完整性。使用者應自行判斷並承擔使用本網站資訊的風險。
-                    <br><br><b>服務內容</b>： 本網站所提供的資源和服務可能隨時變更，無需事先通知。我們保留權利隨時停止或修改部分或全部服務而不對使用者負擔任何責任。
-                    <br><br><b>第三方連結</b>： 本網站可能包含指向第三方網站的連結，這些連結僅為方便使用者提供。這些第三方網站的內容和隱私政策不受我們的控制，我們不對其內容負責。
-                    <br><br><b>使用建議</b>： 本網站上的建議和資訊僅供參考，不應視為專業意見或建議。在做出任何重要決策之前，使用者應該尋求專業建議。
-                    <br><br><b>使用者責任</b>： 使用者應自行負責確保其使用本網站的合法性，並遵守相關法規。本網站不對使用者的任何行為負責。
-                    <br><br>如有任何疑問或意見，請聯絡我們：<a href="#">點擊查看聯絡資訊</a>。
-                    <br><br>弱勢資源網 團隊 敬上
-                </p>
-            </div>
-            <div class="common_quesion container2" id="common_problem">
-                <h1 class="T-title" dsnid="7" dsnnote="常見問題">常見問題</h1>
-                <p class="container2 T-text" dsnid="8">以下是一些常見問題和解答，希望能幫助到您</p>
-                <div class="que ">
-                    <div class="container2 q" onclick="show_a(0)">
-                        <span class="T-text" dsnid="9" dsnnote="Q">今天的天氣很好，你今天的心情好嗎?</span>
-                        <img class="q_img" src="../img/arrow_single.png">
-                    </div>
-                    <hr>
-                    <div class="a T-text" dsnid="10" dsnnote="A" style="height:0;padding:0;">
-                        我的心情很好。但感冒了
-                    </div>
-                    <div class="container2 q" onclick="show_a(1)">
-                        <span class="T-text" dsnid="11" dsnnote="Q">今天的天氣很好，你今天的心情好嗎?</span>
-                        <img class="q_img" src="../img/arrow_single.png">
-                    </div>
-                    <div class="a T-text" dsnid="12" dsnnote="A" style="height:0;padding:0;">
-                        我的心情很好。但感冒了
-                    </div>
-                </div>
-            </div>
-            <div class="welcome_to_use">
-                <div class="pic2"></div>
-                <div class="content container2">
-                    <h1 class="T-text" dsnid="13" dsnnote="開始瀏覽資源吧">開始瀏覽資源吧!</h1>
-                    <p class="T-text" dsnid="14" dsnnote="開始瀏覽資源吧底下的文字">點擊立即開始，至首頁瀏覽資源分類，或是點選了解更多，了解更多關於我們的事情</p>
-                    <a href="/"><button class="container2 b1 btn btn-primary T-text" dsnid="15" dsnnote="按鈕">立即開始</button></a>
-                    <a href="/static/about_us"><button class="b2 btn btn-primary T-text" dsnid="16" dsnnote="按鈕">了解更多</button></a>
-                </div>
+        <div class="container">
+            <div class="title"><h1>Cookie政策及條款</h1></div>
+            <div class="title_img"><img src="../img/index/index_poster_1900_1.png"></div>
+            <div class="section1">
+                非常歡迎您光臨「弱勢支援網」 （以下簡稱本網站），為了讓您能夠安心的使用本網站的各項服務與資訊，特此向您說明本網站的隱私權保護政策，以保障您的權益，請您詳閱下列內容：
+                <br><br>
+                <h3>一、 隱私權保護政策的適用範圍</h3><br>
+                隱私權保護政策內容，包括本網站如何處理在您使用網站服務時收集到的個人識別資料。<br>
+                隱私權保護政策不適用於本網站以外的相關連結網站，也不適用於非本網站所委託或參與管理的人員。<br>
+                <br>
+                <h3>二、 個人資料的蒐集、處理及利用方式</h3><br>
+                當您蒞臨本網站或參與本網站活動時，我們將視活動性質請您提供必要的個人資料，並在該特定目的範圍內處理及利用您的個人資料。<br>
+                本網站蒐集不足以識別使用者身分的個人資料、只蒐集網頁探索紀錄與回饋資料，或日後經您同意而提供之其他個人資料，都僅供本網站於其內部、依照
+                蒐集之目的進行處理和利用、或為完成提供服務或履行合約義務之必要、或依照相關法令規定或有權政府機關之命令或要求，否則本
+                網站不會將足以識別使用者身分的個人資料提供給第三人（包括境內及境外）、或移作蒐集目的以外之使用。<br>
+                <br>
+                <h3>三、 資料之保護</h3><br>
+                本網站主機均設有防火牆、防毒系統等相關的各項資訊安全設備及必要的安全防護措施，加以保護網站及您的個人資料採用嚴格的保護措施，只由經過
+                授權的人員才能接觸您的個人資料，相關處理人員皆簽有保密合約，如有違反保密義務者，將會受到相關的法律處分。<br>
+                如因業務需要有必要委託本網站相關單位提供服務時，本網站亦會嚴格要求其遵守保密義務，並且採取必要檢查程序以確定其將確實遵守。<br>
+                <br>
+                <h3>四、 網站對外的相關連結</h3><br>
+                本網站的網頁提供其他網站的網路連結，您也可經由本網站所提供的連結，點選進入其他網站。但該連結網站不適用本網站的隱私權保護政策，您
+                必須參考該連結網站中的隱私權保護政策。<br><br>
+                <h3>五、 與第三人共用個人資料之政策</h3><br>
+                本網站絕不會提供、交換、出租或出售任何您的個人資料給其他個人、團體、私人企業或公務機關，但有法律依據或合約義務者，不在此限。
+                前項但書之情形包括不限於：
+
+                經由您同意。
+                法律明文規定。
+                為維護國家安全或增進公共利益。
+                為免除您生命、身體、自由或財產上之危險。
+                當您在本網站的行為，違反本網站的服務條款或可能損害或妨礙本網站權益或導致任何人遭受損害時，經本網站揭露您的個人資料是為了辨識、聯絡或採取法律行動所必要者。
+                有利於您的權益。
+                本網站委託廠商協助蒐集、處理或利用您的個人資料時，將對委外廠商或個人善盡監督管理之責。<br>
+                <br>
+                <h3>六、 Cookie 之使用</h3><br>
+                為了提供您最佳的服務，本網站會在您的電腦中放置並取用我們的Cookie，若您不願接受Cookie的寫入，您可在您使用的瀏覽器功能項中設定隱私權等級為高，即可拒絕Coo
+                kie的寫入，但可能會導至網站某些功能無法正常執行 。<br><br>
+                如何關閉 Cookie？<br><br>
+                瀏覽器允許您更改 Cookie 的設定。 這些設定可以在您的瀏覽器選單上的「選項」或 「設定」找到。 如欲了解更多這些設定，可參考下列的連結，對您可能有幫助。<br>
+                <br>
+                <a href="https://support.google.com/chrome/answer/95647?hl=tw">Chrome™ 的 Cookie 設定</a><br>
+                <a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer">Firefox® 的 Cookie 設定</a><br>
+                <a href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d">Internet Explorer® 的 Cookie 設定</a><br>
+                <a href="https://support.apple.com/zh-tw/105082">Safari® 的 Cookie 設定</a><br>
+                <br><br>
+                <h3>七、 隱私權保護政策之修正</h3><br>
+
+                本網站隱私權保護政策將因應需求隨時進行修正，修正後的條款將刊登於網站上。
             </div>
             <hr class="featurette-divider container2">
         </div>
@@ -296,17 +282,13 @@
                     </ul>
                 </div>
             </footer>
-        </div>            
-    </main> 
-    
+        </div>                
+    </main>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
-    <script src="../js/guideline.js"></script>
     <script>
         header_nav_check();
-        guideline_poster_check();
-        getHeader_data();
-        getGuideline_data();
+        //getHeader_data(); 抓取header語言資料
     </script>
 </body>
 </html>

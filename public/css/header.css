@@ -110,6 +110,13 @@ body{
     margin-top:10px;
 }
 
+#change_language{
+    cursor: pointer;
+}
+#change_language a{
+    cursor: pointer;
+}
+
 @media (max-width:1600px){
     .cookie_msg{
         top:72%;
