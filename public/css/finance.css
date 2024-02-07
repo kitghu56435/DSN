@@ -7,12 +7,12 @@
   border-radius: 10px;
   box-shadow: 8px 8px 8px 8px rgba(0, 0, 0, 0.1);
 }
-@media only screen and (max-width: 740px) {
+@media only screen and (max-width: 768px) {
   .frame {
     width: 80%; 
   }
   .article1 {
-    display:unset; 
+    flex-direction: column;
     width: 100%; 
   }
   
@@ -49,12 +49,6 @@ p {
 }
 
 .article1 {
-  width: 120%;
+  width: 100%;
   display:flex;
-}
-
-@media(max-width: 740px) {
-  .article1 {
-    flex-direction: column;
-  }
 }
