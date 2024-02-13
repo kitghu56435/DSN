@@ -145,6 +145,9 @@ function setTemplate_r(data){
     let T_Name_Bar = document.getElementById('T_Name_Bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
+    sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.template.T_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.template.T_ID);
     let str = '';
 
     if(data == undefined){
@@ -159,9 +162,7 @@ function setTemplate_r(data){
         }else{
             T_Name_Bar.innerHTML = data.template.T_Name;
             T_Name_Bar.setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
-            sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
-            sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.template.T_ID);
-            sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.template.T_ID);
+            
             number.innerHTML = '套用數量：' + data.resource.length;
             str = `
             <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>`;

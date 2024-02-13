@@ -22,7 +22,7 @@ router.get('/',(req,res)=>{
         "Template" : []
     }
     
-    db.execute('SELECT * FROM Demand ORDER BY D_ID;',(err,results)=>{
+    db.execute(`SELECT * FROM Demand ORDER BY D_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -504,7 +504,6 @@ router.post('/demand/edit/data',(req,res)=>{
                     container.id.push("");
                 }
                 data.container.push(container);
-                console.log( data.container)
     
     
     
@@ -525,8 +524,7 @@ router.post('/demand/edit/data',(req,res)=>{
                             data.container[j].id[k] = '系統ID讀取錯誤';
                         }
                     }
-                } 
-                console.log(data.container);        
+                }        
             }catch(e){
                 console.log(e)
                 data.msgbox += '模板讀取錯誤<br>';
@@ -626,7 +624,6 @@ router.post('/demand/setting/data',(req,res)=>{
         "msgbox" : ""
     }
 
-    console.log(req.body)
     
     db.execute(`SELECT Resources.D_ID,D_Name,T_ID FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
     AND R_Delete = 0 AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
@@ -959,16 +956,18 @@ router.post('/delete',(req,res)=>{
                 db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ?;`,[D_ID],(err,results)=>{
                     if(err){
                         console.log(err);
-                        msgbox += '資料庫錯誤<br>';
+                        res.json({"msg" : "dberr"});
                     }else{
                         data.demand.D_Name = results[0].D_Name;
                         data.demand.D_ID = results[0].D_ID;
                     }
                 })
-                db.execute(`SELECT R_ID,R_Name,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update FROM Resources,Template WHERE Resources.T_ID = Template.T_ID AND R_Delete = 0 AND D_ID = ?;`,[D_ID],(err,results)=>{
+                db.execute(`SELECT Resources.R_ID,T_Name,R_Shelf,DATE_FORMAT(R_Update,'%Y年%m月%d日 %H:%i:%s') R_Update,RD_Content R_Name
+                FROM Resources,Template,Resource_data WHERE Resources.T_ID = Template.T_ID AND Resources.R_ID = Resource_data.R_ID 
+                AND R_Delete = 0 AND RD_Type = 2 AND L_ID = 'L000000001' AND D_ID = ?;`,[D_ID],(err,results)=>{
                     if(err){
                         console.log(err);
-                        msgbox += '資料庫錯誤<br>';
+                        res.json({"msg" : "dberr"});
                     }else{
                         data.all_r = results.length;
                         for(i = 0;i<results.length;i++){
@@ -986,10 +985,11 @@ router.post('/delete',(req,res)=>{
                                 "R_Update" : results[i].R_Update
                             });
                         }
+                        res.json(data);
                     }
             
                     
-                    res.json(data)
+                    
                 })
             }
         })
@@ -1639,7 +1639,9 @@ router.post('/template/delete',(req,res)=>{
                         res.json({"msg" : "dberr"});
                     }
                 })
-                db.execute(`SELECT Template.*,Resources.R_Name FROM Template LEFT JOIN Resources ON Template.T_ID = Resources.T_ID AND R_Delete = 0;`,(err,results)=>{
+                db.execute(`SELECT Template.*,Resources.R_Name FROM Template LEFT JOIN (SELECT RD_Content R_Name,T_ID FROM Resources,Resource_data 
+                    WHERE Resources.R_ID = Resource_data.R_ID AND R_Delete = 0 AND RD_Type = 2 
+                    AND Resource_data.L_ID = 'L000000001') Resources ON Template.T_ID = Resources.T_ID;`,(err,results)=>{
                     if(err){
                         console.log(err);
                         res.json({"msg" : "dberr"});
@@ -1886,7 +1888,7 @@ async function update_Resource(data){
                 console.log(err)
                 rejects();
             }else{
-                if(results.changedRows == 0){
+                if(results.affectedRows == 0){
                     db.execute(`INSERT INTO Resource_data VALUES(?,?,?,null,2,?);`,[RD_ID,R_ID,L_ID,R_Name],(err)=>{
                         if(err){
                             console.log(err)

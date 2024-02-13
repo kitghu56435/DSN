@@ -12,22 +12,73 @@ router.get('/header',(req,res)=>{
     let html = readFileSync('./public/html/header.html');
     res.end(html);
 })
-
-
 router.post('/header_data',(req,res)=>{
+    let Page = req.body.Page;
     let L_ID = req.cookies.leng;
     if(L_ID == undefined) L_ID = 'L000000001';
+    let data = {
+        "Page" : Page,
+        "L_Name" : "",
+        "lang" : [],
+        "data" : [],
+        "static_data" : []
+    }
+    db.execute(`SELECT L_ID,L_Name FROM Languages`,(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            data.lang = results
+            for(i = 0;i<results.length;i++){
+                if(results[i].L_ID == L_ID){
+                    data.L_Name = results[i].L_Name;
+                }
+            }
+        }
+    })
+    db.execute(`SELECT * FROM Demand,Resources,Resource_data WHERE Demand.D_ID = Resources.D_ID AND Resources.R_ID = Resource_data.R_ID AND RD_Type = 2 
+    AND Resource_data.L_ID = ? AND Demand.L_ID = ? AND R_Delete = 0 AND R_Shelf = 1 ORDER BY Demand.D_ID,Resources.R_ID;
+    `,[L_ID,L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            let D_data = {};
+            let now = results[0].D_ID;
+            let resource = [];
+
+            D_data.D_ID = results[0].D_ID;
+            D_data.D_Name = results[0].D_Name;
+            for(i = 0;i<results.length;i++){
+                resource.push({
+                    "R_ID" : results[i].R_ID,
+                    "R_Name" : results[i].RD_Content,
+                });
+                if(i != results.length - 1){
+                    if(results[i+1].D_ID != now){
+                        D_data.resource = resource;
+                        data.data.push(D_data);
     
+                        D_data = {};
+                        resource = [];
+                        D_data.D_ID = results[i+1].D_ID;
+                        D_data.D_Name = results[i+1].D_Name;
+                    }
+                }else{
+                    D_data.resource = resource;
+                    data.data.push(D_data);
+                }
+                
+            }
+        }
+    })
     db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000003';`,[L_ID],(err,results)=>{
         if(err){
             console.log(err);
             res.json({"msg":"dberr"});
         }else{
-            res.json({
-                "msg" : "success",
-                "L_ID" : L_ID,
-                "data" : results
-            })
+            data.static_data = results;
+            res.json(data);
         }
     })
     
@@ -62,8 +113,6 @@ router.get('/guideline',(req,res)=>{
     }
     res.end(html);
 })
-
-
 router.post('/guideline_data',(req,res)=>{
     let L_ID = req.cookies.leng;
     if(L_ID == undefined) L_ID = 'L000000001';
@@ -91,8 +140,6 @@ router.get('/about_us',(req,res)=>{
     }
     res.end(html);
 })
-
-
 router.post('/about_us_data',(req,res)=>{
     let L_ID = req.cookies.leng;
     if(L_ID == undefined) L_ID = 'L000000001';
@@ -112,6 +159,7 @@ router.post('/about_us_data',(req,res)=>{
 })
 
 
+
 router.get('/cookie_policy',(req,res)=>{
     let html = readFileSync('./public/html/cookie_policy.html','utf-8');
     if(req.cookies.accept == 'null'){
@@ -119,8 +167,6 @@ router.get('/cookie_policy',(req,res)=>{
     }
     res.end(html);
 })
-
-
 router.post('/cookie_policy_data',(req,res)=>{
     let L_ID = req.cookies.leng;
     if(L_ID == undefined) L_ID = 'L000000001';
@@ -138,6 +184,67 @@ router.post('/cookie_policy_data',(req,res)=>{
         }
     })
 })
+
+
+
+
+router.get('/finance',(req,res)=>{
+    let html = readFileSync('./public/html/finance.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getFinance_data();</script>';
+    res.end(html);
+})
+router.post('/finance_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000006';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            console.log(results)
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
+
+//暫緩開發 等有8個資源的目錄頁出現在開發
+router.get('/emergency',(req,res)=>{
+    let html = readFileSync('./public/html/finance.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getEmergency_data();</script>';
+    res.end(html);
+})
+router.post('/emergency_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000007';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            console.log(results)
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
 
 
 

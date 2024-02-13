@@ -1,0 +1,23 @@
+
+
+.section{
+    width:65%;
+    margin:auto;
+    display: flex;
+    text-align: left;
+    padding-top:5%;
+    padding-bottom: 5%;
+}
+.section > .img{
+    padding:5%;
+}
+.section > .text{
+    padding: 5%;
+}
+
+@media (max-width:768px){   
+    .section{
+        flex-direction: column;
+        text-align: center;
+    }
+}

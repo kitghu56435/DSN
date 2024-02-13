@@ -66,9 +66,6 @@ function setIndex_data(data,L_ID){
         let dsnid = T_text[i].getAttribute('dsnid');
         for(j = 0;j<data.length;j++){
             if(dsnid == data[j].RD_Template_ID){
-                // if(dsnid == 'h050' || dsnid == 'h079'){
-                //     T_text[i].setAttribute('placeholder',data[j].RD_Content);
-                // }
                 T_text[i].innerHTML = data[j].RD_Content;
             }
         }
