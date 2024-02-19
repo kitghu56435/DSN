@@ -75,6 +75,15 @@
                     <br><br>弱勢資源網 團隊 敬上
                 </p>
             </div>
+            <div class="welcome_to_use">
+                <div class="pic2"></div>
+                <div class="content container2">
+                    <h1 class="T-text" dsnid="13" dsnnote="開始瀏覽資源吧">開始瀏覽資源吧!</h1>
+                    <p class="T-text" dsnid="14" dsnnote="開始瀏覽資源吧底下的文字">點擊立即開始，至首頁瀏覽資源分類，或是點選了解更多，了解更多關於我們的事情</p>
+                    <a href="/"><button class="container2 b1 btn btn-primary T-text" dsnid="15" dsnnote="按鈕">立即開始</button></a>
+                    <a href="/static/about_us"><button class="b2 btn btn-primary T-text" dsnid="16" dsnnote="按鈕">了解更多</button></a>
+                </div>
+            </div>
             <div class="common_quesion container2" id="common_problem">
                 <h1 class="T-title" dsnid="7" dsnnote="常見問題">常見問題</h1>
                 <p class="container2 T-text" dsnid="8">以下是一些常見問題和解答，希望能幫助到您</p>
@@ -96,15 +105,7 @@
                     </div>
                 </div>
             </div>
-            <div class="welcome_to_use">
-                <div class="pic2"></div>
-                <div class="content container2">
-                    <h1 class="T-text" dsnid="13" dsnnote="開始瀏覽資源吧">開始瀏覽資源吧!</h1>
-                    <p class="T-text" dsnid="14" dsnnote="開始瀏覽資源吧底下的文字">點擊立即開始，至首頁瀏覽資源分類，或是點選了解更多，了解更多關於我們的事情</p>
-                    <a href="/"><button class="container2 b1 btn btn-primary T-text" dsnid="15" dsnnote="按鈕">立即開始</button></a>
-                    <a href="/static/about_us"><button class="b2 btn btn-primary T-text" dsnid="16" dsnnote="按鈕">了解更多</button></a>
-                </div>
-            </div>
+           
             <hr class="featurette-divider container2">
         </div>
         <div class="footer_div">
@@ -174,13 +175,16 @@
     
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
-    <script src="../js/guideline.js"></script>
+    <script src="../js/frontend.js"></script>
     <script src="../js/ajax.js"></script>
     <script>
         header_nav_check();
         guideline_poster_check();
         getHeader_data();
         getGuideline_data();
+        window.addEventListener('resize', function() {
+            guideline_poster_check();
+        });
     </script>
 </body>
 </html>

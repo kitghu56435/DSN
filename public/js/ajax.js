@@ -1,13 +1,7 @@
 
 
 function setDSNdata(data,L_ID){
-    let language = document.getElementById('language');
-    let L_Name = '';
-    switch(L_ID){
-        case "L000000001" : L_Name = '繁體中文'; break;
-        case "L000000002" : L_Name = 'English'; break;
-    }
-    language.innerHTML = L_Name;
+    
     let T_title = document.getElementsByClassName('T-title');
     let T_text = document.getElementsByClassName('T-text');
     let T_img = document.getElementsByClassName('T-img');
@@ -114,7 +108,7 @@ function getAbout_us_data(){
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send(null);
 }
-function getFinance_data(){
+function getEconomy_data(){
     let httpRequest = new XMLHttpRequest();
 
     httpRequest.onreadystatechange = function(){
@@ -132,7 +126,7 @@ function getFinance_data(){
         }
     }
     
-    httpRequest.open('POST','/static/finance_data');
+    httpRequest.open('POST','/static/economy_data');
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send(null);
 }
@@ -144,7 +138,7 @@ function getEmergency_data(){
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
                 if(jsonResponse.msg == 'dberr'){
-                    alert('Finance資料錯誤');
+                    alert('Emergency資料錯誤');
                 }else{
                     setDSNdata(jsonResponse.data,jsonResponse.L_ID);
                 }
@@ -155,6 +149,50 @@ function getEmergency_data(){
     }
     
     httpRequest.open('POST','/static/emergency_data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send(null);
+}
+function getLaw_data(){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('Law資料錯誤');
+                }else{
+                    setDSNdata(jsonResponse.data,jsonResponse.L_ID);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/static/law_data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send(null);
+}
+function getApplication_data(){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('Application資料錯誤');
+                }else{
+                    setDSNdata(jsonResponse.data,jsonResponse.L_ID);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/static/application_data');
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send(null);
 }

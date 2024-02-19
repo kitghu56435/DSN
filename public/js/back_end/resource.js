@@ -105,8 +105,10 @@ function setDemand(data){
     let r_table_div = document.getElementsByClassName('r_table')[0];
     let r_table = r_table_div.getElementsByTagName('table')[0];
     let D_Name_bar = document.getElementById('D_Name_bar');
+    let data_block = document.getElementsByClassName('data_block')[4];
     let str = '';
     
+    data_block.setAttribute('onclick',`url('/backend/resource/demand/name_setting?D_ID=${data.demand.D_ID}')`)
 
     if(data == undefined){
         r_table.innerHTML = `
@@ -129,6 +131,22 @@ function setDemand(data){
             r_table.innerHTML = str;
         }
     }
+}
+
+function setDemand_Setting(data){
+    let D_ID = document.getElementsByName('D_ID')[0];
+    let D_Name_bar = document.getElementById('D_Name_bar');
+    let content = document.getElementsByClassName('content')[0];
+    let table = content.getElementsByTagName('table')[0];
+    D_ID.setAttribute('value',data.D_ID);
+    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.D_ID);
+    D_Name_bar.innerHTML = data.D_Name;
+
+    str = '';
+    for(i = 0;i<data.name.length;i++){
+        str += `<tr><th>需求名稱<br>(${data.name[i].L_Name})</th><td><input name="${data.name[i].L_ID}" type="text" placeholder="請輸入需求名稱" value="${data.name[i].D_Name}"></td></tr>`;
+    }
+    table.innerHTML = str;
 }
 
 function deleteResource(R_ID,D_ID){
@@ -312,6 +330,13 @@ function setResource_edit(data){
         html_area.appendChild(div);
     }
 }
+
+
+
+
+
+
+
 
 function shelfResource(R_ID){
     let httpRequest = new XMLHttpRequest();

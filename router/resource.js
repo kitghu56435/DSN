@@ -22,7 +22,7 @@ router.get('/',(req,res)=>{
         "Template" : []
     }
     
-    db.execute(`SELECT * FROM Demand ORDER BY D_ID;`,(err,results)=>{
+    db.execute(`SELECT * FROM Demand WHERE Demand.L_ID = 'L000000001' ORDER BY D_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -177,6 +177,81 @@ router.get('/demand',(req,res)=>{
     
     
 })
+router.get('/demand/name_setting',(req,res)=>{
+    let html = readFileSync('./public/html/back_end/edit/resource_setting_d.html','utf-8');
+    let D_ID = req.query.D_ID;
+    let msg = req.query.data;
+    let msgbox = '';
+    let data = {
+        "D_Name" : "",
+        "D_ID" : "",
+        "name" :[]
+    }
+
+
+    switch(msg){
+        case 'err' : msgbox = '資料輸入錯誤';break;
+        case 'create_err' : msgbox = '新增模組錯誤';break;
+    }
+    
+
+
+    db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ? AND L_ID = 'L000000001';`,[D_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            msgbox += '資料庫錯誤<br>';
+        }else{
+            data.D_Name = results[0].D_Name;
+            data.D_ID = results[0].D_ID;
+        }
+    })
+    db.execute(`SELECT Languages.L_ID,L_Name,D_Name FROM Languages LEFT JOIN (SELECT * FROM Demand WHERE D_ID = ?) Demand  ON Demand.L_ID = Languages.L_ID;`,[D_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            msgbox += '資料庫錯誤<br>';
+        }else{
+            for(i = 0;i<results.length;i++){
+                data.name.push({
+                    "L_ID" : results[i].L_ID,
+                    "L_Name" : results[i].L_Name,
+                    "D_Name" : checkNull(results[i].D_Name)
+                })
+            }
+        }
+
+        html += `<script>
+        setDemand_Setting(${JSON.stringify(data)});
+        ${setMsgbox(msgbox)}
+        </script>
+        `;
+        res.end(html)
+    })
+
+    
+    
+    
+})
+router.post('/demand/name_setting/data',(req,res)=>{
+    
+
+    db.execute('SELECT L_ID FROM Languages;',(err,results)=>{
+        if(err){
+            console.log(err);
+            res.writeHead(303,{Location:'/backend/resource/demand/setting?data=err'});
+            res.end();
+        }else{
+            new Promise((resolve,reject)=>{
+                resolve(update_Demand(req.body,results));
+            }).then(()=>{
+                res.writeHead(303,{Location:'/backend/resource/demand?D_ID=' + req.body.D_ID});
+                res.end();
+            })
+        }
+    })
+})
+
+
+
 
 
 router.get('/demand/edit',(req,res)=>{
@@ -626,7 +701,7 @@ router.post('/demand/setting/data',(req,res)=>{
 
     
     db.execute(`SELECT Resources.D_ID,D_Name,T_ID FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
-    AND R_Delete = 0 AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
+    AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             data.msgbox += '資料庫錯誤<br>';
@@ -672,7 +747,7 @@ router.post('/demand/setting/data',(req,res)=>{
             }
         }
     })
-    db.execute(`SELECT * FROM Demand;`,(err,results)=>{
+    db.execute(`SELECT * FROM Demand WHERE Demand.L_ID = 'L000000001';`,(err,results)=>{
         if(err){
             console.log(err);
             data.msgbox += '資料庫錯誤<br>';
@@ -873,7 +948,7 @@ router.post('/demand/delete',(req,res)=>{
                         res.json({"msg" : "dberr"});
                         console.log(err);
                     }else{
-                        db.execute('SELECT * FROM Demand ORDER BY D_ID;',(err,results)=>{
+                        db.execute(`SELECT * FROM Demand WHERE L_ID = 'L000000001' ORDER BY D_ID;`,(err,results)=>{
                             if(err){
                                 console.log(err);
                                 res.json({"msg" : "dberr"});
@@ -953,7 +1028,7 @@ router.post('/delete',(req,res)=>{
                 res.json({"msg" : "dberr"});
                 console.log(err);
             }else{
-                db.execute(`SELECT D_ID,D_Name FROM Demand WHERE D_ID = ?;`,[D_ID],(err,results)=>{
+                db.execute(`SELECT D_ID,D_Name FROM Demand WHERE L_ID = 'L000000001' AND D_ID = ?;`,[D_ID],(err,results)=>{
                     if(err){
                         console.log(err);
                         res.json({"msg" : "dberr"});
@@ -1695,14 +1770,45 @@ router.post('/template/delete',(req,res)=>{
 
 
 
-async function create_Demand(D_Name){
-    let D_ID = await NextID('Demand','D_ID','D');
+async function create_Demand(D_Name,L_ID,D_ID){
+    if(D_ID == undefined){
+        D_ID = await NextID('Demand','D_ID','D');
+    } 
+    if(L_ID == undefined) L_ID = 'L000000001';
+
     return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Demand VALUES(?,?);`,[D_ID,D_Name],(err)=>{
+        db.execute(`INSERT INTO Demand VALUES(?,?,?);`,[D_ID,L_ID,D_Name],(err)=>{
             if(err){
                 console.log(err)
                 reject();
             }else{
+                resolve();
+            }
+        })
+    })
+}
+async function update_Demand(data,Array){
+    let D_ID = data.D_ID;
+
+    for(x = 0;x<Array.length;x++){
+        await update_Demand_data(D_ID,Array[x].L_ID,data[Array[x].L_ID]);
+    }
+
+    return new Promise((resolve)=>{
+        resolve();
+    })
+}
+async function update_Demand_data(D_ID,L_ID,D_Name){
+    
+
+    return new Promise((resolve)=>{
+        db.execute(`UPDATE Demand SET D_Name = ? WHERE D_ID = ? AND L_ID = ?`,[D_Name,D_ID,L_ID],(err,results)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(results.affectedRows == 0){
+                    create_Demand(D_Name,L_ID,D_ID);
+                }
                 resolve();
             }
         })
@@ -1937,6 +2043,13 @@ function T_Use(str){
         return 0;
     }else{
         return 1;
+    }
+}
+function checkNull(value){
+    if(value == 'null' || value == null){
+        return '';
+    }else{
+        return value;
     }
 }
 

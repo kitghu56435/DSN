@@ -6,24 +6,23 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>DSN管理後臺-需求名稱</title>
+    <title>DSN管理後臺-需求設置</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/back_end/demand.css" rel="stylesheet">
-    <link href="../../css/back_end/sidebars.css" rel="stylesheet">
-    <link href="../../css/back_end/data_block_list.css" rel="stylesheet">
+    <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/back_end/resource_add.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
 </head>
 <body>
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="./" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../img/backend/resource.png" style="margin-right:5%">
+            <img src="../../../img/backend/resource.png" style="margin-right:5%">
             <span class="fs-2 fw-semibold">DSN管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
-                    <img src="../../img/backend/resource.png">
+                    <img src="../../../img/backend/resource.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                     資源管理
                     </button>
@@ -38,7 +37,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/chat.png">
+                    <img src="../../../img/backend/chat.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-collapse" aria-expanded="false">
                     留言管理
                     </button>
@@ -63,7 +62,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/supplier.png">
+                    <img src="../../../img/backend/supplier.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
                     供應商管理
                     </button>
@@ -75,7 +74,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/language.png">
+                    <img src="../../../img/backend/language.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
                     語言管理
                     </button>
@@ -89,7 +88,7 @@
                 </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
-                    <img src="../../img/backend/member.png">
+                    <img src="../../../img/backend/member.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                     管理員
                     </button>
@@ -100,6 +99,7 @@
                     </div>
                 </li>
             </ul>
+            
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
         <section>
@@ -107,69 +107,59 @@
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
-                      <a class="link-body-emphasis" href="/backend/resource">
-                        <img src="../../img/backend/resource.png">
+                      <a class="link-body-emphasis" href="#">
+                        <img src="../../../img/backend/resource.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource">資源管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource/">資源管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a id="D_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">需求名稱</a>
+                        <a id="D_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="">需求名稱</a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource/demand/setting">需求設置</a>
                     </li>
                   </ol>
                 </nav>
             </div>
-            <div class="content">
-                <div class="data_block_list">
-                    <div class="data_block"><p>0</p><span>資源數量</span></div>
-                    <div class="data_block"><p>0</p><span>上架數量</span></div>
-                    <div class="data_block"><p>0</p><span>下架數量</span></div>
-                    <div class="data_block block_click" onclick="url('/backend/resource/add_r')"><p><img src="../../img/backend/resource.png"></p><span>新增資源</span></div>
-                    <div class="data_block block_click" onclick="url('/backend/resource/add_r')"><p><img src="../../img/backend/resource.png"></p><span>需求設置</span></div>
+            <form method="POST" action="/backend/resource/demand/name_setting/data">
+                <div class="btn_area">
+                    <button>儲存變更</button>
                 </div>
-                <div class="data_table">
-                    <div class="r_table">
-                        <div class="table_title">資源清單</div>
-                        <table>
-                            <tr><th style="width:30%">資源名稱</th><th style="width:15%">套用模板</th><th style="width:15%">資源狀態</th><th style="width:30%">上次更新</th><th style="width:10%">刪除</th></tr>
-                            <!-- <tr><td>中/低收入戶、特殊境遇家庭</td><td>模板1</td><td>上架中</td><td>2023年12月12日 12:12:12</td><td><img src="../../img/bin.png"></td></tr> -->
-                        </table>
-                    </div>
+                <div class="content">
+                    <input type="hidden" name="D_ID" value="">
+                    <table>
+                        <!-- <tr><th>需求名稱<br>(繁體中文)</th><td><input name="D_Name" type="text" placeholder="請輸入需求名稱"></td></tr> -->
+                    </table>
                 </div>
-            </div>
+            </form>
         </section>
     </main>
 </body>
-<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../js/back_end/sidebars.js"></script>
-<script src="../../js/back_end/resource.js"></script>
-<script src="../../js/back_end/data_block_list.js"></script>
-<script src="../../js/header.js"></script>
+<script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/back_end/sidebars.js"></script>
+<script src="../../../js/header.js"></script>
+<script src="../../../js/back_end/resource.js"></script>
 <script>
-    setData_block(0,5);
-    setData_block(1,4);
-    setData_block(2,3);
-    setDemand({
-        "demand" : {
-            "D_ID" : "D000000001",
-            "D_Name" : "經濟資訊"
-        },
-        "resource" : [{
-            "R_ID" : "R000000001",
-            "R_Name" : "中/低收入戶",
-            "T_Name" : '模板1',
-            "R_Shelf" : 1,
-            "R_Update" : '2023年12月12日 12:12:12'
-        },
-        {
-            "R_ID" : "R000000002",
-            "R_Name" : "中/低收入戶",
-            "R_Name" : "獎(助)學金",
-            "T_Name" : '模板2',
-            "R_Shelf" : 0,
-            "R_Update" : '2023年12月12日 12:12:12'
-    }]});
+    // let data = {
+    //     "D_Name" : "經濟",
+    //     "D_ID" : "D000000001",
+    //     "name" :[
+    //         {
+    //             "L_ID" : "L000000001",
+    //             "L_Name" : "繁體中文",
+    //             "D_Name" : "經濟"
+    //         },
+    //         {
+    //             "L_ID" : "L000000002",
+    //             "L_Name" : "English",
+    //             "D_Name" : "Economy"
+    //         }
+    //     ]
+    // }
+
+    // setDemand_Setting(data)
 </script>
 </html>

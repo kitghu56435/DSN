@@ -4,7 +4,7 @@
     width: 100%;
     position: relative;
     text-align: center;
-    background-image: url(../img/about_us/about_us_1900_1.png);
+    background-image: url(../img/index/index_poster_1900_1.png);
     background-size: 100% 100%;
 }
 .title{
@@ -71,13 +71,13 @@
 /* 100% 1463px */
 @media(max-width:1600px){  
     .container1{
-        background-image: url(../img/about_us/about_us_1600_1.png);
+        background-image: url(../img/index/index_poster_1600_1.png);
     }
 }
 /* 125% 1170px */
 @media(max-width:1280px){ 
     .container1{
-        background-image: url(../img/about_us/about_us_1280_1.png);
+        background-image: url(../img/index/index_poster_1280_1.png);
     }
     .container{
         padding-left:2%;
@@ -97,7 +97,7 @@
 /* 200% 731px */
 @media(max-width:768px){  
     .container1{
-        background-image: url(../img/about_us/about_us_768_1.png);
+        background-image: url(../img/index/index_poster_768_1.png);
     }
     .letterp_content {
         padding-left: 10%;
@@ -128,7 +128,7 @@
 /* 300% 487px */
 @media(max-width:560px){  
     .container1{
-        background-image: url(../img/about_us/about_us_560_1.png);
+        background-image: url(../img/index/index_poster_560_1.png);
     }
     .letter{
         padding-left: 0.01%;

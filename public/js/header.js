@@ -72,37 +72,6 @@ function getHeader_data(page_name){
 }
 
 
-// let data = {
-//     "L_ID" : "L000000001",
-//     "lang" : [
-//         {
-//             "L_Name" : "繁體中文",
-//             "L_ID" : "L000000001"
-//         },
-//         {
-//             "L_Name" : "English",
-//             "L_ID" : "L000000002"
-//         }
-//     ],
-//     "data" : [
-//         {
-//             "D_ID" : "D000000001",
-//             "D_Name" : "經濟",
-//             "resource" : [
-//                 {
-//                     "R_ID" : "R000000001",
-//                     "R_Name" : "低收入戶"
-//                 },
-//                 {
-//                     "R_ID" : "R000000002",
-//                     "R_Name" : "低收入戶2"
-//                 }
-//             ]
-//         }
-//     ],
-//     "static_data" : [] //這邊放footer資料
-// }
-
 
 function setHeader_data(data){
     //動態nav
@@ -154,13 +123,13 @@ function setHeader_data(data){
     collapse.appendChild(change_language);
 
 
-
+    //h050被刪掉
     //搜尋框
-    let form = document.createElement('form');
+    let form = document.createElement('div');
     form.setAttribute('class','d-flex container2');
     form.setAttribute('role','search');
-    form.innerHTML = `<input class="form-control me-2 T-text" dsnid="h050" dsnnote="搜尋框" type="search" placeholder="請輸入關鍵字.." aria-label="Search" style="background-color: #ECECFF;">
-    <button class="btn btn-outline-light T-text" dsnid="h051" dsnnote="搜尋按鈕" type="submit" style="width:30%">搜尋</button>`;
+    form.innerHTML = `
+    <button class="btn btn-outline-light T-text" dsnid="h051" dsnnote="搜尋按鈕" type="submit" style="width:100%">搜尋</button>`;
     collapse.appendChild(form);
 
 

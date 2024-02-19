@@ -188,15 +188,15 @@ router.post('/cookie_policy_data',(req,res)=>{
 
 
 
-router.get('/finance',(req,res)=>{
+router.get('/economy',(req,res)=>{
     let html = readFileSync('./public/html/finance.html','utf-8');
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
-    html += '<script>getFinance_data();</script>';
+    html += '<script>getEconomy_data();</script>';
     res.end(html);
 })
-router.post('/finance_data',(req,res)=>{
+router.post('/economy_data',(req,res)=>{
     let L_ID = req.cookies.leng;
     if(L_ID == undefined) L_ID = 'L000000001';
     
@@ -217,9 +217,9 @@ router.post('/finance_data',(req,res)=>{
 
 
 
-//暫緩開發 等有8個資源的目錄頁出現在開發
+
 router.get('/emergency',(req,res)=>{
-    let html = readFileSync('./public/html/finance.html','utf-8');
+    let html = readFileSync('./public/html/emergency.html','utf-8');
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -231,6 +231,65 @@ router.post('/emergency_data',(req,res)=>{
     if(L_ID == undefined) L_ID = 'L000000001';
     
     db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000007';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            console.log(results)
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
+
+router.get('/law',(req,res)=>{
+    let html = readFileSync('./public/html/law.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getLaw_data();</script>';
+    res.end(html);
+})
+router.post('/law_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000008';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            console.log(results)
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
+
+
+router.get('/application',(req,res)=>{
+    let html = readFileSync('./public/html/application.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getApplication_data();</script>';
+    res.end(html);
+})
+router.post('/application_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000009';`,[L_ID],(err,results)=>{
         if(err){
             console.log(err);
             res.json({"msg":"dberr"});
