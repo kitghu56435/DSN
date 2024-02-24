@@ -15,6 +15,7 @@ const resource = require('./router/resource');
 const resourceInfo = require('./router/resourceInfo');
 const static = require('./router/static');
 const language = require('./router/language');
+const supplier = require('./router/supplier');
 
 
 app.use(express.static('public'));
@@ -39,7 +40,7 @@ app.use('/resource',resourceInfo);
 app.use('/static',static);
 app.use('/backend/resource',resource);
 app.use('/backend/language',language);
-
+app.use('/backend/supplier',supplier);
 
 
 

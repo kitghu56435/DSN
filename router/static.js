@@ -205,7 +205,6 @@ router.post('/economy_data',(req,res)=>{
             console.log(err);
             res.json({"msg":"dberr"});
         }else{
-            console.log(results)
             res.json({
                 "msg" : "success",
                 "L_ID" : L_ID,
@@ -235,7 +234,6 @@ router.post('/emergency_data',(req,res)=>{
             console.log(err);
             res.json({"msg":"dberr"});
         }else{
-            console.log(results)
             res.json({
                 "msg" : "success",
                 "L_ID" : L_ID,
@@ -264,7 +262,6 @@ router.post('/law_data',(req,res)=>{
             console.log(err);
             res.json({"msg":"dberr"});
         }else{
-            console.log(results)
             res.json({
                 "msg" : "success",
                 "L_ID" : L_ID,
@@ -294,7 +291,6 @@ router.post('/application_data',(req,res)=>{
             console.log(err);
             res.json({"msg":"dberr"});
         }else{
-            console.log(results)
             res.json({
                 "msg" : "success",
                 "L_ID" : L_ID,
