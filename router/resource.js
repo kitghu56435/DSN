@@ -771,13 +771,13 @@ router.post('/demand/setting/data',(req,res)=>{
                     data.S_List.push({
                         "S_Name" : results[i].S_Name,
                         "S_ID" : results[i].S_ID,
-                        "S_Check" : true
+                        "S_Check" : false
                     })
                 }else{
                     data.S_List.push({
                         "S_Name" : results[i].S_Name,
                         "S_ID" : results[i].S_ID,
-                        "S_Check" : false
+                        "S_Check" : true
                     })
                 }
                 
@@ -787,7 +787,6 @@ router.post('/demand/setting/data',(req,res)=>{
         res.json(data)
     })
 })
-
 router.post('/demand/setting/save',(req,res)=>{ 
     let R_ID = req.body.R_ID;
     let L_ID = req.body.L_ID;

@@ -39,7 +39,7 @@ section{
     display: flex;
 }
 .content > .data_area{
-    width:70%;
+    width:80%;
 }
 .data_area  th{
     width: 30%;

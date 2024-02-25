@@ -4,6 +4,7 @@ const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
 const moment = require('moment-timezone');
+const { rejects } = require('assert');
 
 router.use(Administrator_verafication);
 
@@ -182,7 +183,15 @@ router.post('/add/data',(req,res)=>{
 router.get('/edit',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/supplier_edit.html','utf-8');
     let S_ID = req.query.S_ID;
-    let msgbox = '';
+
+    html += `
+    <script>
+    getSupplier_edit('${S_ID}');
+    </script>`
+    res.end(html);
+})
+router.post('/edit/data',(req,res)=>{
+    let S_ID = req.body.S_ID;
     let data = {
         "S_ID" : "",
         "S_Name" : "",
@@ -191,12 +200,13 @@ router.get('/edit',(req,res)=>{
         "S_Manager" : "",
         "S_Manager_phone" : "",
         "S_Remark" : "",
+        "msgbox" : "",
     }
     
     db.execute(`SELECT * FROM Supplier WHERE S_ID = ?`,[S_ID],(err,results)=>{
         if(err){
             console.log(err);
-            msgbox += '資料庫錯誤<br>';
+            data.msgbox += '資料庫錯誤<br>';
         }else{
             data.S_ID = results[0].S_ID;
             data.S_Name = results[0].S_Name;
@@ -208,16 +218,123 @@ router.get('/edit',(req,res)=>{
             
         }
 
-        html += `<script>
-        ${setMsgbox(msgbox)}
-        setSupplier_edit(${JSON.stringify(data)})
-        </script>
-        `;
-        res.end(html)
+        
+        res.json(data);
     })
 })
+router.post('/edit/save',(req,res)=>{
+    let S_ID = req.body.S_ID;
+    let S_Name = req.body.S_Name;
+
+    
+    if(checkData(S_ID) && checkData(S_Name)){
+        db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
+            if(err){
+                console.log(err);
+                res.json({"msg" : "dberr"})
+            }else if(results.length == 0){
+                res.json({"msg" : "nodata"});
+            }else{
+                new Promise((resolve,reject)=>{
+                    resolve(update_Supplier(req.body));
+                }).then((result)=>{
+                    res.json({"msg" : "success"});
+                }).catch((re)=>{
+                    res.json({"msg" : re});
+                })              
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"})
+    }
+})
+
+
+
+
+
+
+
 router.get('/resource',(req,res)=>{
-    res.end();
+    let html = readFileSync('./public/html/back_end/edit/supplier_r.html','utf-8');
+    let S_ID = req.query.S_ID;
+    
+    html += `
+    <script>
+    getSupplier_r('${S_ID}');
+    </script>`
+    res.end(html);
+})
+router.post('/resource/data',(req,res)=>{
+    let S_ID = req.body.S_ID;
+    let data = {
+        "S_ID" : S_ID,
+        "S_Name" : "",
+        "R_List" : [],
+        "msgbox" : "",
+    }
+    
+    db.execute(`SELECT S_Name FROM Supplier WHERE S_ID = ?`,[S_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            data.msgbox += '資料庫錯誤<br>';
+        }else{
+            data.S_Name = results[0].S_Name;
+        }
+    })
+    db.execute(`SELECT D_Name,Resources3.R_ID,RD_Content,SB_ID FROM (SELECT Resources2.R_ID,Resources2.D_ID,SB_ID FROM (SELECT * FROM Resources WHERE R_Delete = 0) Resources2 LEFT JOIN 
+    (SELECT * FROM Supplier_binding WHERE S_ID = ?) Supplier_binding ON Supplier_binding.R_ID = Resources2.R_ID) Resources3,Demand,
+    Resource_data WHERE Resources3.D_ID = Demand.D_ID AND Resource_data.R_ID = Resources3.R_ID AND RD_Type = 2 AND Resource_data.L_ID = 'L000000001'
+    AND Demand.L_ID = 'L000000001';`,[S_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            data.msgbox += '資料庫錯誤<br>';
+        }else{
+            for(i = 0;i<results.length;i++){
+                if(results[i].SB_ID != null && results[i].SB_ID != 'null'){
+                    data.R_List.push({
+                        "D_Name" : results[i].D_Name,
+                        "R_ID" : results[i].R_ID,
+                        "R_Name" : results[i].RD_Content,
+                        "R_Check" : false
+                    })
+                }else{
+                    data.R_List.push({
+                        "D_Name" : results[i].D_Name,
+                        "R_ID" : results[i].R_ID,
+                        "R_Name" : results[i].RD_Content,
+                        "R_Check" : true
+                    })
+                }
+                
+            }
+            
+        }
+
+        res.json(data)
+    })
+})
+router.post('/resource/save',(req,res)=>{
+    let S_ID = req.body.S_ID;
+
+    if(checkData(S_ID)){
+        db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
+            if(err){
+                console.log(err);
+                res.json({"msg" : "dberr"})
+            }else if(results.length == 0){
+                res.json({"msg" : "nodata"});
+            }else{
+                new Promise((resolve,reject)=>{
+                    resolve(update_Supplier(req.body));
+                }).then((result)=>{
+                    res.json({"msg" : "success","num" : req.body.R_ID.length});
+                })            
+            }
+        })
+    }else{
+        res.json({"msg" : "dataerr"})
+    }
 })
 
 
@@ -271,6 +388,38 @@ async function create_Supplier_binding(R_ID,S_ID){
             }else{
                 resolve();
             }
+        })
+    })
+}
+async function update_Supplier(data){
+    let S_ID = data.S_ID;
+    let R_ID = data.R_ID;
+
+    await delete_Supplier_binding(S_ID)  //先刪除目前綁定的資源
+
+    if(checkData(R_ID)){    //重新綁定
+        if(typeof R_ID == 'object'){
+            for(c = 0;c<R_ID.length;c++){
+                await create_Supplier_binding(R_ID[c],S_ID);
+            }
+        }else{
+            await create_Supplier_binding(R_ID,S_ID);
+        }
+    } 
+
+
+
+    return new Promise((resolve,rejects)=>{
+        resolve();
+    })
+}
+async function delete_Supplier_binding(S_ID){
+    return new Promise((resolve)=>{
+        db.execute(`DELETE FROM Supplier_binding WHERE S_ID = ?`,[S_ID],(err)=>{
+            if(err){
+                console.log(err);
+            }
+            resolve();
         })
     })
 }
