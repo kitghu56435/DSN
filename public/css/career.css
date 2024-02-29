@@ -125,3 +125,30 @@ button {
     border-radius: 4px;
     font-size: large;
 }
+
+@media(max-width: 768px) {
+    .main-image {
+        position: relative;
+        flex: 1;
+        margin: 10px; 
+        flex-direction:initial;
+        width: 100%;
+    }
+    .side-images {
+        position: relative;
+        flex:none;
+        margin: 10px; 
+        flex-direction:column;
+        width: 100%;
+    }
+    .main-image img {
+        width: 100%;
+        display:flex;
+        border-radius: 10px;
+    }
+    .side-images img {
+        width: 100%;
+        display:flex;
+        border-radius: 10px;
+    }
+}
