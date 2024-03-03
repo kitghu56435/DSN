@@ -19,7 +19,7 @@ const supplier = require('./router/supplier');
 
 
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:false,limit:'1000kb'}));
+app.use(express.urlencoded({extended:false,limit:'100m'}));
 app.use(cookieParser(process.env.cookieSecret));
 app.use(setCookie);   //初始化cookie
 app.use(bodyParser.json());

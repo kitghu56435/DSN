@@ -105,6 +105,35 @@ router.post('/index_data',(req,res)=>{
 })
 
 
+router.get('/search',(req,res)=>{
+    let html = readFileSync('./public/html/search.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    res.end(html);
+})
+router.post('/search_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000014';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
+
+
+
 
 router.get('/guideline',(req,res)=>{
     let html = readFileSync('./public/html/guideline.html','utf-8');
@@ -302,7 +331,115 @@ router.post('/application_data',(req,res)=>{
 
 
 
+router.get('/psychology',(req,res)=>{
+    let html = readFileSync('./public/html/psychology.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getPsychology_data();</script>';
+    res.end(html);
+})
+router.post('/psychology_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000010';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
 
+
+
+router.get('/education',(req,res)=>{
+    let html = readFileSync('./public/html/education.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getEducation_data();</script>';
+    res.end(html);
+})
+router.post('/education_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000012';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
+
+router.get('/career',(req,res)=>{
+    let html = readFileSync('./public/html/career.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getCareer_data();</script>';
+    res.end(html);
+})
+router.post('/career_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000011';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
+
+
+
+router.get('/medical',(req,res)=>{
+    let html = readFileSync('./public/html/medical.html','utf-8');
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    html += '<script>getMedical_data();</script>';
+    res.end(html);
+})
+router.post('/medical_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000013';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+        }
+    })
+})
 
 
 module.exports = router;

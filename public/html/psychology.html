@@ -26,17 +26,18 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse"> 
+                <div class="collapse navbar-collapse" id="navbarCollapse">
                 </div>
             </div>
         </nav> 
             <div class="nav-scroller bg-body shadow-sm">
                 <nav class="nav" aria-label="Secondary navigation">
-                  <a class="nav-link T-text"  dsnid="h052" dsnnote="關於我們" href="/static/about_us">關於我們</a>
-                  <a class="nav-link T-text"  dsnid="h053" dsnnote="聯絡資訊" href="/static/about_us#content">聯絡資訊</a>
-                  <a class="nav-link T-text"  dsnid="h054" dsnnote="新手指南" href="/static/guideline">新手指南</a>
-                  <a class="nav-link T-text"  dsnid="h055" dsnnote="常見問題" href="/static/guideline#common_problem">常見問題</a>
-                  <a class="nav-link T-text"  dsnid="h056" dsnnote="申請文件教學" href="#">申請文件教學</a>
+                    <a class="nav-link T-text"  dsnid="h082" dsnnote="資源搜尋" href="/static/search">資源搜尋</a>
+                    <a class="nav-link T-text"  dsnid="h052" dsnnote="關於我們" href="/static/about_us">關於我們</a>
+                    <a class="nav-link T-text"  dsnid="h053" dsnnote="聯絡資訊" href="/static/about_us#content">聯絡資訊</a>
+                    <a class="nav-link T-text"  dsnid="h054" dsnnote="新手指南" href="/static/guideline">新手指南</a>
+                    <a class="nav-link T-text"  dsnid="h055" dsnnote="常見問題" href="/static/guideline#common_problem">常見問題</a>
+                    <a class="nav-link T-text"  dsnid="h056" dsnnote="申請文件教學" href="#">申請文件教學</a>
                 </nav>
             </div>
     </header>
@@ -54,27 +55,28 @@
                   <img src="../img/psychology/p1.jpg" alt="Image 1" />
                   <h2>憂鬱症/抑鬱症</h2>
                   <p>24/7 Support</p>
-                  <a href="#" class="button">查看詳情</a>
+                  <a href="#" class="btn btn-primary">查看詳情</a>
                 </div>
                 <div class="frame">
                   <img src="../img/psychology/p1.jpg" alt="Image 2" />
                   <h2>焦慮症</h2>
                   <p>Flexible and Convenient</p>
-                  <a href="#" class="button">查看詳情</a>
+                  <a href="#" class="btn btn-primary">查看詳情</a>
                 </div>
                 <div class="frame">
                   <img src="../img/psychology/p1.jpg" alt="Image 3" />
                   <h2>創傷後壓力症候群</h2>
                   <p>Connect with Others</p>
-                  <a href="#" class="button">查看詳情</a>
+                  <a href="#" class="btn btn-primary">查看詳情</a>
                 </div>
                 <div class="frame">
                     <img src="../img/psychology/p1.jpg" alt="Image 3" />
                     <h2>躁鬱症</h2>
                     <p>Learn and Grow</p>
-                    <a href="#" class="button">查看詳情</a>
-                  </div>
+                    <a href="#" class="btn btn-primary">查看詳情</a>
+                </div>
             </div>
+            <hr class="featurette-divider container2">  
         </div>
         <div class="footer_div">
             <footer class="py-1">
@@ -113,6 +115,7 @@
                         <h5 class="T-title" dsnid="h073" dsnnote="其他資訊">其他資訊</h5>
                         <ul class="nav flex-column">
                             <li class="nav-item mb-2"><a href="/static/cookie_policy" class="nav-link p-0 text-body-secondary T-text" dsnid="h074" dsnnote="Cookie政策及條款">Cookie政策及條款</a></li>
+                            <li class="nav-item mb-2"><a href="/static/search" class="nav-link p-0 text-body-secondary T-text" dsnid="h083" dsnnote="資源搜尋">資源搜尋</a></li>
                             <li class="nav-item mb-2"><a href="/sign_in" class="nav-link p-0 text-body-secondary T-text" dsnid="h075" dsnnote="管理登入">管理登入</a></li>
                         </ul>
                         </div>
@@ -142,9 +145,10 @@
     </main>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
+    <script src="../js/ajax.js"></script>
     <script>
         header_nav_check();
-        //getHeader_data(); 抓取header語言資料
+        getHeader_data('psychology'); //抓取header語言資料
     </script>
 </body>
 </html>

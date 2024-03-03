@@ -156,6 +156,64 @@ function addID(ID_Type,Now_ID){
 }
 
 
+
+async function RDNextID(table,ID_Name,ID_Type){
+    return new Promise((resolve,reject)=>{
+        db.execute(`SELECT ${ID_Name} FROM ${table};`,(err,results)=>{
+            if(err){
+                console.log(err);
+                reject();
+            }else{
+                if(results.length == 0){
+                    resolve(RDaddID(ID_Type));
+                }else{
+                    resolve(RDaddID(ID_Type,results[results.length - 1][ID_Name]));
+                }
+            }
+        })
+    }).catch(()=>{
+        console.log('dberr');
+    })
+}
+
+function RDaddID(ID_Type,Now_ID){
+    let return_value = '';    
+
+    if(Now_ID == undefined){                  //第一個序號
+        return_value = ID_Type;
+        for(c = 0;c < ((20-ID_Type.length)-1);c++){
+            return_value += '0';
+        }
+        return_value += '1';
+    }else{
+        let ID_Type_length = ID_Type.length;
+        let Now_ID_length = Now_ID.length
+        let Now_Num = '';
+        for(i = ID_Type_length;i<Now_ID_length;i++){       //將數字與字串隔開
+            Now_Num += Now_ID[i];
+        }
+        let New_Num = (Number(Now_Num) + 1);              //獲得數字並加1  
+        let New_Num_str = String(New_Num);      
+        let New_Num_length = New_Num_str.length;
+        
+    
+        if((Now_ID_length-ID_Type_length) < New_Num_length){
+            return 'over-max';
+            
+        }else{
+            return_value += ID_Type;
+            for(j = 0;j < (Now_ID_length-ID_Type_length-New_Num_length);j++){
+                return_value += '0';
+            }
+            return_value += New_Num_str;
+        }
+    }
+    
+
+    return return_value;
+}
+
+
 function setMsgbox(msg){
     if(msg == ''){
         return '';
@@ -255,6 +313,7 @@ function checkData(data){
 module.exports = {
     getClientIP,
     NextID,
+    RDNextID,
     addID,
     create_Sessionid,
     CheckSessionRepeat,

@@ -59,7 +59,7 @@ body{
 
 .cookie_msg{
     position: fixed;
-    z-index: 9999;
+    z-index: 9998;
     top:72%;
     left: 2%;
     width:32vw;
@@ -117,12 +117,215 @@ body{
     cursor: pointer;
 }
 
+.search_blackscreen{
+    position: fixed;
+    z-index: 9999;
+    opacity: 0.4;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #D0D0D0;
+}
+.search_window{
+    position: fixed;
+    z-index: 10000;
+    top:50%;
+    left: 50%;
+
+    transform: translate(-50%,-50%);
+    width:70vw;
+    height:700px;
+    box-shadow: 0px 0px 5px #ADADAD;
+    background-color: #FFFFFF	;
+    border-radius: 10px;
+    padding:1% 2% 2% 2%;
+    font-size: 20px;
+}
+
+.search_window > .title > img{
+    display: inline;
+    float: right;
+    height:30px;
+    width:30px;
+    cursor: pointer;
+}
+.search_window > .title > span{
+    font-size: 1.5em;
+}
+.search_window > .text{
+    padding-top: 1%;
+    padding-bottom: 1%;
+    text-align: center;
+}
+.search_window form{
+    padding-left: 5%;
+    padding-right: 5%;
+    height:85%;
+    overflow-y: scroll;
+    box-shadow: inset 0px 0px 5px #ADADAD;
+    background-color: #FCFCFC	;
+    border-radius: 10px;
+}
+.search_window form img{
+    position: relative;
+    vertical-align: baseline;
+    top:8px;
+    left: -5px;
+    width:30px;
+    height:30px;
+    padding-left: 0;
+    padding-right: 0;
+}
+.search_window .type_title{
+    display: inline-block;
+    font-size: 1.2em;
+    margin-bottom: 1%;
+}
+.search_window .type_des{
+    font-size: 0.9em;
+    color:rgba(33, 37, 41, 0.75);
+}
+.search_window .checkbox-span{
+    white-space: nowrap;
+}
+.search_window .form_section{
+    margin-top: 1.2em;
+    margin-bottom: 1.2em;
+}
+.search_window select{
+   height: auto !important;
+   padding-top: 1.9rem !important;
+   font-size: 1em;
+}
+.search_window .floatingSelect{
+    margin-left:0.5em;
+}
+.search_window  .form_section  label{
+    margin-left: 0.5em;
+    margin-right: 0.7em;
+}
+.search_window  .btn_area{
+    padding-top:1em;
+    padding-bottom: 1em;
+    text-align: center;
+}
+.search_window  .btn_area > button{
+    width:15vh;
+    font-size: 1em;
+}
+
+
+/* <div class="search_blackscreen"></div>
+    <div class="search_window">
+        <div class="title">
+            <img style="float: none;margin-top: -1%;" src="../img/backend/search.png">
+            <span>資源搜尋</span>
+            <img onclick="search_window()" src="../img/X.png">
+        </div>
+        <div class="text">
+            使用資源搜尋功能，快速找到符合您狀況的資源。選擇您想查詢的條件，並滑動至視窗下方點選搜尋按鈕。
+        </div>
+        <form>
+            <div class="form_section">
+                <img src="../img/search/resource.png">
+                <span class="type_title">資源種類</span><br>
+                <span class="type_des">(複選)選擇資源種類，讓我們提供您要的資訊。</span><br>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="economy"><label for="economy">經濟資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="law"><label for="law">法律資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="emergency"><label for="emergency">緊急資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="education"><label for="education">教育資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="career"><label for="career">職涯資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="medical"><label for="medical">醫療資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="psychology"><label for="psychology">心理資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="application"><label for="application">申請文件資訊</label></span>
+            </div>
+            <div class="form_section">
+                <img src="../img/search/member.png">
+                <span class="type_title">申請者身分</span><br>
+                <span class="type_des">(複選)每種身分都有屬於他們的資源。</span><br>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">新住民(子女)</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">原住民</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">中/低收入戶</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">就職青年</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">單親家庭</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">身心障礙(子女)</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">特殊境遇家庭</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">暴力/霸凌受害者</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">懷孕少女</label></span>
+            </div>
+            <div class="form_section">
+                <img src="../img/search/school.png">
+                <span class="type_title">在學狀況</span><br>
+                <span class="type_des">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">國小</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">國中</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">高中</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">大學</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">研究所</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">畢業就學</label></span>
+            </div>
+            <div class="form_section">
+                <img src="../img/search/location.png">
+                <span class="type_title">申請者地區</span>
+                <span class="type_des">有些資源有地區限制。</span><br>
+                <div class="row">
+                    <div class="col form-floating">
+                        <select class="form-select" id="city" onchange="setDistrict()">
+                            <option value="不限縣市">不限縣市</option>
+                            <option value="臺北市">臺北市</option>
+                            <option value="新北市">新北市</option>
+                            <option value="基隆市">基隆市</option>
+                            <option value="新竹市">新竹市</option>
+                            <option value="桃園市">桃園市</option>
+                            <option value="新竹縣">新竹縣</option>
+                            <option value="宜蘭縣">宜蘭縣</option>
+                            <option value="臺中市">臺中市</option>
+                            <option value="苗栗縣">苗栗縣</option>
+                            <option value="彰化縣">彰化縣</option>
+                            <option value="南投縣">南投縣</option>
+                            <option value="雲林縣">雲林縣</option>
+                            <option value="高雄市">高雄市</option>
+                            <option value="臺南市">臺南市</option>
+                            <option value="嘉義市">嘉義市</option>
+                            <option value="嘉義縣">嘉義縣</option>
+                            <option value="屏東縣">屏東縣</option>
+                            <option value="澎湖縣">澎湖縣</option>
+                            <option value="花蓮縣">花蓮縣</option>
+                            <option value="臺東縣">臺東縣</option>
+                            <option value="金門縣">金門縣</option>
+                            <option value="連江縣">連江縣</option>
+                        </select>
+                        <label class="floatingSelect" for="city">申請者戶籍縣市</label>
+                    </div>
+                    
+                    <div class="col form-floating">
+                        <select class="form-select" id="district"><option>不限區</option></select>
+                        <label class="floatingSelect" for="district">申請者戶籍行政區</label>
+                    </div>
+                </div>
+            </div>
+            <div class="btn_area"><button class="btn btn-primary btn-lg">查詢</button></div>
+        </form>
+    </div> */
+
+
+
+
+
+
+
+
 @media (max-width:1600px){
     .cookie_msg{
         top:72%;
         height:170px;
         padding:1% 2% 2% 2%;
         font-size: 16px;
+    }
+    .search_window{
+        height:600px;
+        font-size: 18px;
     }
 }
 
@@ -132,6 +335,14 @@ body{
         height:140px;
         padding:1% 2% 2% 2%;
         font-size: 14px;
+    }
+    .search_window{
+        height:500px;
+        font-size: 14px;
+    }
+    .search_window > .title > img{
+        height:25px;
+        width:25px;
     }
 }
 
@@ -149,6 +360,11 @@ body{
         border-radius: 10px;
         padding:1% 2% 2% 2%;
     }
+    .search_window{
+        height:730px;
+        width:90vw;
+        font-size: 16px;
+    }
 }
 
 @media (max-width:560px){
@@ -163,5 +379,13 @@ body{
         background-color: #CECEFF;
         border-radius: 10px;
         padding:1% 2% 2% 2%;
+    }
+    .search_window{
+        height:700px;
+        width:90vw;
+        font-size: 16px;
+    }
+    .search_window form{
+        height:80%;
     }
 }

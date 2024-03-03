@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox,checkData,NextID,setCookie} = require('../function');
+const {Administrator_verafication,setMsgbox,checkData,NextID,RDNextID} = require('../function');
 const moment = require('moment-timezone');
 
 
@@ -1840,7 +1840,7 @@ async function create_Template(data){
 }
 async function create_Resource(data){
     let R_ID = await NextID('Resources','R_ID','R');
-    let RD_ID = await NextID('Resource_data','RD_ID','RD');
+    let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
     let R_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let R_Name = data.R_Name;
     let T_ID = data.T_ID;
@@ -1905,7 +1905,7 @@ async function update_Resource_data(data){
     })
 }
 async function create_Resource_data(R_ID,L_ID,Template_ID,Content){
-    let RD_ID = await NextID('Resource_data','RD_ID','RD');
+    let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
 
     await delete_Resource_data(R_ID,L_ID,Template_ID,Content);  //先刪除原來的資料
 
@@ -1961,7 +1961,7 @@ async function delete_Resource_data(R_ID,L_ID,Template_ID,Content){
     
 }
 async function update_Resource(data){
-    let RD_ID = await NextID('Resource_data','RD_ID','RD');
+    let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
     let R_ID = data.R_ID;
     let L_ID = data.L_ID;
     let R_Name = data.R_Name;

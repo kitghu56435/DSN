@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
+const {Administrator_verafication,setMsgbox,NextID,checkData,RDNextID} = require('../function');
 const moment = require('moment-timezone');
 
 router.use(Administrator_verafication);
@@ -664,7 +664,7 @@ async function update_Static_data(data){
     })
 }
 async function create_Static_data(SP_ID,L_ID,Template_ID,Content){
-    let RD_ID = await NextID('Resource_data','RD_ID','RD');
+    let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
 
     await delete_Static_data(SP_ID,L_ID,Template_ID,Content);  //先刪除原來的資料
 

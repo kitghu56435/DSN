@@ -1,0 +1,150 @@
+
+.container1{
+    height: 500px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    background-image: url(../img/index/index_poster_1900_1.png);
+    background-size: 100% 100%;
+}
+.title{
+    color:white;
+    font-size: 3em;
+}
+.title2{
+    color: white;
+    font-size: 1.5em;
+}
+.container {
+    margin-top: 0% 2% 2% 2%;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+.bottom-left {
+    position: absolute;
+    text-align: left;
+    top: 37%;
+    left: 15%;
+}
+.data_form{
+    padding-left: 0%;
+    padding-right: 0%;
+}
+.data_form > h2{
+    margin-top:5%;
+    display: inline-block;
+}
+.data_form img{
+    position: relative;
+    vertical-align: baseline;
+    top:2px;
+    left: -5px;
+    width:30px;
+    height:30px;
+}
+.data_form .checkbox-span{
+    white-space: nowrap;
+}
+.search_content{
+    text-align: center;
+    font-size: 20px;
+}
+.search_content > .type_des{
+    display: inline-block;
+    margin-top:0.5%;
+    margin-bottom: 1%;
+    color: rgba(33, 37, 41, 0.75);
+}
+.search_content .form-check-input{
+    margin-left:2%;
+    margin-right:0.5%;
+}
+.search_content select{
+    height: auto !important;
+    padding-top: 1.9rem !important;
+    font-size: 1em;
+ }
+.search_content .floatingSelect{
+    margin-left:0.5em;
+}
+.search_content  .form_section > label{
+    margin-left: 0.2em;
+    margin-right: 0.7em;
+}
+.data_form > .btn_area{
+    padding-top:5%;
+    padding-bottom: 2%;
+    text-align: center;
+}
+.data_form > .btn_area > button{
+    width:10%;
+}
+
+/* 100% 1463px */
+@media(max-width:1600px){  
+    .container1{
+        background-image: url(../img/index/index_poster_1600_1.png);
+    }
+}
+/* 125% 1170px */
+@media(max-width:1280px){ 
+    .container1{
+        background-image: url(../img/index/index_poster_1280_1.png);
+    }
+    .container{
+        padding-left:2%;
+    }
+    .bottom-left {
+        position: absolute;
+        top: 40%;
+        left: 9%;
+    }
+    
+    
+}
+/* 200% 731px */
+@media(max-width:768px){  
+    .container1{
+        background-image: url(../img/index/index_poster_768_1.png);
+    }
+    .data_form > h2{
+        margin-top:10%;
+        display: inline-block;
+    }
+    .container{
+        padding-left: 3%;
+    }
+    .bottom-left{
+        top:72%;
+    }
+    .data_form > .btn_area > button{
+        width:20%;
+    }
+}
+/* 300% 487px */
+@media(max-width:560px){  
+    .title {
+        font-size: 2.5em;
+    }
+    .container1{
+        background-image: url(../img/index/index_poster_560_1.png);
+    }
+    .data_form > h2{
+        margin-top:15%;
+        display: inline-block;
+    }
+    .search_content{
+        font-size: 14px;
+    }
+    .bottom-left{
+        top:60%;
+    }
+    .data_form > .btn_area {
+        padding-top: 15%;
+        padding-bottom: 2%;
+    }
+    .data_form > .btn_area > button{
+        width:40%;
+    }
+}
