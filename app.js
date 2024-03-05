@@ -16,10 +16,12 @@ const resourceInfo = require('./router/resourceInfo');
 const static = require('./router/static');
 const language = require('./router/language');
 const supplier = require('./router/supplier');
+const message = require('./router/message');
+
 
 
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:false,limit:'100m'}));
+app.use(express.urlencoded({extended:false,limit:'300M'}));
 app.use(cookieParser(process.env.cookieSecret));
 app.use(setCookie);   //初始化cookie
 app.use(bodyParser.json());
@@ -41,6 +43,7 @@ app.use('/static',static);
 app.use('/backend/resource',resource);
 app.use('/backend/language',language);
 app.use('/backend/supplier',supplier);
+app.use('/backend/message',message);
 
 
 

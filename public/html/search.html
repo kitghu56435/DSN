@@ -93,13 +93,37 @@
                 <div class="search_content row container2  T-text" dsnid="04">
                     <span class="type_des">有些資源有地區限制。</span><br>
                     <div class="col form-floating">
-                        <select class="form-select" id="floatingSelect1"><option>桃園市</option></select>
-                        <label class="floatingSelect" for="floatingSelect1">申請者戶籍縣市</label>
+                        <select class="form-select" id="city" onchange="setDistrict()">
+                            <option value="不限縣市">不限縣市</option>
+                            <option value="臺北市">臺北市</option>
+                            <option value="新北市">新北市</option>
+                            <option value="基隆市">基隆市</option>
+                            <option value="新竹市">新竹市</option>
+                            <option value="桃園市">桃園市</option>
+                            <option value="新竹縣">新竹縣</option>
+                            <option value="宜蘭縣">宜蘭縣</option>
+                            <option value="臺中市">臺中市</option>
+                            <option value="苗栗縣">苗栗縣</option>
+                            <option value="彰化縣">彰化縣</option>
+                            <option value="南投縣">南投縣</option>
+                            <option value="雲林縣">雲林縣</option>
+                            <option value="高雄市">高雄市</option>
+                            <option value="臺南市">臺南市</option>
+                            <option value="嘉義市">嘉義市</option>
+                            <option value="嘉義縣">嘉義縣</option>
+                            <option value="屏東縣">屏東縣</option>
+                            <option value="澎湖縣">澎湖縣</option>
+                            <option value="花蓮縣">花蓮縣</option>
+                            <option value="臺東縣">臺東縣</option>
+                            <option value="金門縣">金門縣</option>
+                            <option value="連江縣">連江縣</option>
+                        </select>
+                        <label class="floatingSelect" for="city">申請者戶籍縣市</label>
                     </div>
                     
                     <div class="col form-floating">
-                        <select class="form-select" id="floatingSelect2"><option>桃園區</option></select>
-                        <label class="floatingSelect" for="floatingSelect2">申請者戶籍區</label>
+                        <select class="form-select" id="district"><option>不限區</option></select>
+                        <label class="floatingSelect" for="district">申請者戶籍區</label>
                     </div>
                 </div>
                 <div class="btn_area"><button class="btn btn-primary">搜尋</button></div>

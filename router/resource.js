@@ -1681,9 +1681,6 @@ router.get('/template/use',(req,res)=>{
         res.end(html)
     })
 })
-
-
-
 router.post('/template/delete',(req,res)=>{
     let T_ID = req.body.T_ID;
     let T_Number = Number(T_ID.substring(1));
@@ -1760,6 +1757,7 @@ router.post('/template/delete',(req,res)=>{
         res.json({"msg" : "dataerr"});
     }
 })
+
 
 
 

@@ -6,13 +6,14 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>DSN管理後臺-模板名稱</title>
+    <title>DSN管理後臺-資源留言</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../css/back_end/template_r.css" rel="stylesheet">
+    <link href="../../../css/back_end/message_record_r.css" rel="stylesheet">
     <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
     <link href="../../../css/back_end/sidebars2.css" rel="stylesheet">
+    <script src="../../../js/back_end/resource.js"></script>
 </head>
 <body>
     <main class="d-flex flex-nowrap">
@@ -24,10 +25,10 @@
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
                     <img src="../../../img/backend/resource.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
                     資源管理
                     </button>
-                    <div class="collapse show" id="home-collapse">
+                    <div class="collapse" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                         <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
@@ -39,10 +40,10 @@
                 </li>
                 <li class="mb-1">
                     <img src="../../../img/backend/chat.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-collapse" aria-expanded="false">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-collapse" aria-expanded="true">
                     留言管理
                     </button>
-                    <div class="collapse" id="chat-collapse">
+                    <div class="collapse show" id="chat-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="/backend/message" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">留言管理</a></li>
                             <li><a href="/backend/message/record/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源留言</a></li>
@@ -117,10 +118,8 @@
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
         <div class="sidebars2">
-            <a href="">模板標籤</a>
-            <a href="">模板設定</a>
-            <a href="" style="background-color: #7B7B7B;color: white;">使用資源</a>
-            <a href="">刪除模板</a>
+            <a href="/backend/message/record/resource" style="background-color: #7B7B7B;color: white;">資源留言</a>
+            <a href="/backend/message/record/page">頁面留言</a>
         </div>
         <section>
             <div class="container-breadcrumb my-2">
@@ -128,38 +127,35 @@
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
                       <a class="link-body-emphasis" href="#">
-                        <img src="../../../img/backend/resource.png">
+                        <img src="../../../img/backend/chat.png">
                         <span class="visually-hidden fs-4">DSN管理系統</span>
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">留言管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">模板管理</a>
+                        <a id="D_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">資源留言</a>
                     </li>
-                    <li class="breadcrumb-item fs-4">
-                        <a id="T_Name_Bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#">模板1</a>
-                    </li>
-                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
-                      Data
-                    </li> -->
                   </ol>
                 </nav>
             </div>
-            <div class="btn_area">
-                <button>預覽模板</button>
-            </div>
             <div class="content">
                 <p class="lable_area">
-                    <span class="number">套用數量：0</span>
+                    <span>總留言數量：3</span>
                 </p>
-                <div class="r_table">
-                    <div class="table_title">套用資源</div>
-                    <table>
-                        <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>
-                        <!-- <tr><td>中/低收入戶</td><td>經濟資源</td><td><img src="../../../img/backend/language.png"></td></tr> -->
-                    </table>
+                <div class="container_msg">  
+                    <!-- <div class="msg_title"  onclick="show_feedback(0)">
+                        <span style="margin-right: 3%;">經濟資訊-低收入戶</span>
+                        <span>2023年12月12日 12:12:12</span>
+                        <span class="text">使用者回饋部分....</span>
+                        <img src="../../../img/backend/bin.png">
+                    </div>
+                    <div class="msg_text">
+                        <div>
+                            123123123
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </section>
@@ -167,20 +163,29 @@
 </body>
 <script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../../js/back_end/sidebars.js"></script>
-<script src="../../../js/back_end/template.js"></script>
+<script src="../../../js/back_end/message.js"></script>
 <!-- <script>
-    setTemplate_r({
-        "template": {
-            "T_ID" : "T000000001",
-            "T_Name" : "模板一"
-        },
-        "resource" : [
+    setMessage_record_r({
+        "feedback":[
             {
-                "R_ID" : "R000000001",
-                "R_Name" : "資源名稱",
                 "D_Name" : "需求名稱",
+                "R_Name" : "資源名稱",
+                "RF_ID" : "RD00000001",
+                "RF_Content" : "內容內容內容內容內容內容內容內容內容內容",
+                "RF_Date" : "2023年12月12日 12:12:12"
+            },{
+                "D_Name" : "需求名稱",
+                "R_Name" : "資源名稱",
+                "RF_ID" : "RD00000002",
+                "RF_Content" : "內容內容內容內容內容內容內容內容內容內容",
+                "RF_Date" : "2023年12月12日 12:12:12"
+            },{
+                "D_Name" : "需求名稱",
+                "R_Name" : "資源名稱",
+                "RF_ID" : "RD00000003",
+                "RF_Content" : "內容內容內容內容內容內容內容內容內容內容",
+                "RF_Date" : "2023年12月12日 12:12:12"
             }
-        ]
-    })
+        ]})
 </script> -->
 </html>

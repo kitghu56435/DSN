@@ -7,11 +7,11 @@
     background-image: url(../img/index/index_poster_1900_1.png);
     background-size: 100% 100%;
 }
-.title{
+.bottom-left > .title{
     color:white;
     font-size: 3em;
 }
-.title2{
+.bottom-left > .title2{
     color: white;
     font-size: 1.5em;
 }
@@ -124,7 +124,7 @@
 }
 /* 300% 487px */
 @media(max-width:560px){  
-    .title {
+    .bottom-left > .title {
         font-size: 2.5em;
     }
     .container1{

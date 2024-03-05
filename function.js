@@ -308,6 +308,43 @@ function checkData(data){
 }
 
 
+function EOM(year,month){   //月底日期產生函數
+    let day = 0;
+
+    if(year%4 == 0 && month == 2){
+        day = 29;
+    }else{
+        switch(month){
+            case 1 : day = 31;
+            case 2 : day = 28;
+            case 3 : day = 31;
+            case 4 : day = 30;
+            case 5 : day = 31;
+            case 6 : day = 30;
+            case 7 : day = 31;
+            case 8 : day = 31;
+            case 9 : day = 30;
+            case 10 : day = 31;
+            case 11 : day = 30;
+            case 12 : day = 31;
+        }
+    }
+
+    if(month < 10){
+        month = '0' + month;
+    }
+    return `${year}-${month}-${day} 23:59:59`;
+}
+function SOM(year,month){    //月初日期產生函數
+    if(month < 10){
+        month = '0' + month;
+    }
+    return `${year}-${month}-01 00:00:00`;
+}
+function Proportion(all,n){  //回傳百分比(%)
+    return Math.round((n/all)*100)
+}
+
 
 
 module.exports = {
@@ -323,5 +360,8 @@ module.exports = {
     find,
     find_Count,
     checkData,
-    setCookie
+    setCookie,
+    EOM,
+    SOM,
+    Proportion
 }

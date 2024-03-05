@@ -226,6 +226,10 @@ function setLanguage(L_ID,Page){
                     case "law" : getLaw_data();
                     case "emergency" : getEmergency_data();
                     case "application" : getApplication_data();
+                    case "psychology" : getPsychology_data();
+                    case "career" : getCareer_data();
+                    case "education" : getEducation_data();
+                    case "medical" : getMedical_data();
                 }
             }
         }
