@@ -1,6 +1,14 @@
 var sha = require('sha256');
 const db = require('./db');
 
+let Required_Resource = {  //強制資源清單
+    "A4" : ['R000000002'],   //中/低收入戶
+    "A7" : ['身心障礙者資源1','身心障礙者資源2'],   //身心障礙者
+    "A8" : ['身心障礙子女1','身心障礙子女2'],   //身心障礙子女
+    "A9" : ['特殊境遇家1','特殊境遇家2'],   //特殊境遇家
+    "B1" : ['暴力/霸凌受害者1','暴力/霸凌受害者2'],   //暴力/霸凌受害者
+    "B2" : ['懷孕少女1','懷孕少女2']    //懷孕少女
+}
 
 const Administrator_verafication = (req,res,next) => {
     
@@ -233,8 +241,8 @@ function find(str,content){    //簡單文字爬蟲 回傳布林值
         if(founded){
             break;
         }else{
-            for(j = 0;j<str.length;j++){
-                if(content[k+j] == str[j]){
+            for(p = 0;p<str.length;p++){
+                if(content[k+p] == str[p]){
                     count++;
                     if(count == match_num){
                         founded = true;   
@@ -347,6 +355,10 @@ function Proportion(all,n){  //回傳百分比(%)
 
 
 
+
+
+
+
 module.exports = {
     getClientIP,
     NextID,
@@ -363,5 +375,6 @@ module.exports = {
     setCookie,
     EOM,
     SOM,
-    Proportion
+    Proportion,
+    Required_Resource
 }

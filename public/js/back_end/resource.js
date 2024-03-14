@@ -540,17 +540,19 @@ function setResource_feedback(data){
     let R_Name_bar = document.getElementById('R_Name_bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
-    sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-    sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
-    sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
-    sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
-    D_Name_bar.innerHTML = data.resource.D_Name;
-    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
-    R_Name_bar.innerHTML = data.resource.R_Name;
-    R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+    if(data.resource.D_ID != undefined){
+        sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+        sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
+        sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
+        sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+        D_Name_bar.innerHTML = data.resource.D_Name;
+        D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
+        R_Name_bar.innerHTML = data.resource.R_Name;
+        R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+    }
     let str = '';
-    
-
+    console.log(data)
+    content.innerHTML = '';
     if(data == undefined){
         content.innerHTML += `
         <p class="lable_area">
@@ -571,7 +573,7 @@ function setResource_feedback(data){
                 <div class="msg_title"  onclick="show_feedback(${i})">
                     <span>${data.feedback[i].RF_Date}</span>
                     <span class="text">${data.feedback[i].RF_Content.substring(0,6)}....</span>
-                    <img src="../../../img/backend/bin.png">
+                    <img onclick="handleChildClick(event),msgbox(2,'即將刪除${data.feedback[i].RF_ID}此留言','deleteRecordMessage(` + '`' + data.feedback[i].RF_ID + '`' + `,` + '`resource_feedback`' + `,` + '`' + data.resource.R_ID + '`' + `)')" src="../../../img/backend/bin.png">
                 </div>
                 <div class="msg_text">
                     <div>
@@ -583,6 +585,38 @@ function setResource_feedback(data){
 
         content.innerHTML = str;
     }
+}
+
+function deleteRecordMessage(RF_ID,page,R_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                
+                msgbox();
+                if(jsonResponse.msgbox == 'dberr'){
+                    msgbox(1,'資料庫錯誤');
+                }else if(jsonResponse.msgbox == 'nodata'){
+                    msgbox(1,'查無留言資料');
+                }else{
+                    if(jsonResponse.page == 'resource_feedback'){
+                        
+                        setResource_feedback(jsonResponse);
+                    }else{
+                        msgbox(1,'參數錯誤');
+                    }
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/message/record/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('RF_ID=' + RF_ID + '&page=' + page + '&R_ID=' + R_ID);
 }
 
 

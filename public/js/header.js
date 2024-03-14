@@ -218,18 +218,18 @@ function setLanguage(L_ID,Page){
             }else{
                 getHeader_data(Page);
                 switch(Page){
-                    case "index" : getIndex_data();
-                    case "guideline" : getGuideline_data();
-                    case "about_us" : getAbout_us_data();
-                    case "cookie_policy" : getCookie_policy_data();
-                    case "economy" : getEconomy_data();
-                    case "law" : getLaw_data();
-                    case "emergency" : getEmergency_data();
-                    case "application" : getApplication_data();
-                    case "psychology" : getPsychology_data();
-                    case "career" : getCareer_data();
-                    case "education" : getEducation_data();
-                    case "medical" : getMedical_data();
+                    case "index" : getIndex_data(); break;
+                    case "guideline" : getGuideline_data(); break;
+                    case "about_us" : getAbout_us_data(); break;
+                    case "cookie_policy" : getCookie_policy_data(); break;
+                    case "economy" : getEconomy_data(); break;
+                    case "law" : getLaw_data(); break;
+                    case "emergency" : getEmergency_data(); break;
+                    case "application" : getApplication_data(); break;
+                    case "psychology" : getPsychology_data(); break;
+                    case "career" : getCareer_data(); break;
+                    case "education" : getEducation_data(); break;
+                    case "medical" : getMedical_data(); break;
                 }
             }
         }
@@ -242,6 +242,27 @@ function setLanguage(L_ID,Page){
 
 /*--------------- search_window ------------------*/ 
 
+function check_search_data(){
+    let demand = document.getElementsByName('demand');
+    let aa = document.getElementById('aa');
+    let data_form = document.getElementById('data_form');
+    let checked = false;
+    for(i = 0;i < demand.length;i++){
+        if(demand[i].checked){
+            checked = true
+            break;
+        }        
+    }
+    
+    if(checked){
+        data_form.submit();
+    }else{
+        aa.click();
+        alert('請至少選一種資源種類');
+        
+    }
+}
+
 function setDistrict(){
     let city = document.getElementById('city').value;
     let district = document.getElementById('district');
@@ -249,29 +270,29 @@ function setDistrict(){
     district.innerHTML = '';
 
     let cityDistrictsMap = {
-        '不限縣市' : ['不限區'],
-        '臺北市': ['中正區', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
-        '新北市': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
-        '桃園市': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
-        '台中市': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
-        '台南市': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
-        '高雄市': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '左營區', '楠梓區', '小港區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
-        '基隆市': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
-        '新竹市': ['東區', '北區', '香山區'],
-        '新竹縣': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
-        '苗栗縣': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
-        '彰化縣': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
-        '南投縣': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
-        '雲林縣': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
-        '嘉義市': ['東區', '西區'],
-        '嘉義縣': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
-        '屏東縣': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
-        '宜蘭縣': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
-        '花蓮縣': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
-        '台東縣': ['台東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉','東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
-        '澎湖縣': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
-        '金門縣': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
-        '連江縣': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
+        'A0' : ['不限區'],  
+        'A1': ['中正區', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
+        'A2': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
+        'A3': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
+        'A4': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
+        'A5': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
+        'A6': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '左營區', '楠梓區', '小港區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
+        'A7': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
+        'A8': ['東區', '北區', '香山區'],
+        'A9': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
+        'B1': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
+        'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
+        'B3': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
+        'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
+        'B5': ['東區', '西區'],
+        'B6': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
+        'B7': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
+        'B8': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
+        'B9': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
+        'C1': ['台東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉','東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
+        'C2': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
+        'C3': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
+        'C4': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
     };
 
     cityDistrictsMap[city].forEach(function(value) {
@@ -282,6 +303,17 @@ function setDistrict(){
     });
 }
 
+function SchoolCheck(n){
+    let school_check = document.getElementsByClassName('school_check');
+    
+    if(school_check[n].checked){
+        for(i = 0;i < school_check.length;i++){
+            school_check[i].checked = false;
+        }
+        school_check[n].checked = true;
+    }
+    
+}
 
 function search_window(){
     let search_window = document.getElementsByClassName('search_window')[0];
@@ -324,12 +356,14 @@ function search_window(){
                 <img src="../img/search/member.png">
                 <span class="type_title">申請者身分</span><br>
                 <span class="type_des">(複選)每種身分都有屬於他們的資源。</span><br>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">新住民(子女)</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">新住民</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">新住民子女</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">原住民</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">中/低收入戶</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">就職青年</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">單親家庭</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">身心障礙(子女)</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">身心障礙</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">身心障礙子女</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">特殊境遇家庭</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">暴力/霸凌受害者</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">懷孕少女</label></span>
@@ -338,9 +372,11 @@ function search_window(){
                 <img src="../img/search/school.png">
                 <span class="type_title">在學狀況</span><br>
                 <span class="type_des">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">未就學</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">國小</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">國中</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">高中</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">五專</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">大學</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">研究所</label></span>
                 <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">畢業就學</label></span>

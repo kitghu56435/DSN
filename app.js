@@ -17,7 +17,7 @@ const static = require('./router/static');
 const language = require('./router/language');
 const supplier = require('./router/supplier');
 const message = require('./router/message');
-
+const search = require('./router/search');
 
 
 app.use(express.static('public'));
@@ -44,6 +44,7 @@ app.use('/backend/resource',resource);
 app.use('/backend/language',language);
 app.use('/backend/supplier',supplier);
 app.use('/backend/message',message);
+app.use('/search',search);
 
 
 

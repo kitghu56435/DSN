@@ -137,6 +137,10 @@
     .search_content{
         font-size: 14px;
     }
+    .search_content > .type_des{
+        margin-top:2%;
+        margin-bottom: 4%;
+    }
     .bottom-left{
         top:60%;
     }

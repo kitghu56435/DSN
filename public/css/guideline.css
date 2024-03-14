@@ -45,9 +45,22 @@
   text-align: left;
 }
 .flow_pic > p{
-  margin-top: 3%;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 
+}
+.flow_pic h1{
+  margin-bottom: 3%;
+}
+.flow_pic h3{
+  margin-top: 5%;
+  margin-bottom: 1%;
+}
+.flow_pic h3 img{
+  position: relative;
+  top:-4px;
+  margin-right:2%;
+  width:40px;
+  height:40px;
 }
 
 .welcome_to_use {
@@ -97,6 +110,7 @@
   overflow: hidden;
   transition: 0.3s;
 }
+
 
 
 

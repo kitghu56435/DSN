@@ -51,7 +51,7 @@ function setMessage_record_r(data){
     let content = document.getElementsByClassName('content')[0];
     let str = '';
     
-
+    content.innerHTML = '';
     if(data == undefined){
         content.innerHTML += `
         <p class="lable_area">
@@ -73,7 +73,7 @@ function setMessage_record_r(data){
                     <span style="margin-right: 3%;">${data.feedback[i].D_Name}-${data.feedback[i].R_Name}</span>
                     <span>${data.feedback[i].RF_Date}</span>
                     <span class="text">${data.feedback[i].RF_Content.substring(0,6)}....</span>
-                    <img src="../../../img/backend/bin.png">
+                    <img onclick="handleChildClick(event),msgbox(2,'即將刪除${data.feedback[i].RF_ID}此留言','deleteRecordMessage(` + '`' + data.feedback[i].RF_ID + '`' + `,` + '`resource`' + `)')" src="../../../img/backend/bin.png">
                 </div>
                 <div class="msg_text">
                     <div>
@@ -93,21 +93,21 @@ function setMessage_record_p(data){
     let content = document.getElementsByClassName('content')[0];
     let str = '';
     
-
+    content.innerHTML = '';
     if(data == undefined){
         content.innerHTML += `
         <p class="lable_area">
-        <span>留言數量：0</span>
+        <span>頁面留言數量：0</span>
         </p>`;
     }else if(data.feedback.length == 0){
         content.innerHTML += `
         <p class="lable_area">
-        <span>留言數量：0</span>
+        <span>頁面留言數量：0</span>
         </p>`;
     }else{
         str += `
         <p class="lable_area">
-        <span>留言數量：${data.feedback.length}</span>
+        <span>頁面留言數量：${data.feedback.length}</span>
         </p>`;
         for(i = 0;i < data.feedback.length;i++){
             str += `<div class="container_msg">
@@ -115,7 +115,7 @@ function setMessage_record_p(data){
                     <span style="margin-right:3%">頁面留言</span>
                     <span>${data.feedback[i].RF_Date}</span>
                     <span class="text">${data.feedback[i].RF_Content.substring(0,6)}....</span>
-                    <img src="../../../img/backend/bin.png">
+                    <img onclick="handleChildClick(event),msgbox(2,'即將刪除${data.feedback[i].RF_ID}此留言','deleteRecordMessage(` + '`' + data.feedback[i].RF_ID + '`' + `,` + '`page`' + `)')" src="../../../img/backend/bin.png">
                 </div>
                 <div class="msg_text">
                     <div>
@@ -128,3 +128,42 @@ function setMessage_record_p(data){
         content.innerHTML = str;
     }
 }
+
+
+function deleteRecordMessage(RF_ID,page){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                
+                msgbox();
+                if(jsonResponse.msgbox == 'dberr'){
+                    msgbox(1,'資料庫錯誤');
+                }else if(jsonResponse.msgbox == 'nodata'){
+                    msgbox(1,'查無留言資料');
+                }else{
+                    if(jsonResponse.page == 'resource'){
+                        setMessage_record_r(jsonResponse);
+                    }else if(jsonResponse.page == 'page'){
+                        setMessage_record_p(jsonResponse);
+                    }else{
+                        msgbox(1,'參數錯誤');
+                    }
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/message/record/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('RF_ID=' + RF_ID + '&page=' + page);
+}
+
+
+function handleChildClick(event) {
+    event.stopPropagation();
+} 

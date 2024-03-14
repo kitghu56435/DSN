@@ -1,9 +1,12 @@
 .title_area{
     margin-top:2%;
-    margin-bottom: 2%;
+    margin-bottom: 1%;
     text-align: center;
 }
-h1 > img{
+h2{
+    margin-top:4%;
+}
+h2 > img{
     margin-right: 1%;
     width:30px;
     height:30px;
@@ -49,17 +52,26 @@ h4 > img{
     padding-bottom: 2%;
 }
 .data_resource > .r_box{
-    display: inline-block;
-    width:19%;
+    display: inline-flex;
+    width:49%;
     height:220px;
     margin-top:1%;
+    overflow: hidden;
 }
 .data_resource > .r_box > .r_box_img{
-    height: 100%;
-    width:100%;
+    width:200px;
+    height:200px
 }
 .data_resource > .r_box > .r_box_text{
+    width:70%;
     padding:2%;
+}
+.data_resource > .r_box > .r_box_text > span{
+    padding:1.5%;
+    border: 1px 	#0080FF solid;
+    color: 	#0080FF;
+    border-radius: 10px;
+    margin-right:1%;
 }
 .again_button{
     padding-top:2%;
@@ -94,7 +106,7 @@ h4 > img{
     }
     .data_resource > .r_box{
         height:200px;
-        width:32.5%
+        width:100%
     }
     .data_resource {
         padding-top: 5%;
@@ -106,7 +118,7 @@ h4 > img{
 }
 
 @media(max-width:560px){  
-    h1 > img {
+    h2 > img {
         position: relative;
         top:2px;
         margin-right: 1%;
@@ -127,9 +139,15 @@ h4 > img{
         width: 60px;
         height: 60px;
     }
+    .data_resource > .r_box > .r_box_img{
+        width:200px;
+        height:200px;
+        margin:auto;
+    }
     .data_resource > .r_box {
-        height: 170px;
-        width: 48.5%;
+        height: auto;
+        width: 100%;
+        flex-direction: column;
     }
     .again_button > button{
         width:45%;
