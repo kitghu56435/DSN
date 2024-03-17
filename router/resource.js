@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox,checkData,NextID,RDNextID} = require('../function');
+const {Administrator_verafication,setMsgbox,checkData,NextID,RDNextID,addID} = require('../function');
 const moment = require('moment-timezone');
 
 
@@ -693,6 +693,8 @@ router.post('/demand/setting/data',(req,res)=>{
         "T_ID" : "",
         "D_Name" : "",
         "D_ID" : "",
+        "R_Depiction" : "",
+        "R_Img" : "",
         "T_List" : [],
         "D_List" : [],
         "S_List" : [],
@@ -700,7 +702,7 @@ router.post('/demand/setting/data',(req,res)=>{
     }
 
     
-    db.execute(`SELECT Resources.D_ID,D_Name,T_ID FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
+    db.execute(`SELECT Resources.D_ID,D_Name,T_ID,R_Img FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
     AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -709,15 +711,20 @@ router.post('/demand/setting/data',(req,res)=>{
             data.D_Name = results[0].D_Name;
             data.T_ID = results[0].T_ID;
             data.D_ID = results[0].D_ID;
+            data.R_Img = results[0].R_Img;
         }
     })
-    db.execute(`SELECT RD_Content R_Name FROM Resource_data WHERE R_ID = ? AND L_ID = ? AND RD_Type = 2;`,[R_ID,L_ID],(err,results)=>{
+    db.execute(`SELECT RD_Content R_Name,RD_Type FROM Resource_data WHERE R_ID = ? AND L_ID = ? AND ( RD_Type = 3 OR RD_Type = 2) ORDER BY RD_Type;`,[R_ID,L_ID],(err,results)=>{
         if(err){
             console.log(err);
             data.msgbox += '資料庫錯誤<br>';
         }else{
-            if(results.length != 0){
-                data.R_Name = results[0].R_Name;
+            for(i = 0; i < results.length;i++){
+                if(results[i].RD_Type == 2){
+                    data.R_Name = results[0].R_Name;
+                }else if(results[i].RD_Type == 3){
+                    data.R_Depiction = results[1].R_Name;  //這個其實是資源敘述
+                }
             }
         }
     })
@@ -767,7 +774,7 @@ router.post('/demand/setting/data',(req,res)=>{
             data.msgbox += '資料庫錯誤<br>';
         }else{
             for(i = 0;i<results.length;i++){
-                if(results[i].SB_ID != null && results[i].SB_ID != 'null'){
+                if(results[i].SB_ID == null || results[i].SB_ID == 'null'){
                     data.S_List.push({
                         "S_Name" : results[i].S_Name,
                         "S_ID" : results[i].S_ID,
@@ -783,7 +790,6 @@ router.post('/demand/setting/data',(req,res)=>{
                 
             }
         }
-
         res.json(data)
     })
 })
@@ -791,8 +797,10 @@ router.post('/demand/setting/save',(req,res)=>{
     let R_ID = req.body.R_ID;
     let L_ID = req.body.L_ID;
     let R_Name = req.body.R_Name;
+    let R_Img = req.body.R_Img;
+
     
-    if(checkData(R_ID) && checkData(L_ID) && checkData(R_Name)){
+    if(checkData(R_ID) && checkData(L_ID) && checkData(R_Name) && checkData(R_Img)){
         db.execute(`SELECT L_ID FROM Languages WHERE L_ID = ?;`,[L_ID],(err,results)=>{  //確認是否有此語言續號
             if(err){
                 console.log(err);
@@ -820,6 +828,86 @@ router.post('/demand/setting/save',(req,res)=>{
         res.json({"msg" : "dataerr"})
     }
 })
+
+
+
+
+router.get('/demand/search',(req,res)=>{
+    let html = readFileSync('./public/html/back_end/edit/resource_search.html','utf-8');
+    let R_ID = req.query.R_ID;
+
+   
+
+    html += `
+    <script>
+    getResource_search('${R_ID}');
+    </script>`
+    res.end(html);
+})
+router.post('/demand/search/data',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    let data = {
+        "R_Name" : "",
+        "D_Name" : "",
+        "D_ID" : "",
+        "R_ID" : R_ID,
+        "R_Identity" : [],
+        "R_School" : [],
+        "R_City" : [],
+        "msgbox" : ""
+    }
+
+    
+    db.execute(`SELECT Resources.D_ID,D_Name,R_City,R_School,R_Identity FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
+    AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            data.msgbox += '資料庫錯誤<br>';
+        }else{
+            data.D_Name = results[0].D_Name;
+            data.D_ID = results[0].D_ID;
+
+            data.R_Identity = setCode_to_Array(results[0].R_Identity);
+            data.R_School = setCode_to_Array(results[0].R_School);
+            data.R_City = setCode_to_Array(results[0].R_City);
+        }
+    })
+    db.execute(`SELECT RD_Content R_Name,RD_Type FROM Resource_data WHERE R_ID = ? AND L_ID = 'L000000001' AND RD_Type = 2;`,[R_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            data.msgbox += '資料庫錯誤<br>';
+        }else{
+            data.R_Name = results[0].R_Name;
+        }
+
+        res.json(data)
+    })
+})
+router.post('/demand/search/save',(req,res)=>{ 
+    let R_ID = req.body.R_ID;
+    console.log(req.body);
+    
+    
+    db.execute(`SELECT T_ID FROM Resources WHERE R_ID = ? AND R_Delete = 0;`,[R_ID],(err,results)=>{  //確認是否有此資源
+        if(err){
+            console.log(err);
+            res.json({"msg" : "dberr"});
+        }else if(results.length == 0){
+            res.json({"msg" : "nodata"});
+        }else{
+            new Promise((resolve,reject)=>{
+                resolve(update_Resource_search(req.body));
+            }).then((result)=>{
+                res.json({"msg" : "success"})
+            })
+        }
+    })            
+          
+        
+    
+})
+
+
 
 
 router.get('/demand/feedback',(req,res)=>{
@@ -1104,7 +1192,7 @@ router.get('/add_r',(req,res)=>{
             }
         }
     })
-    db.execute(`SELECT * FROM Demand;`,(err,results)=>{
+    db.execute(`SELECT * FROM Demand WHERE L_ID = 'L000000001';`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -1144,7 +1232,7 @@ router.get('/add_r',(req,res)=>{
     
 })
 router.post('/add_r/data',(req,res)=>{
-    if(checkData(req.body.R_Name) && checkData(req.body.T_ID) && checkData(req.body.D_ID)){
+    if(checkData(req.body.R_Name) && checkData(req.body.T_ID) && checkData(req.body.D_ID)  && checkData(req.body.R_Img) && checkData(req.body.R_Depiction)){
         new Promise((resolve,reject)=>{
             resolve(create_Resource(req.body));
         }).then(()=>{
@@ -1838,12 +1926,15 @@ async function create_Template(data){
 }
 async function create_Resource(data){
     let R_ID = await NextID('Resources','R_ID','R');
-    let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
+    let RD_ID1 = await RDNextID('Resource_data','RD_ID','RD');  //給資源名稱的
+    let RD_ID2 = addID('RD',RD_ID1)                             //給資源敘述的
     let R_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let R_Name = data.R_Name;
     let T_ID = data.T_ID;
     let D_ID = data.D_ID;
     let S_ID = data.S_ID;
+    let R_Depiction = data.R_Depiction;
+    let R_Img = data.R_Img;
 
     if(checkData(S_ID)){
         if(typeof S_ID == 'object'){
@@ -1857,16 +1948,23 @@ async function create_Resource(data){
 
    
     return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,0,0);`,
-        [R_ID,D_ID,T_ID,R_Date,R_Date],(err)=>{
+        db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,null,null,null,null,0);`,
+        [R_ID,D_ID,T_ID,R_Date,R_Date,R_Img],(err)=>{
             if(err){
                 console.log(err)
                 reject();
             }else{
                 db.execute(`INSERT INTO Resource_data VALUES(?,?,'L000000001',null,2,?);`,
-                [RD_ID,R_ID,R_Name],(err)=>{
+                [RD_ID1,R_ID,R_Name],(err)=>{
                     if(err){
-                        console.log(err)
+                        console.log(err);
+                        reject();
+                    }
+                })
+                db.execute(`INSERT INTO Resource_data VALUES(?,?,'L000000001',null,3,?);`,
+                [RD_ID2,R_ID,R_Depiction],(err)=>{
+                    if(err){
+                        console.log(err);
                         reject();
                     }else{
                         resolve();
@@ -1966,6 +2064,10 @@ async function update_Resource(data){
     let T_ID = data.T_ID;
     let D_ID = data.D_ID;
     let S_ID = data.S_ID;
+    let R_Img = data.R_Img;
+    let R_Depiction = data.R_Depiction;
+
+    
 
     
     await delete_Supplier_binding(R_ID);  //刪除供應商綁定
@@ -1979,10 +2081,26 @@ async function update_Resource(data){
 
     return new Promise((resolve)=>{
         //資源需求與模板
-        db.execute(`UPDATE Resources SET T_ID = ?,D_ID = ? WHERE R_ID = ?`,[T_ID,D_ID,R_ID],(err)=>{
+        db.execute(`UPDATE Resources SET T_ID = ?,D_ID = ?,R_Img = ? WHERE R_ID = ?`,[T_ID,D_ID,R_Img,R_ID],(err)=>{
             if(err){
                 console.log(err)
                 rejects();
+            }
+        })
+        //資源敘述
+        db.execute(`UPDATE Resource_data SET RD_Content = ? WHERE R_ID = ? AND L_ID = ? AND RD_Type = 3`,[R_Depiction,R_ID,L_ID],(err,results)=>{
+            if(err){
+                console.log(err)
+                rejects();
+            }else{
+                if(results.affectedRows == 0){
+                    db.execute(`INSERT INTO Resource_data VALUES(?,?,?,null,3,?);`,[RD_ID,R_ID,L_ID,R_Depiction],(err)=>{
+                        if(err){
+                            console.log(err)
+                            rejects();
+                        }
+                    })
+                }
             }
         })
         //資源名稱
@@ -2007,6 +2125,27 @@ async function update_Resource(data){
         })
     })
 }
+async function update_Resource_search(data){
+    let R_ID = data.R_ID;
+    let R_Identity_code = setArray_to_Code(data.R_Identity);
+    let R_School_code = setArray_to_Code(data.R_School);
+    let R_City_code = setArray_to_Code(data.R_City);
+
+
+
+
+    return new Promise((resolve,rejects)=>{
+        //資源需求與模板
+        db.execute(`UPDATE Resources SET R_Identity = ?,R_School = ?,R_City = ? WHERE R_ID = ?`,[R_Identity_code,R_School_code,R_City_code,R_ID],(err)=>{
+            if(err){
+                console.log(err)
+                rejects();
+            }else{
+                resolve()
+            }
+        })
+    })
+}
 async function delete_Supplier_binding(R_ID){
     return new Promise((resolve)=>{
         db.execute(`DELETE FROM Supplier_binding WHERE R_ID = ?`,[R_ID],(err)=>{
@@ -2023,7 +2162,43 @@ async function delete_Supplier_binding(R_ID){
 
 
 
+function setCode_to_Array(code){
+    let str = '';
+    let array = [];
 
+    if(code == undefined || code == null || code == 'null'){
+        return '';
+    }else{
+        for(m = 0;m < code.length;m++){
+            str += code[m];
+            if(m%2 == 1){
+                array.push(str);
+                str = '';
+            }
+        }
+
+        return array;
+    }
+}
+function setArray_to_Code(array){
+    let str = '';
+    let all = false
+    
+
+    for(m = 0;m < array.length;m++){
+        if(array[m] == 'A0'){
+            all = true
+            break;
+        }
+        str += array[m];
+    }
+
+    if(all){
+        return 'A0';
+    }else{
+        return str;
+    }
+}
 function isBase64(str){
     try {
         if(str.substring(0,10) == 'data:image'){

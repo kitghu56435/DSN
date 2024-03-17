@@ -291,7 +291,7 @@ router.post('/resource/data',(req,res)=>{
             data.msgbox += '資料庫錯誤<br>';
         }else{
             for(i = 0;i<results.length;i++){
-                if(results[i].SB_ID != null && results[i].SB_ID != 'null'){
+                if(results[i].SB_ID == null || results[i].SB_ID == 'null'){
                     data.R_List.push({
                         "D_Name" : results[i].D_Name,
                         "R_ID" : results[i].R_ID,

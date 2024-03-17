@@ -338,48 +338,47 @@ function search_window(){
         <div class="text">
             使用資源搜尋功能，快速找到符合您狀況的資源。選擇您想查詢的條件，並滑動至視窗下方點選搜尋按鈕。
         </div>
-        <form>
+        <form class="data_form" id="data_form" method="post" action="/static/search_results">
             <div class="form_section">
                 <img src="../img/search/resource.png">
                 <span class="type_title">資源種類</span><br>
-                <span class="type_des">(複選)選擇資源種類，讓我們提供您要的資訊。</span><br>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="economy"><label for="economy">經濟資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="law"><label for="law">法律資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="emergency"><label for="emergency">緊急資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="education"><label for="education">教育資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="career"><label for="career">職涯資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="medical"><label for="medical">醫療資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="psychology"><label for="psychology">心理資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="application"><label for="application">申請文件資訊</label></span>
+                <span class="type_des">(必填)請至少選擇一種資源種類，讓我們提供您要的資訊。</span><br>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy">經濟資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law">法律資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A3" id="emergency"><label for="emergency">緊急資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A4" id="education"><label for="education">教育資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A5" id="career"><label for="career">職涯資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A6" id="medical"><label for="medical">醫療資訊</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology">心理資訊</label></span>
             </div>
             <div class="form_section">
                 <img src="../img/search/member.png">
                 <span class="type_title">申請者身分</span><br>
                 <span class="type_des">(複選)每種身分都有屬於他們的資源。</span><br>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">新住民</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">新住民子女</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">原住民</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">中/低收入戶</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">就職青年</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">單親家庭</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">身心障礙</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">身心障礙子女</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">特殊境遇家庭</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">暴力/霸凌受害者</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id=""><label for="">懷孕少女</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">新住民</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">新住民子女</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">原住民</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">中/低收入戶</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A5" id="identity5"><label for="identity5">就職青年</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A6" id="identity6"><label for="identity6">單親家庭</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A7" id="identity7"><label for="identity7">身心障礙</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A8" id="identity8"><label for="identity8">身心障礙子女</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A9" id="identity9"><label for="identity9">特殊境遇家庭</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B1" id="identity10"><label for="identity10">暴力/霸凌受害者</label></span>
+                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B2" id="identity11"><label for="identity11">懷孕少女</label></span>
             </div>
             <div class="form_section">
                 <img src="../img/search/school.png">
                 <span class="type_title">在學狀況</span><br>
                 <span class="type_des">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">未就學</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">國小</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">國中</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">高中</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">五專</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">大學</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">研究所</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" id="" ><label for="">畢業就學</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1">未就學</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2">國小</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A3" id="school3" onclick="SchoolCheck(2)"><label for="school3">國中</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A4" id="school4" onclick="SchoolCheck(3)"><label for="school4">高中</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A5" id="school5" onclick="SchoolCheck(4)"><label for="school5">五專</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A6" id="school6" onclick="SchoolCheck(5)"><label for="school6">大學</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A7" id="school7" onclick="SchoolCheck(6)"><label for="school7">研究所</label></span>
+                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8">畢業就學</label></span>
             </div>
             <div class="form_section">
                 <img src="../img/search/location.png">
@@ -387,41 +386,44 @@ function search_window(){
                 <span class="type_des">有些資源有地區限制。</span><br>
                 <div class="row">
                     <div class="col form-floating">
-                        <select class="form-select" id="city" onchange="setDistrict()">
-                            <option value="不限縣市">不限縣市</option>
-                            <option value="臺北市">臺北市</option>
-                            <option value="新北市">新北市</option>
-                            <option value="基隆市">基隆市</option>
-                            <option value="新竹市">新竹市</option>
-                            <option value="桃園市">桃園市</option>
-                            <option value="新竹縣">新竹縣</option>
-                            <option value="宜蘭縣">宜蘭縣</option>
-                            <option value="臺中市">臺中市</option>
-                            <option value="苗栗縣">苗栗縣</option>
-                            <option value="彰化縣">彰化縣</option>
-                            <option value="南投縣">南投縣</option>
-                            <option value="雲林縣">雲林縣</option>
-                            <option value="高雄市">高雄市</option>
-                            <option value="臺南市">臺南市</option>
-                            <option value="嘉義市">嘉義市</option>
-                            <option value="嘉義縣">嘉義縣</option>
-                            <option value="屏東縣">屏東縣</option>
-                            <option value="澎湖縣">澎湖縣</option>
-                            <option value="花蓮縣">花蓮縣</option>
-                            <option value="臺東縣">臺東縣</option>
-                            <option value="金門縣">金門縣</option>
-                            <option value="連江縣">連江縣</option>
+                        <select class="form-select" name="R_City" id="city" onchange="setDistrict()">
+                            <option value="A0">不限縣市</option>
+                            <option value="A1">臺北市</option>
+                            <option value="A2">新北市</option>
+                            <option value="A3">桃園市</option>
+                            <option value="A4">台中市</option>
+                            <option value="B5">台南市</option>
+                            <option value="B6">高雄市</option>
+                            <option value="A7">基隆市</option>
+                            <option value="A8">新竹市</option>
+                            <option value="A9">新竹縣</option>
+                            <option value="B1">苗栗縣</option>
+                            <option value="B2">彰化縣</option>
+                            <option value="B3">南投縣</option>
+                            <option value="B4">雲林縣</option>               
+                            <option value="B5">嘉義市</option>
+                            <option value="B6">嘉義縣</option>
+                            <option value="B7">屏東縣</option>
+                            <option value="B8">宜蘭縣</option>
+                            <option value="B9">花蓮縣</option>
+                            <option value="C1">台東縣</option>
+                            <option value="C2">澎湖縣</option>
+                            <option value="C3">金門縣</option>
+                            <option value="C4">連江縣</option>
                         </select>
                         <label class="floatingSelect" for="city">申請者戶籍縣市</label>
                     </div>
                     
                     <div class="col form-floating">
-                        <select class="form-select" id="district"><option>不限區</option></select>
+                        <select class="form-select" name="R_District" id="district"><option>不限區</option></select>
                         <label class="floatingSelect" for="district">申請者戶籍行政區</label>
                     </div>
                 </div>
             </div>
-            <div class="btn_area"><button class="btn btn-primary btn-lg">查詢</button></div>
+            <div class="btn_area">
+                <a style="display: none" id="aa" href="#data_form"></a>
+                <button type="button" onclick="check_search_data()" class="btn btn-primary btn-lg">查詢</button>
+            </div>
         </form>
         `;
         body.appendChild(screen);

@@ -106,6 +106,7 @@ function setSearch_results(data){
     //搜尋結果呈現
     let demand_ID = ['D000000001','D000000002','D000000003','D000000004'
     ,'D000000005','D000000006',"D000000007"];
+    console.log(data)
     let title = false;   //是否放上標題了
     let suggestion = false; //是否有建議資源
     let data_html = document.getElementsByClassName('data');  // 0 是適合資訊 1 是建議資訊
@@ -123,7 +124,7 @@ function setSearch_results(data){
                     }
                     str0 += `
                     <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
+                        <img class="r_box_img" src="../img/R_Img/${data.R_List[j].R_Img}">
                         <div class="r_box_text">
                             <h4>${data.R_List[j].R_Name}</h4>
                             <p>
@@ -164,7 +165,6 @@ function setSearch_results(data){
     if(suggestion){
         data_html[1].innerHTML = str1;
     }else{
-        console.log('123')
         let title_area = document.getElementsByClassName('title_area')[2];
         title_area.parentElement.removeChild(title_area);
         data_html[1].parentElement.removeChild(data_html[1]);

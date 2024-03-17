@@ -10,7 +10,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../css/back_end/resource_setting.css" rel="stylesheet">
+    <link href="../../../css/back_end/resource_search.css" rel="stylesheet">
     <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
     <link href="../../../css/back_end/sidebars2.css" rel="stylesheet">
 </head>
@@ -118,8 +118,8 @@
         <div class="b-example-divider b-example-vr" style="margin-left:20%;position: fixed;"></div>
         <div class="sidebars2">
             <a href="" >資源編輯</a>
-            <a href="" style="background-color: #7B7B7B;color: white;">資源設定</a>
-            <a href="">搜尋設定</a>
+            <a href="">資源設定</a>
+            <a href="" style="background-color: #7B7B7B;color: white;">搜尋設定</a>
             <a href="">資源回饋</a>
             <a href="">資源供應商</a>
            
@@ -150,44 +150,79 @@
                 </nav>
             </div>
             <div class="btn_area">
-                <button onclick="saveResource('')">儲存</button>
+                <button onclick="saveResource_search('')">儲存</button>
                 <button>下架資源</button>
                 <button>查看資源</button>
-                <select class="lang">
-                    <option>中文</option>
-                </select>
-                <label>選擇語言</label>
             </div>
             <form class="content">
                 <div class="data_area">
-                    <table>
-                        <input name="L_ID" type="hidden" value="">
-                        <tr><th>資源序號</th><td class="R_ID"></td></tr>
-                        <tr><th>資源名稱</th><td><input name="R_Name" type="text" placeholder="請輸入資源名稱"></td></tr>
-                        <tr><th>選擇模組</th><td>
-                            <select name="T_ID">
-                                <option value="">無資料</option>
-                                <!-- <option value="">模組1</option> -->
-                            </select>
-                        </td></tr>
-                        <tr><th>資源需求</th><td>
-                            <select name="D_ID">
-                                <option value="">無資料</option>
-                                <!-- <option value="">無資料</option> -->
-                            </select>
-                        </td></tr>
-                        <tr><th>資源照片</th><td><input name="R_Img" placeholder="請輸入照片名稱"></td></tr>
-                        <tr><th>資源敘述</th><td><textarea name="R_Depiction" placeholder="字數限制400字元"></textarea></td></tr>
-                    </table>
+                    <div class="s_table">
+                        <div class="table_title">申請身分</div>
+                        <div class="scroll">
+                            <table id="identity_table">
+                                <tr><th>身分名稱</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('i0'),CheckAll('identity_table','i0')"><td>不限身分</th><td><input id="i0" value="A0" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i1'),CancelAll('i0')"><td>新住民</th><td><input id="i1" value="A1" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i2'),CancelAll('i0')"><td>新住民子女</th><td><input id="i2" value="A2" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i3'),CancelAll('i0')"><td>原住民</th><td><input id="i3" value="A3" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i4'),CancelAll('i0')"><td>中/低收入戶</th><td><input id="i4" value="A4" name="R_Identity" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('i5'),CancelAll('i0')"><td>就職青年</th><td><input id="i5" value="A5" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i6'),CancelAll('i0')"><td>單親家庭</th><td><input id="i6" value="A6" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i7'),CancelAll('i0')"><td>身心障礙</th><td><input id="i7" value="A7" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i8'),CancelAll('i0')"><td>身心障礙子女</th><td><input id="i8" value="A8" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i9'),CancelAll('i0')"><td>特殊境遇家庭</th><td><input id="i9" value="A9" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i10'),CancelAll('i0')"><td>暴力/霸凌受害者</th><td><input id="i10" value="B1" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i11'),CancelAll('i0')"><td>懷孕少女</th><td><input id="i11" value="B2" name="R_Identity" type="checkbox"></th></tr> 
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="supplier_area">
                     <div class="s_table">
-                        <div class="table_title">綁定供應商</div>
+                        <div class="table_title">申請在校狀況</div>
                         <div class="scroll">
-                            <table id="s_table">
-                                <tr><th>供應商序號</th><th>供應商名稱</th><th>勾選</th></tr>
-                                <tr><td colspan="3">無資料</td></tr>
-                                <!-- <tr onclick="checkbox('c1')"><td>S000000001</td><td>供應商1</td><td><input id="c1" type="checkbox"></td></tr> -->
+                            <table id="school_table">
+                                <tr><th>在校狀況</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('s0'),CheckAll('school_table','s0')"><td>不限就學</th><td><input id="s0" value="A0" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s1'),CancelAll('s0')"><td>未就學</th><td><input id="s1" value="A1" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s2'),CancelAll('s0')"><td>國小</th><td><input id="s2" value="A2" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s3'),CancelAll('s0')"><td>國中</th><td><input id="s3" value="A3" name="R_School" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('s4'),CancelAll('s0')"><td>高中</th><td><input id="s4" value="A4" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s5'),CancelAll('s0')"><td>五專</th><td><input id="s5" value="A5" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s6'),CancelAll('s0')"><td>大學</th><td><input id="s6" value="A6" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s7'),CancelAll('s0')"><td>研究所</th><td><input id="s7" value="A7" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s8'),CancelAll('s0')"><td>畢業就學</th><td><input id="s8" value="A8" name="R_School" type="checkbox"></th></tr>    
+                            </table>
+                        </div>
+                    </div>
+                    <div class="s_table" style="margin-top:2%">
+                        <div class="table_title">申請縣市</div>
+                        <div class="scroll">
+                            <table id="city_table">
+                                <tr><th>縣市名稱</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('c1'),CheckAll('city_table','c1')"><td>不限縣市</th><td><input id="c1" value="A0" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c2'),CancelAll('c1')"><td>臺北市</th><td><input id="c2" value="A1" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c3'),CancelAll('c1')"><td>新北市</th><td><input id="c3" value="A2" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c4'),CancelAll('c1')"><td>桃園市</th><td><input id="c4" value="A3" name="R_City" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('c5'),CancelAll('c1')"><td>台中市</th><td><input id="c5" value="A4" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c6'),CancelAll('c1')"><td>台南市</th><td><input id="c6" value="A5" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c7'),CancelAll('c1')"><td>高雄市</th><td><input id="c7" value="A6" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c8'),CancelAll('c1')"><td>基隆市</th><td><input id="c8" value="A7" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c9'),CancelAll('c1')"><td>新竹市</th><td><input id="c9" value="A8" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c10'),CancelAll('c1')"><td>新竹縣</th><td><input id="c10" value="A9" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c11'),CancelAll('c1')"><td>苗栗縣</th><td><input id="c11" value="B1" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c12'),CancelAll('c1')"><td>彰化縣</th><td><input id="c12" value="B2" name="R_City" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('c13'),CancelAll('c1')"><td>南投縣</th><td><input id="c13" value="B3" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c14'),CancelAll('c1')"><td>雲林縣</th><td><input id="c14" value="B4" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c15'),CancelAll('c1')"><td>嘉義市</th><td><input id="c15" value="B5" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c16'),CancelAll('c1')"><td>嘉義縣</th><td><input id="c16" value="B6" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c17'),CancelAll('c1')"><td>屏東縣</th><td><input id="c17" value="B7" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c18'),CancelAll('c1')"><td>宜蘭縣</th><td><input id="c18" value="B8" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c19'),CancelAll('c1')"><td>花蓮縣</th><td><input id="c19" value="B9" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c20'),CancelAll('c1')"><td>台東縣</th><td><input id="c20" value="C1" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c21'),CancelAll('c1')"><td>澎湖縣</th><td><input id="c21" value="C2" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c22'),CancelAll('c1')"><td>金門縣</th><td><input id="c22" value="C3" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c23'),CancelAll('c1')"><td>連江縣</th><td><input id="c23" value="C4" name="R_City" type="checkbox"></th></tr> 
                             </table>
                         </div>
                     </div>
@@ -200,88 +235,14 @@
 <script src="../../../js/back_end/sidebars.js"></script>
 <script src="../../../js/back_end/resource.js"></script>
 <!-- <script>
-    setResource_setting({
-        "leng" :  [{
-                "L_Name" : "中文",
-                "L_ID" : "L000000001"
-            },
-            {
-                "L_Name" : "英文",
-                "L_ID" : "L000000002"
-            }
-        ],
+    setResource_search({
         "R_Name" : "獎(助)學金",
-        "T_ID" : "T000000002",
         "D_Name" : "經濟需求",
         "D_ID" : "D000000002",
         "R_ID" : "R000000002",
-        "T_List" : [
-            {
-                "T_Name" : "模板1",
-                "T_ID" : "T000000001"
-            },
-            {
-                "T_Name" : "模板2",
-                "T_ID" : "T000000002"
-            },
-        ],
-        "D_List" : [
-            {
-                "D_Name" : "經濟資訊",
-                "D_ID" : "D000000001"
-            },
-            {
-                "D_Name" : "緊急資訊",
-                "D_ID" : "D000000002"
-            },
-        ],
-        "S_List" : [
-            {
-                "S_Name" : "供應商1",
-                "S_ID" : "S000000001",
-                "S_Check" : true
-            },
-            {
-                "S_Name" : "供應商2",
-                "S_ID" : "S000000002",
-                "S_Check" : false
-            },
-            {
-                "S_Name" : "供應商3",
-                "S_ID" : "S000000003",
-                "S_Check" : true
-            },
-            {
-                "S_Name" : "供應商4",
-                "S_ID" : "S000000004",
-                "S_Check" : false
-            },
-            {
-                "S_Name" : "供應商4",
-                "S_ID" : "S000000004",
-                "S_Check" : false
-            },
-            {
-                "S_Name" : "供應商4",
-                "S_ID" : "S000000004",
-                "S_Check" : false
-            },
-            {
-                "S_Name" : "供應商4",
-                "S_ID" : "S000000004",
-                "S_Check" : false
-            },
-            {
-                "S_Name" : "供應商4",
-                "S_ID" : "S000000004",
-                "S_Check" : false
-            },
-            {
-                "S_Name" : "供應商4",
-                "S_ID" : "S000000004",
-                "S_Check" : false
-            },
-        ]
+        "R_Identity" : ['A1'],
+        "R_School" : ['A2'],
+        "R_City" : ['A3']
     })
 </script> -->
 </html>

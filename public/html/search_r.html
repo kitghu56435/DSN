@@ -67,7 +67,7 @@
             <div class="data">
                 <h3><div><img src="../img/index/D000000001.png"></div>經濟資源資訊</h3>
                 <div class="data_resource">
-                    <div class="r_box">
+                    <!-- <div class="r_box">
                         <img class="r_box_img" src="../img/p1.jpg">
                         <div class="r_box_text">
                             <h4>資源名稱</h4>
@@ -78,46 +78,10 @@
                             </p>
                             <span>標籤</span><span>標籤</span><span>標籤</span>
                         </div>
-                    </div>
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text">
-                            <h4>資源名稱</h4>
-                            <p>
-                                資源簡述資源簡述資源簡述資源簡述資源簡述資源簡述
-                                資源簡述資源簡述資源簡述資源簡述資源簡述資源簡述
-                                資源簡述資源簡述資源簡述資源簡述資源簡述資源簡述
-                            </p>
-                            <span>標籤</span><span>標籤</span><span>標籤</span>
-                        </div>
-                    </div>
+                    </div> -->
                 </div>
                 <h3><div><img src="../img/index/D000000003.png"></div>法律資源資訊</h3>
                 <div class="data_resource">
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text"><h4>資源名稱</h4></div>
-                    </div>
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text"><h4>資源名稱</h4></div>
-                    </div>
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text"><h4>資源名稱</h4></div>
-                    </div>
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text"><h4>資源名稱</h4></div>
-                    </div>
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text"><h4>資源名稱</h4></div>
-                    </div>
-                    <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
-                        <div class="r_box_text"><h4>資源名稱</h4></div>
-                    </div>
                 </div>
             </div>
             <div class="title_area"><h2><img src="../img/search/resource.png">其他可能適合您的資源</h2></div>
@@ -222,48 +186,48 @@
     <script src="../js/frontend.js"></script>
     <script>
         header_nav_check();
-        //getHeader_data();
-        let data = {
-            "Search_data" : {
-                "demand" : 'A1',
-                "identity" : ['A1','A2'],
-                "school" : 'A3',
-                "R_City" : 'A2',
-                "R_District" : '桃園區',
-            },
-            "R_List" : [{
-                "D_ID" : "D000000001",
-                "D_Name" : "經濟資訊",
-                "R_ID" : "R000000000",
-                "R_Name" : "範例資源名稱",
-                "R_Depiction" : "範例資源敘述範例資源敘述範例資源敘述範例資源敘述範例資源敘述",
-                "R_Label" : ["範例標籤","範例標籤"],
-                "R_Img" : "",
-                "Search_Type" : "search"
-            },{
-                "D_ID" : "D000000001",
-                "D_Name" : "經濟資訊",
-                "R_ID" : "R000000000",
-                "R_Name" : "範例資源名稱",
-                "R_Depiction" : "範例資源敘述範例資源敘述範例資源敘述範例資源敘述範例資源敘述",
-                "R_Label" : ["範例標籤","範例標籤"],
-                "R_Img" : "",
-                "Search_Type" : "search"
-            }
-            ,{
-                "D_ID" : "D000000002",
-                "D_Name" : "緊急資訊",
-                "R_ID" : "R000000000",
-                "R_Name" : "範例資源名稱",
-                "R_Depiction" : "範例資源敘述",
-                "R_Label" : ["範例標籤","範例標籤"],
-                "R_Img" : "",
-                "Search_Type" : "suggestion"
-            }],
-        }
+        getHeader_data();
+        // let data = {
+        //     "Search_data" : {
+        //         "demand" : 'A1',
+        //         "identity" : ['A1','A2'],
+        //         "school" : 'A3',
+        //         "R_City" : 'A2',
+        //         "R_District" : '桃園區',
+        //     },
+        //     "R_List" : [{
+        //         "D_ID" : "D000000001",
+        //         "D_Name" : "經濟資訊",
+        //         "R_ID" : "R000000000",
+        //         "R_Name" : "範例資源名稱",
+        //         "R_Depiction" : "範例資源敘述範例資源敘述範例資源敘述範例資源敘述範例資源敘述",
+        //         "R_Label" : ["範例標籤","範例標籤"],
+        //         "R_Img" : "",
+        //         "Search_Type" : "search"
+        //     },{
+        //         "D_ID" : "D000000001",
+        //         "D_Name" : "經濟資訊",
+        //         "R_ID" : "R000000000",
+        //         "R_Name" : "範例資源名稱",
+        //         "R_Depiction" : "範例資源敘述範例資源敘述範例資源敘述範例資源敘述範例資源敘述",
+        //         "R_Label" : ["範例標籤","範例標籤"],
+        //         "R_Img" : "",
+        //         "Search_Type" : "search"
+        //     }
+        //     ,{
+        //         "D_ID" : "D000000002",
+        //         "D_Name" : "緊急資訊",
+        //         "R_ID" : "R000000000",
+        //         "R_Name" : "範例資源名稱",
+        //         "R_Depiction" : "範例資源敘述",
+        //         "R_Label" : ["範例標籤","範例標籤"],
+        //         "R_Img" : "",
+        //         "Search_Type" : "suggestion"
+        //     }],
+        // }
 
 
-        setSearch_results(data);
+        // setSearch_results(data);
     </script>
 </body>
 </html>

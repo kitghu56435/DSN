@@ -231,32 +231,38 @@ function setMsgbox(msg){
 }
 
 function find(str,content){    //簡單文字爬蟲 回傳布林值
-    let count = 0;
-    let match_num = str.length;
-    let founded = false;
-    if(content == null){
-        return founded;
-    }
-    for(k = 0;k<content.length;k++){
-        if(founded){
-            break;
-        }else{
-            for(p = 0;p<str.length;p++){
-                if(content[k+p] == str[p]){
-                    count++;
-                    if(count == match_num){
-                        founded = true;   
-                        break;                                                      
+    
+    if(str == '' || str == null || str == undefined || content == '' || content == null || content == undefined){
+        return false;
+    }else{
+        let count = 0;
+        let match_num = str.length;
+        let founded = false;
+        if(content == null){
+            return founded;
+        }
+        for(k = 0;k<content.length;k++){
+            if(founded){
+                break;
+            }else{
+                for(p = 0;p<str.length;p++){
+                    if(content[k+p] == str[p]){
+                        count++;
+                        if(count == match_num){
+                            founded = true;   
+                            break;                                                      
+                        }
+                    }else{
+                        count = 0;
+                        break;
                     }
-                }else{
-                    count = 0;
-                    break;
                 }
             }
         }
+    
+        return founded;
     }
-
-    return founded;
+    
 }
 
 

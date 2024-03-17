@@ -219,117 +219,7 @@ function setResource_Add_r(data){
 }
 
 
-function setResource_edit(data){
-    let lang = document.getElementsByClassName('lang')[0];   
-    let html_area = document.getElementsByClassName('html_area')[0];
-    let D_Name_bar = document.getElementById('D_Name_bar');
-    let R_Name_bar = document.getElementById('R_Name_bar');
-    let sidebars2 = document.getElementsByClassName('sidebars2')[0];
-    let sidebars2_a = sidebars2.getElementsByTagName('a');
-    let btn_area = document.getElementsByClassName('btn_area')[0];
-    let btn = btn_area.getElementsByTagName('button');
 
-    D_Name_bar.innerHTML = data.resource.D_Name;
-    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
-    R_Name_bar.innerHTML = data.resource.R_Name;
-    R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-
-    sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
-    sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
-    sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
-    sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
-
-    if(data.resource.R_Shelf){
-        btn[1].innerHTML = '下架資源';
-    }else{
-        btn[1].innerHTML = '上架資源';
-    }
-    btn[0].setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
-    btn[1].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
-    
-    let L_Name_array = [];
-    let L_ID_array = [];
-    for(i = 0;i < data.leng.length;i++){
-        L_Name_array.push(data.leng[i].L_Name);
-        L_ID_array.push(data.leng[i].L_ID);
-    }
-    lang.innerHTML = Select_Option_HTML(data.resource.L_ID,L_Name_array,L_ID_array);
-    lang.setAttribute('onchange',`getResource_data('${data.resource.R_ID}',this.value)`);
-
-
-    
-    html_area.innerHTML = `<input type="hidden" id="L_ID" name="L_ID" value="${data.resource.L_ID}">`;
-    for(i = 0;i< data.container.length;i++){
-        let div = document.createElement('div');
-        let str = '';
-
-        if(data.container[i].type == 'title'){
-            div.setAttribute('class','container2_title');
-            str += `
-            <div class="item">
-                <div class="item_title">${data.container[i].id[0]}(標題)</div>
-                <div class="item_label">
-                    <span>項目提示：${data.container[i].note[0]}</span>
-                </div>
-                <div class="item_content">
-                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
-                </div>
-            </div>
-            `;
-        }else{
-            div.setAttribute('class','container2');
-            
-
-            for(j = 0;j < data.container[i].item;j++){
-                
-                if(data.container[i].item_type[j] == 'text'){
-                    str += `
-                    <div class="item">
-                        <div class="item_title">${data.container[i].id[j]}(文字)</div>
-                        <div class="item_label">
-                            <span>項目提示：${data.container[i].note[j]}</span>
-                        </div>
-                        <div class="item_content">
-                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
-                        </div>
-                    </div>                    
-                    `;
-                }else if(data.container[i].item_type[j] == 'url'){
-                    str += `
-                    <div class="item">
-                        <div class="item_title">${data.container[i].id[j]}(連結)</div>
-                        <div class="item_label">
-                            <span>項目提示：${data.container[i].note[j]}</span>
-                        </div>
-                        <div class="item_content">
-                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
-                        </div>
-                    </div> 
-                    `;
-                }else if(data.container[i].item_type[j] == 'img'){
-                    str += `
-                    <div class="item">
-                        <div class="item_title">${data.container[i].id[j]}(照片)</div>
-                        <div class="item_label">
-                            <span>項目提示：${data.container[i].note[j]}</span>
-                        </div>
-                        <div class="item_content">
-                            <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
-                            <input type="file" onchange="setContainer2_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_input_file" accept="image/*">
-                            <input type="hidden" name="${data.container[i].id[j]}" value="img_no_change">
-                        </div>
-                    </div>                    
-                    `;
-                }
-            }
-
-            
-        }
-
-        div.innerHTML = str;
-        html_area.appendChild(div);
-    }
-}
 
 
 
@@ -534,6 +424,201 @@ function setContainer2_img(RD_ID){
 
 
 
+
+function getResource_search(R_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,jsonResponse.msgbox);
+                    setResource_search(jsonResponse);
+                }else{
+                    console.log(jsonResponse)
+                    setResource_search(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/search/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID='+R_ID);
+}
+function saveResource_search(R_ID){
+    let form = document.getElementsByClassName('content')[0];
+    let formData = new FormData(form);
+    let R_Identity = [];
+    let R_School = [];
+    let R_City = [];
+    let formObject = {};
+    
+
+    formData.forEach(function(value, key){
+        if(key == 'R_Identity'){
+            R_Identity.push(value);
+        }else if(key == 'R_School'){
+            R_School.push(value);
+        }else if(key == 'R_City'){
+            R_City.push(value);
+        }
+    });
+    formObject.R_Identity = R_Identity;
+    formObject.R_School = R_School;
+    formObject.R_City = R_City;
+    formObject.R_ID = R_ID;
+
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'nodata'){
+                    msgbox(1,'查無資源，請嘗試重新整理頁面');
+                }else if(jsonResponse.msg == 'err'){
+                    msgbox(1,'更新錯誤');
+                }else if(jsonResponse.msg == 'success'){
+                    msgbox(1,'更新完成');
+                }else{
+                    msgbox(1,'伺服器無法反應，請稍後再嘗試');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/demand/search/save');
+    httpRequest.setRequestHeader('Content-Type','application/json');
+    httpRequest.send(JSON.stringify(formObject));
+}
+
+
+
+function setResource_edit(data){
+    let lang = document.getElementsByClassName('lang')[0];   
+    let html_area = document.getElementsByClassName('html_area')[0];
+    let D_Name_bar = document.getElementById('D_Name_bar');
+    let R_Name_bar = document.getElementById('R_Name_bar');
+    let sidebars2 = document.getElementsByClassName('sidebars2')[0];
+    let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
+
+    D_Name_bar.innerHTML = data.resource.D_Name;
+    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
+    R_Name_bar.innerHTML = data.resource.R_Name;
+    R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+
+    sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+    sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/demand/search?R_ID=' + data.resource.R_ID);
+    sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
+    sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+
+    if(data.resource.R_Shelf){
+        btn[1].innerHTML = '下架資源';
+    }else{
+        btn[1].innerHTML = '上架資源';
+    }
+    btn[0].setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
+    btn[1].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
+    
+    let L_Name_array = [];
+    let L_ID_array = [];
+    for(i = 0;i < data.leng.length;i++){
+        L_Name_array.push(data.leng[i].L_Name);
+        L_ID_array.push(data.leng[i].L_ID);
+    }
+    lang.innerHTML = Select_Option_HTML(data.resource.L_ID,L_Name_array,L_ID_array);
+    lang.setAttribute('onchange',`getResource_data('${data.resource.R_ID}',this.value)`);
+
+
+    
+    html_area.innerHTML = `<input type="hidden" id="L_ID" name="L_ID" value="${data.resource.L_ID}">`;
+    for(i = 0;i< data.container.length;i++){
+        let div = document.createElement('div');
+        let str = '';
+
+        if(data.container[i].type == 'title'){
+            div.setAttribute('class','container2_title');
+            str += `
+            <div class="item">
+                <div class="item_title">${data.container[i].id[0]}(標題)</div>
+                <div class="item_label">
+                    <span>項目提示：${data.container[i].note[0]}</span>
+                </div>
+                <div class="item_content">
+                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
+                </div>
+            </div>
+            `;
+        }else{
+            div.setAttribute('class','container2');
+            
+
+            for(j = 0;j < data.container[i].item;j++){
+                
+                if(data.container[i].item_type[j] == 'text'){
+                    str += `
+                    <div class="item">
+                        <div class="item_title">${data.container[i].id[j]}(文字)</div>
+                        <div class="item_label">
+                            <span>項目提示：${data.container[i].note[j]}</span>
+                        </div>
+                        <div class="item_content">
+                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
+                        </div>
+                    </div>                    
+                    `;
+                }else if(data.container[i].item_type[j] == 'url'){
+                    str += `
+                    <div class="item">
+                        <div class="item_title">${data.container[i].id[j]}(連結)</div>
+                        <div class="item_label">
+                            <span>項目提示：${data.container[i].note[j]}</span>
+                        </div>
+                        <div class="item_content">
+                            <textarea name="${data.container[i].id[j]}" placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
+                        </div>
+                    </div> 
+                    `;
+                }else if(data.container[i].item_type[j] == 'img'){
+                    str += `
+                    <div class="item">
+                        <div class="item_title">${data.container[i].id[j]}(照片)</div>
+                        <div class="item_label">
+                            <span>項目提示：${data.container[i].note[j]}</span>
+                        </div>
+                        <div class="item_content">
+                            <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
+                            <input type="file" onchange="setContainer2_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_input_file" accept="image/*">
+                            <input type="hidden" name="${data.container[i].id[j]}" value="img_no_change">
+                        </div>
+                    </div>                    
+                    `;
+                }
+            }
+
+            
+        }
+
+        div.innerHTML = str;
+        html_area.appendChild(div);
+    }
+}
+
 function setResource_feedback(data){
     let content = document.getElementsByClassName('content')[0];
     let D_Name_bar = document.getElementById('D_Name_bar');
@@ -543,8 +628,9 @@ function setResource_feedback(data){
     if(data.resource.D_ID != undefined){
         sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
         sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
-        sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
-        sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+        sidebars2_a[2].setAttribute('href','/backend/resource/demand/search?R_ID=' + data.resource.R_ID);
+        sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
+        sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
         D_Name_bar.innerHTML = data.resource.D_Name;
         D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
         R_Name_bar.innerHTML = data.resource.R_Name;
@@ -587,38 +673,91 @@ function setResource_feedback(data){
     }
 }
 
-function deleteRecordMessage(RF_ID,page,R_ID){
-    let httpRequest = new XMLHttpRequest();
+function setResource_search(data){
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
+    let D_Name_bar = document.getElementById('D_Name_bar');
+    let R_Name_bar = document.getElementById('R_Name_bar');
+    let sidebars2 = document.getElementsByClassName('sidebars2')[0];
+    let sidebars2_a = sidebars2.getElementsByTagName('a');
 
-    httpRequest.onreadystatechange = function(){
-        if(httpRequest.readyState === 4){
-            if(httpRequest.status === 200){
-                let jsonResponse = JSON.parse(httpRequest.responseText);
-                
-                msgbox();
-                if(jsonResponse.msgbox == 'dberr'){
-                    msgbox(1,'資料庫錯誤');
-                }else if(jsonResponse.msgbox == 'nodata'){
-                    msgbox(1,'查無留言資料');
-                }else{
-                    if(jsonResponse.page == 'resource_feedback'){
-                        
-                        setResource_feedback(jsonResponse);
-                    }else{
-                        msgbox(1,'參數錯誤');
+    let identity_table = document.getElementById('identity_table');
+    let identity_option = identity_table.getElementsByTagName('input');
+    let school_table = document.getElementById('school_table');
+    let school_option = school_table.getElementsByTagName('input');
+    let city_table = document.getElementById('city_table');
+    let city_option = city_table.getElementsByTagName('input');
+    
+
+    
+
+    D_Name_bar.innerHTML = data.D_Name;
+    D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.D_ID);
+    R_Name_bar.innerHTML = data.R_Name;
+    R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.R_ID);
+    sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.R_ID);
+    sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.R_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/demand/search?R_ID=' + data.R_ID);
+    sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.R_ID);
+    sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
+    btn[0].setAttribute('onclick',`saveResource_search('${data.R_ID}')`);
+
+    
+    
+
+    if(data != undefined){
+        
+        
+        for(i = 0;i<data.R_Identity.length;i++){
+            if(data.R_Identity[i] == 'A0'){
+                for(j = 0;j < identity_option.length;j++){
+                    identity_option[j].checked = true;
+                }
+                break;
+            }else{
+                for(j = 0;j < identity_option.length;j++){
+                    if(data.R_Identity[i] == identity_option[j].value){
+                        identity_option[j].checked = true;
                     }
                 }
-            }else{
-                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
             }
+            
         }
-    }
-    
-    httpRequest.open('POST','/backend/message/record/delete');
-    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-    httpRequest.send('RF_ID=' + RF_ID + '&page=' + page + '&R_ID=' + R_ID);
-}
 
+        for(i = 0;i<data.R_School.length;i++){
+            if(data.R_School[i] == 'A0'){
+                for(j = 0;j < school_option.length;j++){
+                    school_option[j].checked = true;
+                }
+                break;
+            }else{
+                for(j = 0;j < school_option.length;j++){
+                    if(data.R_School[i] == school_option[j].value){
+                        school_option[j].checked = true;
+                    }
+                }
+            }
+            
+        }
+
+        for(i = 0;i<data.R_City.length;i++){
+            if(data.R_City[i] == 'A0'){
+                for(j = 0;j < city_option.length;j++){
+                    city_option[j].checked = true;
+                }
+                break;
+            }else{
+                for(j = 0;j < city_option.length;j++){
+                    if(data.R_City[i] == city_option[j].value){
+                        city_option[j].checked = true;
+                    }
+                }
+            }
+            
+        }
+        
+    }
+}
 
 function setResource_setting(data){
     let lang = document.getElementsByClassName('lang')[0];
@@ -627,6 +766,8 @@ function setResource_setting(data){
     let T_ID = document.getElementsByName('T_ID')[0];
     let D_ID = document.getElementsByName('D_ID')[0];
     let L_ID = document.getElementsByName('L_ID')[0];
+    let R_Img = document.getElementsByName('R_Img')[0];
+    let R_Depiction = document.getElementsByName('R_Depiction')[0];
     let btn_area = document.getElementsByClassName('btn_area')[0];
     let btn = btn_area.getElementsByTagName('button');
     let s_table = document.getElementById('s_table');
@@ -648,8 +789,9 @@ function setResource_setting(data){
     R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.R_ID);
     sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.R_ID);
     sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.R_ID);
-    sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.R_ID);
-    sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/demand/search?R_ID=' + data.R_ID);
+    sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.R_ID);
+    sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
     btn[0].setAttribute('onclick',`saveResource('${data.R_ID}')`);
     L_ID.setAttribute('value',data.L_ID);
 
@@ -675,8 +817,11 @@ function setResource_setting(data){
 
     if(data != undefined){
         R_Name.setAttribute('value',data.R_Name);
+        R_Img.setAttribute('value',data.R_Img);
         R_Name.value = data.R_Name;
-        R_ID.innerHTML = data.R_ID
+        R_ID.innerHTML = data.R_ID;
+        R_Depiction.value = data.R_Depiction;
+        R_Depiction.innerHTML = data.R_Depiction;
         T_ID.innerHTML = Select_Option_HTML(data.T_ID,T_value_array,T_id_array);
         D_ID.innerHTML = Select_Option_HTML(data.D_ID,D_value_array,D_id_array);
         
@@ -702,8 +847,9 @@ function setResource_supplier(data){
     let sidebars2_a = sidebars2.getElementsByTagName('a');
     sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
     sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
-    sidebars2_a[2].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
-    sidebars2_a[3].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
+    sidebars2_a[2].setAttribute('href','/backend/resource/demand/search?R_ID=' + data.resource.R_ID);
+    sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.resource.R_ID);
+    sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
     D_Name_bar.innerHTML = data.resource.D_Name;
     D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
     R_Name_bar.innerHTML = data.resource.R_Name;
@@ -743,9 +889,57 @@ function setResource_supplier(data){
 
 
 
+function CheckAll(table_id,check_id){
+    let table = document.getElementById(table_id);
+    let input = table.getElementsByTagName('input');
+    let check = document.getElementById(check_id);
+    for(i = 0;i < input.length;i++){
+        if(check.checked){
+            input[i].checked = true;
+        }else{
+            input[i].checked = false;
+        }
+    }
+    
+    
+}
+function CancelAll(check_id){
+    let check = document.getElementById(check_id);
+    if(check.checked){
+        check.checked = false;
+    }
+}
+function deleteRecordMessage(RF_ID,page,R_ID){
+    let httpRequest = new XMLHttpRequest();
 
-
-
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                
+                msgbox();
+                if(jsonResponse.msgbox == 'dberr'){
+                    msgbox(1,'資料庫錯誤');
+                }else if(jsonResponse.msgbox == 'nodata'){
+                    msgbox(1,'查無留言資料');
+                }else{
+                    if(jsonResponse.page == 'resource_feedback'){
+                        
+                        setResource_feedback(jsonResponse);
+                    }else{
+                        msgbox(1,'參數錯誤');
+                    }
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/message/record/delete');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('RF_ID=' + RF_ID + '&page=' + page + '&R_ID=' + R_ID);
+}
 function Select_Option_HTML(value,value_array,id_array){
     str = '';
     for(i = 0;i<value_array.length;i++){

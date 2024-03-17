@@ -131,16 +131,7 @@ router.post('/search_data',(req,res)=>{
     })
 })
 
-// "R_List" : [{
-//     "D_ID" : "D000000001",
-//     "D_Name" : "經濟資訊",
-//     "R_ID" : "R000000000",
-//     "R_Name" : "範例資源名稱",
-//     "R_Depiction" : "範例資源敘述",
-//     "R_Label" : ["範例標籤","範例標籤"],  //選上的因素標籤
-//     "R_Img" : "",
-//     "Search_Type" : ""
-// }],
+
 
 router.post('/search_results',(req,res)=>{
     let html = readFileSync('./public/html/search_r.html','utf-8');
@@ -171,12 +162,13 @@ router.post('/search_results',(req,res)=>{
                 "D_Name" : results[i].D_Name,
                 "R_ID" : results[i].R_ID,
                 "R_Name" : results[i].R_Name,
-                "R_Depiction" : "",
+                "R_Depiction" : results[i].R_Depiction,
                 "R_Label" : ['強烈建議'],
-                "R_Img" : "",
+                "R_Img" : results[i].R_Img,
                 "Search_Type" : "required"
             })              
         }
+        //console.log(temp_R_List)
     })
     
     
@@ -200,9 +192,9 @@ router.post('/search_results',(req,res)=>{
                     "D_Name" : results[i].D_Name,
                     "R_ID" : results[i].R_ID,
                     "R_Name" : results[i].R_Name,
-                    "R_Depiction" : "",
+                    "R_Depiction" : results[i].R_Depiction,
                     "R_Label" : [getMultiple_IdentityText(identity,results[i].R_Identity)],
-                    "R_Img" : "",
+                    "R_Img" : results[i].R_Img,
                     "Search_Type" : "search"
                 })
             }
@@ -213,32 +205,32 @@ router.post('/search_results',(req,res)=>{
 
     
 
-    //申請者在學狀況過濾(適合資料)
+    //申請者在學狀況過濾(適合資料)(不符合需要刪掉)
     new Promise((resolve,reject)=>{
         resolve(searchResource_school(school));
     }).then((results)=>{
-        let match = false;
+        //let match = false;
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
                     temp_R_List[j].R_Label.push(getMultiple_SchoolText(school,results[i].R_School));
-                    match = true;
+                    //match = true;
                     break;
                 }
             }
-            if(!match){
-                temp_R_List.push({
-                    "D_ID" : results[i].D_ID,
-                    "D_Name" : results[i].D_Name,
-                    "R_ID" : results[i].R_ID,
-                    "R_Name" : results[i].R_Name,
-                    "R_Depiction" : "",
-                    "R_Label" : [getMultiple_SchoolText(school,results[i].R_School)],
-                    "R_Img" : "",
-                    "Search_Type" : "search"
-                })
-            }
-            match = false;
+            // if(!match){
+            //     temp_R_List.push({
+            //         "D_ID" : results[i].D_ID,
+            //         "D_Name" : results[i].D_Name,
+            //         "R_ID" : results[i].R_ID,
+            //         "R_Name" : results[i].R_Name,
+            //         "R_Depiction" : results[i].R_Depiction,
+            //         "R_Label" : [getMultiple_SchoolText(school,results[i].R_School)],
+            //         "R_Img" : results[i].R_Img,
+            //         "Search_Type" : "search"
+            //     })
+            // }
+            // match = false;
         }
         //console.log(temp_R_List);
     })
@@ -752,8 +744,25 @@ async function searchResource_location(R_City){
 }
 async function searchResource_identity(identity){
     let parameter = [];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID 
+    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
+    (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
+    AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 3 AND ( R_Identity LIKE '%A0%' `;
+
+
+    if(typeof identity == 'string'){
+        str += 'OR R_Identity LIKE ? ';
+        parameter.push(`%${identity}%`);
+    }else if(typeof identity == 'object'){
+        for(i = 0;i<identity.length;i++){
+            str += 'OR R_Identity LIKE ? ';
+            parameter.push(`%${identity[i]}%`);
+        }
+    }
+
+    str +=` )) Depiction
+    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
     AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 2 AND ( R_Identity LIKE '%A0%' `;
+
 
     if(typeof identity == 'string'){
         str += 'OR R_Identity LIKE ? ';
@@ -781,7 +790,23 @@ async function searchResource_identity(identity){
 }
 async function searchResource_school(school){
     let parameter = [];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_School,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID 
+    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_School,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
+    (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
+    AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 3 AND ( R_School LIKE '%A0%' `
+
+    if(typeof school == 'string'){
+        str += 'OR R_School LIKE ? ';
+        parameter.push(`%${school}%`);
+    }else if(typeof school == 'object'){
+        for(i = 0;i<school.length;i++){
+            str += 'OR R_School LIKE ? ';
+            parameter.push(`%${school[i]}%`);
+        }
+    }
+
+
+    str +=` )) Depiction
+    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
     AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 2 AND ( R_School LIKE '%A0%' `;
 
     if(typeof school == 'string'){
@@ -796,6 +821,7 @@ async function searchResource_school(school){
     str += ')';
     // console.log(str);
     // console.log(parameter);
+    
 
     return new Promise((resolve,reject)=>{
         db.execute(str,parameter,(err,results)=>{
@@ -842,7 +868,34 @@ async function searchResource_suitable(demand){
 }
 async function searchResource_requestData(identity){
     let parameter = [];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID 
+    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
+    (SELECT R_ID,RD_Content R_Depiction FROM Resource_data WHERE L_ID = 'L000000001' `
+
+    if(typeof identity == 'string'){
+        if(Required_Resource[identity]){
+
+            for(i = 0;i<Required_Resource[identity].length;i++){
+                str += 'AND R_ID = ? ';
+                parameter.push(Required_Resource[identity][i]);
+            }
+            
+        }
+    }else if(typeof identity == 'object'){
+        for(i = 0;i<identity.length;i++){
+
+            if(Required_Resource[identity[i]]){
+                for(j = 0;j<Required_Resource[identity[i]].length;j++){
+                    str += 'AND R_ID = ? ';
+                    parameter.push(Required_Resource[identity[i]][j]);
+                }
+            }
+
+        }
+    }
+
+
+    str += ` AND RD_Type = 3) Depiction
+    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
     AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 2 AND ( FALSE `;
 
     if(typeof identity == 'string'){
@@ -867,8 +920,8 @@ async function searchResource_requestData(identity){
         }
     }
     str += ')';
-    // console.log(str);
-    // console.log(parameter);
+    //console.log(str);
+    //console.log(parameter);
 
     return new Promise((resolve,reject)=>{
         db.execute(str,parameter,(err,results)=>{

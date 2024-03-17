@@ -60,7 +60,8 @@ h4 > img{
 }
 .data_resource > .r_box > .r_box_img{
     width:200px;
-    height:200px
+    height:200px;
+    border-radius: 10px;
 }
 .data_resource > .r_box > .r_box_text{
     width:70%;

@@ -45,27 +45,15 @@ section{
     display: flex;
 }
 .content > .data_area{
+    padding-left: 2%;
+    padding-right:2%;
     width:50%;
 }
-.data_area  th{
-    width: 25%;
-    padding:0.2em 1em 0.2em 1em;
-}
-.data_area  td{
-    width: 75%;
-    padding:0.2em 1em 0.2em 1em;
-}
-.data_area input,.data_area select,.data_area textarea{
-    padding:0.2em;
-    width: 100%;
-}
 
-.data_area textarea{
-    resize: none;
-    height:30vh;
-}
 
 .supplier_area{
+    padding-left: 2%;
+    padding-right:2%;
     width:50%;
 }
 .s_table{
@@ -84,7 +72,7 @@ section{
     background-color:#D0D0D0	;
 }
 .s_table .scroll{
-    height: 65vh;
+    height: 45vh;
     overflow-y: scroll;
 }
 .s_table  table{
