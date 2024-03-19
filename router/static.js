@@ -64,6 +64,7 @@ router.post('/header_data',(req,res)=>{
                         resource = [];
                         D_data.D_ID = results[i+1].D_ID;
                         D_data.D_Name = results[i+1].D_Name;
+                        now = results[i+1].D_ID;
                     }
                 }else{
                     D_data.resource = resource;
@@ -79,6 +80,7 @@ router.post('/header_data',(req,res)=>{
             res.json({"msg":"dberr"});
         }else{
             data.static_data = results;
+            console.log(data);
             res.json(data);
         }
     })
@@ -108,6 +110,7 @@ router.post('/index_data',(req,res)=>{
 
 router.get('/search',(req,res)=>{
     let html = readFileSync('./public/html/search.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -135,6 +138,7 @@ router.post('/search_data',(req,res)=>{
 
 router.post('/search_results',(req,res)=>{
     let html = readFileSync('./public/html/search_r.html','utf-8');
+    let L_ID = req.cookies.leng;
     let demand = req.body.demand;
     let identity = req.body.identity;
     let school = req.body.school;
@@ -154,7 +158,7 @@ router.post('/search_results',(req,res)=>{
 
     //加入強制資源(強制資料)
     new Promise((resolve,reject)=>{
-        resolve(searchResource_requestData(identity));
+        resolve(searchResource_requestData(identity,L_ID));
     }).then((results)=>{
         for(i = 0;i<results.length;i++){
             temp_R_List.push({
@@ -163,7 +167,7 @@ router.post('/search_results',(req,res)=>{
                 "R_ID" : results[i].R_ID,
                 "R_Name" : results[i].R_Name,
                 "R_Depiction" : results[i].R_Depiction,
-                "R_Label" : ['強烈建議'],
+                "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
                 "R_Img" : results[i].R_Img,
                 "Search_Type" : "required"
             })              
@@ -175,13 +179,13 @@ router.post('/search_results',(req,res)=>{
     
     //申請者身分過濾(適合資料)
     new Promise((resolve,reject)=>{
-        resolve(searchResource_identity(identity));
+        resolve(searchResource_identity(identity,L_ID));
     }).then((results)=>{
         let match = false;
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getMultiple_IdentityText(identity,results[i].R_Identity));
+                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_IdentityText(identity,results[i].R_Identity),L_ID));
                     match = true;
                     break;
                 }
@@ -193,7 +197,7 @@ router.post('/search_results',(req,res)=>{
                     "R_ID" : results[i].R_ID,
                     "R_Name" : results[i].R_Name,
                     "R_Depiction" : results[i].R_Depiction,
-                    "R_Label" : [getMultiple_IdentityText(identity,results[i].R_Identity)],
+                    "R_Label" : [getR_Label_leng(getMultiple_IdentityText(identity,results[i].R_Identity),L_ID)],
                     "R_Img" : results[i].R_Img,
                     "Search_Type" : "search"
                 })
@@ -207,13 +211,13 @@ router.post('/search_results',(req,res)=>{
 
     //申請者在學狀況過濾(適合資料)(不符合需要刪掉)
     new Promise((resolve,reject)=>{
-        resolve(searchResource_school(school));
+        resolve(searchResource_school(school,L_ID));
     }).then((results)=>{
         //let match = false;
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getMultiple_SchoolText(school,results[i].R_School));
+                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_SchoolText(school,results[i].R_School),L_ID));
                     //match = true;
                     break;
                 }
@@ -243,7 +247,7 @@ router.post('/search_results',(req,res)=>{
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getMultiple_LocationText(R_City,results[i].R_City));
+                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_LocationText(R_City,results[i].R_City),L_ID));
                     data.R_List.push(temp_R_List[j])
                     break;
                 }
@@ -274,6 +278,7 @@ router.post('/search_results',(req,res)=>{
         }
 
         html += `<script>
+        setSearch_window_L_ID('${req.cookies.leng}');
         setSearch_results(${JSON.stringify(data)});
         </script>
         `;
@@ -295,7 +300,7 @@ router.post('/search_results_data',(req,res)=>{
     let L_ID = req.cookies.leng;
     if(L_ID == undefined) L_ID = 'L000000001';
     
-    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000014';`,[L_ID],(err,results)=>{
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000015';`,[L_ID],(err,results)=>{
         if(err){
             console.log(err);
             res.json({"msg":"dberr"});
@@ -312,8 +317,10 @@ router.post('/search_results_data',(req,res)=>{
 
 
 
+
 router.get('/guideline',(req,res)=>{
     let html = readFileSync('./public/html/guideline.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -342,6 +349,7 @@ router.post('/guideline_data',(req,res)=>{
 
 router.get('/about_us',(req,res)=>{
     let html = readFileSync('./public/html/about_us.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -369,6 +377,7 @@ router.post('/about_us_data',(req,res)=>{
 
 router.get('/cookie_policy',(req,res)=>{
     let html = readFileSync('./public/html/cookie_policy.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -397,6 +406,7 @@ router.post('/cookie_policy_data',(req,res)=>{
 
 router.get('/economy',(req,res)=>{
     let html = readFileSync('./public/html/finance.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -426,6 +436,7 @@ router.post('/economy_data',(req,res)=>{
 
 router.get('/emergency',(req,res)=>{
     let html = readFileSync('./public/html/emergency.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -454,6 +465,7 @@ router.post('/emergency_data',(req,res)=>{
 
 router.get('/law',(req,res)=>{
     let html = readFileSync('./public/html/law.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -483,6 +495,7 @@ router.post('/law_data',(req,res)=>{
 
 router.get('/application',(req,res)=>{
     let html = readFileSync('./public/html/application.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -511,6 +524,7 @@ router.post('/application_data',(req,res)=>{
 
 router.get('/psychology',(req,res)=>{
     let html = readFileSync('./public/html/psychology.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -539,6 +553,7 @@ router.post('/psychology_data',(req,res)=>{
 
 router.get('/education',(req,res)=>{
     let html = readFileSync('./public/html/education.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -567,6 +582,7 @@ router.post('/education_data',(req,res)=>{
 
 router.get('/career',(req,res)=>{
     let html = readFileSync('./public/html/career.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -595,6 +611,7 @@ router.post('/career_data',(req,res)=>{
 
 router.get('/medical',(req,res)=>{
     let html = readFileSync('./public/html/medical.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }
@@ -622,6 +639,63 @@ router.post('/medical_data',(req,res)=>{
 
 
 
+function getR_Label_leng(str,L_ID){
+    if(L_ID == 'L000000002'){
+        switch(str){
+            case '強烈建議' : return 'Recommend';
+            //IdentityText
+            case '所有身分' : return 'All Identity';
+            case '新住民' : return 'New resident';
+            case '新住民子女' : return 'Children of new residents';
+            case '原住民' : return 'Aboriginal people';
+            case '中/低收入戶' : return 'Middle/low-income households';
+            case '就職青年' : return 'Job-seeking youth';
+            case '單親家庭' : return 'One-parent family';
+            case '身心障礙者' : return 'Disability';
+            case '身心障礙子女' : return 'Disabled children';
+            case '特殊境遇家庭' : return 'families in special circumstances';
+            case '暴力/霸凌受害者' : return 'Victims of Violence/Bullying';
+            case '懷孕少女' : return 'pregnant girl';
+            //SchoolText
+            case '不限就學' : return 'All Study status';
+            case '未就學' : return 'Not in school';
+            case '國小' : return 'Elementary school';
+            case '國中' : return 'junior high school';
+            case '高中' : return 'high school';
+            case '五專' : return 'junior college';
+            case '大學' : return 'college';
+            case '研究所' : return 'university';
+            case '畢業就學' : return 'Study after graduation';
+            //CityText
+            case '所有縣市' : return 'All City';
+            case '臺北市' : return 'Taipei';
+            case '新北市' : return 'New Taipei';
+            case '桃園市' : return 'Taoyuan';
+            case '台中市' : return 'Taichung';
+            case '台南市' : return 'Tainan';
+            case '高雄市' : return 'Kaohsiung';
+            case '基隆市' : return 'Keelung';
+            case '新竹市' : return 'Hsinchu';
+            case '新竹縣' : return 'Hsinchu County';
+            case '苗栗縣' : return 'Miaoli';
+            case '彰化縣' : return 'Changhua';
+            case '南投縣' : return 'Nantou';
+            case '雲林縣' : return 'Yunlin';
+            case '嘉義市' : return 'Chiayi';
+            case '嘉義縣' : return 'Chiayi County';
+            case '屏東縣' : return 'Pingtung';
+            case '宜蘭縣' : return 'Yilan';
+            case '花蓮縣' : return 'Hualien';
+            case '台東縣' : return 'Taitung';
+            case '澎湖縣' : return 'Penghu';
+            case '金門縣' : return 'Kinmen';
+            case '連江縣' : return 'Lianjiang';
+        }
+    }else{
+        //預設中文
+        return str;
+    }
+}
 function getDemandID(code){
     switch(code){
         case 'A1' : return `D000000001`  //經濟需求
@@ -742,11 +816,11 @@ async function searchResource_location(R_City){
         })
     })
 }
-async function searchResource_identity(identity){
-    let parameter = [];
+async function searchResource_identity(identity,L_ID){
+    let parameter = [L_ID];
     str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
     (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
-    AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 3 AND ( R_Identity LIKE '%A0%' `;
+    AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 3 AND ( R_Identity LIKE '%A0%' `;
 
 
     if(typeof identity == 'string'){
@@ -761,8 +835,10 @@ async function searchResource_identity(identity){
 
     str +=` )) Depiction
     WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 2 AND ( R_Identity LIKE '%A0%' `;
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 2 AND ( R_Identity LIKE '%A0%' `;
 
+    parameter.push(L_ID);
+    parameter.push(L_ID);
 
     if(typeof identity == 'string'){
         str += 'OR R_Identity LIKE ? ';
@@ -788,11 +864,11 @@ async function searchResource_identity(identity){
         })
     })
 }
-async function searchResource_school(school){
-    let parameter = [];
+async function searchResource_school(school,L_ID){
+    let parameter = [L_ID];
     str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_School,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
     (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
-    AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 3 AND ( R_School LIKE '%A0%' `
+    AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 3 AND ( R_School LIKE '%A0%' `
 
     if(typeof school == 'string'){
         str += 'OR R_School LIKE ? ';
@@ -807,7 +883,12 @@ async function searchResource_school(school){
 
     str +=` )) Depiction
     WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 2 AND ( R_School LIKE '%A0%' `;
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 2 AND ( R_School LIKE '%A0%' `;
+
+
+    parameter.push(L_ID);
+    parameter.push(L_ID);
+
 
     if(typeof school == 'string'){
         str += 'OR R_School LIKE ? ';
@@ -866,10 +947,10 @@ async function searchResource_suitable(demand){
     })
     
 }
-async function searchResource_requestData(identity){
-    let parameter = [];
+async function searchResource_requestData(identity,L_ID){
+    let parameter = [L_ID];
     str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
-    (SELECT R_ID,RD_Content R_Depiction FROM Resource_data WHERE L_ID = 'L000000001' `
+    (SELECT R_ID,RD_Content R_Depiction FROM Resource_data WHERE L_ID = ? `
 
     if(typeof identity == 'string'){
         if(Required_Resource[identity]){
@@ -896,7 +977,10 @@ async function searchResource_requestData(identity){
 
     str += ` AND RD_Type = 3) Depiction
     WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001' AND Resource_data.RD_Type = 2 AND ( FALSE `;
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 2 AND ( FALSE `;
+
+    parameter.push(L_ID);
+    parameter.push(L_ID);
 
     if(typeof identity == 'string'){
         if(Required_Resource[identity]){

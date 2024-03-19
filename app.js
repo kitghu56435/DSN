@@ -50,6 +50,7 @@ app.use('/search',search);
 
 app.get('/',(req,res)=>{
     let html = readFileSync('./public/html/index.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
     }

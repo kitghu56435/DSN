@@ -43,27 +43,27 @@
     </header>
     <main>
         <div class="container">
-            <div class="title_area"><h2>搜尋條件</h2></div>
-            <div class="search_key">
+            <div class="title_area container2"><h2 class="T-title" dsnid="01" dsnnote="搜尋條件">搜尋條件</h2></div>
+            <div class="search_key container2">
                 <div>
-                    <div><h4><img src="../img/search/resource.png">資源種類</h4></div>
+                    <div><h4 class="T-text" dsnid="02" dsnnote="資源種類"><img src="../img/search/resource.png">資源種類</h4></div>
                     <div id="demand">經濟資源、法律資源</div>
                 </div>
                 <div>
-                    <div><h4><img src="../img/search/member.png">申請者身分</h4></div>
+                    <div><h4 class="T-text" dsnid="03" dsnnote="申請者身分"><img src="../img/search/member.png">申請者身分</h4></div>
                     <div id="identity">原住民</div>
                 </div>
                 <div>
-                    <div><h4><img src="../img/search/school.png">在學狀態</h4></div>
+                    <div><h4 class="T-text" dsnid="04" dsnnote="在學狀態"><img src="../img/search/school.png">在學狀態</h4></div>
                     <div id="school">高中</div>
                 </div>
                 <div>
-                    <div><h4><img src="../img/search/location.png">申請者地區</h4></div>
+                    <div><h4 class="T-text" dsnid="05" dsnnote="申請者地區"><img src="../img/search/location.png">申請者地區</h4></div>
                     <div id="R_City">台北市中山區</div>
                 </div>
             </div>
-            <hr class="featurette-divider container2" style="margin-top:1%;margin-bottom: 1%;">
-            <div class="title_area"><h2><img src="../img/backend/search.png">資源搜尋結果</h2></div>
+            <hr class="featurette-divider" style="margin-top:1%;margin-bottom: 1%;">
+            <div class="title_area container2"><h2 class="T-title" dsnid="06" dsnnote="資源搜尋結果"><img src="../img/backend/search.png">資源搜尋結果</h2></div>
             <div class="data">
                 <h3><div><img src="../img/index/D000000001.png"></div>經濟資源資訊</h3>
                 <div class="data_resource">
@@ -84,7 +84,7 @@
                 <div class="data_resource">
                 </div>
             </div>
-            <div class="title_area"><h2><img src="../img/search/resource.png">其他可能適合您的資源</h2></div>
+            <div class="title_area container2"><h2 class="T-title" dsnid="07" dsnnote="其他可能適合您的資源"><img src="../img/search/resource.png">其他可能適合您的資源</h2></div>
             <div class="data">
                 <div class="data_resource">
                     <div class="r_box">
@@ -109,9 +109,9 @@
                     </div>
                 </div>
             </div>
-            <div class="again_button">
-                <h5>輸入的條件越準確，我們就可以提供更適合您的資訊喔</h5>
-                <button class="btn btn-primary">再搜尋一次</button>
+            <div class="again_button container2">
+                <h5 class="T-text" dsnid="08" dsnnote="在搜尋提示">輸入的條件越準確，我們就可以提供更適合您的資訊喔</h5>
+                <button class="btn btn-primary T-text" onclick="url('/static/search')" dsnid="09" dsnnote="再搜尋一次按鈕">再搜尋一次</button>
             </div>
             <hr class="featurette-divider container2">
         </div>
@@ -186,7 +186,8 @@
     <script src="../js/frontend.js"></script>
     <script>
         header_nav_check();
-        getHeader_data();
+        getHeader_data('search_results');
+        getSearch_results_data();
         // let data = {
         //     "Search_data" : {
         //         "demand" : 'A1',

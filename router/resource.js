@@ -721,9 +721,9 @@ router.post('/demand/setting/data',(req,res)=>{
         }else{
             for(i = 0; i < results.length;i++){
                 if(results[i].RD_Type == 2){
-                    data.R_Name = results[0].R_Name;
+                    data.R_Name = results[i].R_Name;
                 }else if(results[i].RD_Type == 3){
-                    data.R_Depiction = results[1].R_Name;  //這個其實是資源敘述
+                    data.R_Depiction = results[i].R_Name;  //這個其實是資源敘述
                 }
             }
         }
@@ -1948,7 +1948,7 @@ async function create_Resource(data){
 
    
     return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,null,null,null,null,0);`,
+        db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,null,null,null,0);`,
         [R_ID,D_ID,T_ID,R_Date,R_Date,R_Img],(err)=>{
             if(err){
                 console.log(err)
@@ -2057,7 +2057,8 @@ async function delete_Resource_data(R_ID,L_ID,Template_ID,Content){
     
 }
 async function update_Resource(data){
-    let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
+    let RD_ID1 = await RDNextID('Resource_data','RD_ID','RD');  //給資源名稱的
+    let RD_ID2 = addID('RD',RD_ID1)                             //給資源敘述的
     let R_ID = data.R_ID;
     let L_ID = data.L_ID;
     let R_Name = data.R_Name;
@@ -2079,7 +2080,7 @@ async function update_Resource(data){
 
 
 
-    return new Promise((resolve)=>{
+    return new Promise((resolve,rejects)=>{
         //資源需求與模板
         db.execute(`UPDATE Resources SET T_ID = ?,D_ID = ?,R_Img = ? WHERE R_ID = ?`,[T_ID,D_ID,R_Img,R_ID],(err)=>{
             if(err){
@@ -2094,7 +2095,7 @@ async function update_Resource(data){
                 rejects();
             }else{
                 if(results.affectedRows == 0){
-                    db.execute(`INSERT INTO Resource_data VALUES(?,?,?,null,3,?);`,[RD_ID,R_ID,L_ID,R_Depiction],(err)=>{
+                    db.execute(`INSERT INTO Resource_data VALUES(?,?,?,null,3,?);`,[RD_ID2,R_ID,L_ID,R_Depiction],(err)=>{
                         if(err){
                             console.log(err)
                             rejects();
@@ -2110,7 +2111,7 @@ async function update_Resource(data){
                 rejects();
             }else{
                 if(results.affectedRows == 0){
-                    db.execute(`INSERT INTO Resource_data VALUES(?,?,?,null,2,?);`,[RD_ID,R_ID,L_ID,R_Name],(err)=>{
+                    db.execute(`INSERT INTO Resource_data VALUES(?,?,?,null,2,?);`,[RD_ID1,R_ID,L_ID,R_Name],(err)=>{
                         if(err){
                             console.log(err)
                             rejects();

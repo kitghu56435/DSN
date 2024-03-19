@@ -68,6 +68,9 @@ h4 > img{
     padding:2%;
 }
 .data_resource > .r_box > .r_box_text > span{
+    margin-top:0.5%;
+    display: inline-block;
+    white-space: nowrap;
     padding:1.5%;
     border: 1px 	#0080FF solid;
     color: 	#0080FF;

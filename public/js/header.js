@@ -84,7 +84,7 @@ function setHeader_data(data){
         let str = '';
         
         for(j = 0;j<data.data[i].resource.length;j++){
-            str += `<li><a class="dropdown-hover-item" href="#">${data.data[i].resource[j].R_Name}</a></li>`;
+            str += `<li><a class="dropdown-hover-item" style="white-space: normal;" href="#">${data.data[i].resource[j].R_Name}</a></li>`;
             if(data.data[i].resource.length-1  != j){
                 str += `<li><hr class="nav-link-hr"></li>`;
             }
@@ -108,9 +108,9 @@ function setHeader_data(data){
     let change_language = document.createElement('ul');
     change_language.setAttribute('class','navbar-nav mb-2 mb-md-0');
     change_language.setAttribute('id','change_language');
-    str = '';
+    let str = '';
     for(i = 0;i<data.lang.length;i++){
-        str += `<li><a class="dropdown-item" onclick="setLanguage('${data.lang[i].L_ID}','${data.Page}')">${data.lang[i].L_Name}</a></li>`;
+        str += `<li><a class="dropdown-item" onclick="setLanguage('${data.lang[i].L_ID}','${data.Page}'),setSearch_window_L_ID('${data.lang[i].L_ID}')">${data.lang[i].L_Name}</a></li>`;
     }
     
     str2 = `<li class="nav-item dropdown">
@@ -230,6 +230,8 @@ function setLanguage(L_ID,Page){
                     case "career" : getCareer_data(); break;
                     case "education" : getEducation_data(); break;
                     case "medical" : getMedical_data(); break;
+                    case "search" : getSearch_data(); break;
+                    case "search_results" : getSearch_results_data(); break;
                 }
             }
         }
@@ -241,6 +243,12 @@ function setLanguage(L_ID,Page){
 }
 
 /*--------------- search_window ------------------*/ 
+
+let search_window_L_ID = 'L000000001';  //預設是英文搜尋彈跳視窗
+
+function setSearch_window_L_ID(L_ID){
+    search_window_L_ID = L_ID;
+}
 
 function check_search_data(){
     let demand = document.getElementsByName('demand');
@@ -264,43 +272,84 @@ function check_search_data(){
 }
 
 function setDistrict(){
-    let city = document.getElementById('city').value;
-    let district = document.getElementById('district');
+    let city = document.getElementsByName('R_City');
+    let district = document.getElementsByClassName('district');
     
-    district.innerHTML = '';
-
-    let cityDistrictsMap = {
-        'A0' : ['不限區'],  
-        'A1': ['中正區', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
-        'A2': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
-        'A3': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
-        'A4': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
-        'A5': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
-        'A6': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '左營區', '楠梓區', '小港區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
-        'A7': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
-        'A8': ['東區', '北區', '香山區'],
-        'A9': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
-        'B1': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
-        'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
-        'B3': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
-        'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
-        'B5': ['東區', '西區'],
-        'B6': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
-        'B7': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
-        'B8': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
-        'B9': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
-        'C1': ['台東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉','東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
-        'C2': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
-        'C3': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
-        'C4': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
-    };
-
-    cityDistrictsMap[city].forEach(function(value) {
-        let option = document.createElement('option');
-        option.value = value;
-        option.text = value;
-        district.add(option);
-    });
+    
+    let cityDistrictsMap = {};
+    
+    if(search_window_L_ID == 'L000000001'){
+        cityDistrictsMap = {
+            'A0' : ['不限區'],  
+            'A1': ['中正區', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
+            'A2': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
+            'A3': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
+            'A4': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
+            'A5': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
+            'A6': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '左營區', '楠梓區', '小港區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
+            'A7': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
+            'A8': ['東區', '北區', '香山區'],
+            'A9': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
+            'B1': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
+            'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
+            'B3': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
+            'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
+            'B5': ['東區', '西區'],
+            'B6': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
+            'B7': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
+            'B8': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
+            'B9': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
+            'C1': ['台東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉','東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
+            'C2': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
+            'C3': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
+            'C4': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
+        }
+    }else if(search_window_L_ID == 'L000000002'){
+        cityDistrictsMap = {
+            'A0' : ['Not limited'],  
+            'A1': ['Zhongzheng', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
+            'A2': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
+            'A3': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
+            'A4': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
+            'A5': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
+            'A6': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '左營區', '楠梓區', '小港區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
+            'A7': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
+            'A8': ['東區', '北區', '香山區'],
+            'A9': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
+            'B1': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
+            'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
+            'B3': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
+            'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
+            'B5': ['東區', '西區'],
+            'B6': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
+            'B7': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
+            'B8': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
+            'B9': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
+            'C1': ['台東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉','東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
+            'C2': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
+            'C3': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
+            'C4': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
+        }
+    }
+    
+    if(district.length == 2){   //應付再搜尋頁面打開搜尋視窗 出現兩個district的狀況
+        district[1].innerHTML = '';
+        cityDistrictsMap[city[1].value].forEach(function(value) {
+            let option = document.createElement('option');
+            option.value = value;
+            option.text = value;
+            district[1].add(option);
+        });
+    }else{
+        district[0].innerHTML = '';
+        cityDistrictsMap[city[0].value].forEach(function(value) {
+            let option = document.createElement('option');
+            option.value = value;
+            option.text = value;
+            district[0].add(option);
+        });
+    }
+    
 }
 
 function SchoolCheck(n){
@@ -329,103 +378,206 @@ function search_window(){
         let window = document.createElement('div');
         screen.setAttribute('class','search_blackscreen');
         window.setAttribute('class','search_window');
-        window.innerHTML = `
-        <div class="title">
-            <img style="float: none;margin-top: -1%;" src="../img/backend/search.png">
-            <span>資源搜尋</span>
-            <img onclick="search_window()" src="../img/X.png">
-        </div>
-        <div class="text">
-            使用資源搜尋功能，快速找到符合您狀況的資源。選擇您想查詢的條件，並滑動至視窗下方點選搜尋按鈕。
-        </div>
-        <form class="data_form" id="data_form" method="post" action="/static/search_results">
-            <div class="form_section">
-                <img src="../img/search/resource.png">
-                <span class="type_title">資源種類</span><br>
-                <span class="type_des">(必填)請至少選擇一種資源種類，讓我們提供您要的資訊。</span><br>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy">經濟資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law">法律資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A3" id="emergency"><label for="emergency">緊急資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A4" id="education"><label for="education">教育資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A5" id="career"><label for="career">職涯資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A6" id="medical"><label for="medical">醫療資訊</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology">心理資訊</label></span>
+
+        if(search_window_L_ID == 'L000000001'){
+            window.innerHTML = `
+            <div class="title">
+                <img style="float: none;margin-top: -1%;" src="../img/backend/search.png">
+                <span>資源搜尋</span>
+                <img onclick="search_window()" src="../img/X.png">
             </div>
-            <div class="form_section">
-                <img src="../img/search/member.png">
-                <span class="type_title">申請者身分</span><br>
-                <span class="type_des">(複選)每種身分都有屬於他們的資源。</span><br>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">新住民</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">新住民子女</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">原住民</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">中/低收入戶</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A5" id="identity5"><label for="identity5">就職青年</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A6" id="identity6"><label for="identity6">單親家庭</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A7" id="identity7"><label for="identity7">身心障礙</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A8" id="identity8"><label for="identity8">身心障礙子女</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A9" id="identity9"><label for="identity9">特殊境遇家庭</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B1" id="identity10"><label for="identity10">暴力/霸凌受害者</label></span>
-                <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B2" id="identity11"><label for="identity11">懷孕少女</label></span>
+            <div class="text">
+                使用資源搜尋功能，快速找到符合您狀況的資源。選擇您想查詢的條件，並滑動至視窗下方點選搜尋按鈕。
             </div>
-            <div class="form_section">
-                <img src="../img/search/school.png">
-                <span class="type_title">在學狀況</span><br>
-                <span class="type_des">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1">未就學</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2">國小</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A3" id="school3" onclick="SchoolCheck(2)"><label for="school3">國中</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A4" id="school4" onclick="SchoolCheck(3)"><label for="school4">高中</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A5" id="school5" onclick="SchoolCheck(4)"><label for="school5">五專</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A6" id="school6" onclick="SchoolCheck(5)"><label for="school6">大學</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A7" id="school7" onclick="SchoolCheck(6)"><label for="school7">研究所</label></span>
-                <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8">畢業就學</label></span>
-            </div>
-            <div class="form_section">
-                <img src="../img/search/location.png">
-                <span class="type_title">申請者地區</span>
-                <span class="type_des">有些資源有地區限制。</span><br>
-                <div class="row">
-                    <div class="col form-floating">
-                        <select class="form-select" name="R_City" id="city" onchange="setDistrict()">
-                            <option value="A0">不限縣市</option>
-                            <option value="A1">臺北市</option>
-                            <option value="A2">新北市</option>
-                            <option value="A3">桃園市</option>
-                            <option value="A4">台中市</option>
-                            <option value="B5">台南市</option>
-                            <option value="B6">高雄市</option>
-                            <option value="A7">基隆市</option>
-                            <option value="A8">新竹市</option>
-                            <option value="A9">新竹縣</option>
-                            <option value="B1">苗栗縣</option>
-                            <option value="B2">彰化縣</option>
-                            <option value="B3">南投縣</option>
-                            <option value="B4">雲林縣</option>               
-                            <option value="B5">嘉義市</option>
-                            <option value="B6">嘉義縣</option>
-                            <option value="B7">屏東縣</option>
-                            <option value="B8">宜蘭縣</option>
-                            <option value="B9">花蓮縣</option>
-                            <option value="C1">台東縣</option>
-                            <option value="C2">澎湖縣</option>
-                            <option value="C3">金門縣</option>
-                            <option value="C4">連江縣</option>
-                        </select>
-                        <label class="floatingSelect" for="city">申請者戶籍縣市</label>
-                    </div>
-                    
-                    <div class="col form-floating">
-                        <select class="form-select" name="R_District" id="district"><option>不限區</option></select>
-                        <label class="floatingSelect" for="district">申請者戶籍行政區</label>
+            <form class="data_form" id="data_form" method="post" action="/static/search_results">
+                <div class="form_section">
+                    <img src="../img/search/resource.png">
+                    <span class="type_title">資源種類</span><br>
+                    <span class="type_des">(必填)請至少選擇一種資源種類，讓我們提供您要的資訊。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy">經濟資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law">法律資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A3" id="emergency"><label for="emergency">緊急資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A4" id="education"><label for="education">教育資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A5" id="career"><label for="career">職涯資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A6" id="medical"><label for="medical">醫療資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology">心理資訊</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/member.png">
+                    <span class="type_title">申請者身分</span><br>
+                    <span class="type_des">(複選)每種身分都有屬於他們的資源。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">新住民</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">新住民子女</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">原住民</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">中/低收入戶</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A5" id="identity5"><label for="identity5">就職青年</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A6" id="identity6"><label for="identity6">單親家庭</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A7" id="identity7"><label for="identity7">身心障礙</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A8" id="identity8"><label for="identity8">身心障礙子女</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A9" id="identity9"><label for="identity9">特殊境遇家庭</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B1" id="identity10"><label for="identity10">暴力/霸凌受害者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B2" id="identity11"><label for="identity11">懷孕少女</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/school.png">
+                    <span class="type_title">在學狀況</span><br>
+                    <span class="type_des">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1">未就學</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2">國小</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A3" id="school3" onclick="SchoolCheck(2)"><label for="school3">國中</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A4" id="school4" onclick="SchoolCheck(3)"><label for="school4">高中</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A5" id="school5" onclick="SchoolCheck(4)"><label for="school5">五專</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A6" id="school6" onclick="SchoolCheck(5)"><label for="school6">大學</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A7" id="school7" onclick="SchoolCheck(6)"><label for="school7">研究所</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8">畢業就學</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/location.png">
+                    <span class="type_title">申請者地區</span>
+                    <span class="type_des">有些資源有地區限制。</span><br>
+                    <div class="row">
+                        <div class="col form-floating">
+                            <select class="form-select" name="R_City" id="city" onchange="setDistrict()">
+                                <option value="A0">不限縣市</option>
+                                <option value="A1">臺北市</option>
+                                <option value="A2">新北市</option>
+                                <option value="A3">桃園市</option>
+                                <option value="A4">台中市</option>
+                                <option value="B5">台南市</option>
+                                <option value="B6">高雄市</option>
+                                <option value="A7">基隆市</option>
+                                <option value="A8">新竹市</option>
+                                <option value="A9">新竹縣</option>
+                                <option value="B1">苗栗縣</option>
+                                <option value="B2">彰化縣</option>
+                                <option value="B3">南投縣</option>
+                                <option value="B4">雲林縣</option>               
+                                <option value="B5">嘉義市</option>
+                                <option value="B6">嘉義縣</option>
+                                <option value="B7">屏東縣</option>
+                                <option value="B8">宜蘭縣</option>
+                                <option value="B9">花蓮縣</option>
+                                <option value="C1">台東縣</option>
+                                <option value="C2">澎湖縣</option>
+                                <option value="C3">金門縣</option>
+                                <option value="C4">連江縣</option>
+                            </select>
+                            <label class="floatingSelect" for="city">申請者戶籍縣市</label>
+                        </div>
+                        
+                        <div class="col form-floating">
+                            <select class="form-select district" name="R_District" id="district"><option>不限區</option></select>
+                            <label class="floatingSelect" for="district">申請者戶籍行政區</label>
+                        </div>
                     </div>
                 </div>
+                <div class="btn_area">
+                    <a style="display: none" id="aa" href="#data_form"></a>
+                    <button type="button" onclick="check_search_data()" class="btn btn-primary btn-lg">查詢</button>
+                </div>
+            </form>
+            `;
+        }else if(search_window_L_ID == 'L000000002'){
+            window.innerHTML = `
+            <div class="title">
+                <img style="float: none;margin-top: -1%;" src="../img/backend/search.png">
+                <span>Resource search</span>
+                <img onclick="search_window()" src="../img/X.png">
             </div>
-            <div class="btn_area">
-                <a style="display: none" id="aa" href="#data_form"></a>
-                <button type="button" onclick="check_search_data()" class="btn btn-primary btn-lg">查詢</button>
+            <div class="text">
+                Use the resource search function to quickly find resources that match your situation. Select the conditions you want to query.
             </div>
-        </form>
-        `;
+            <form class="data_form" id="data_form" method="post" action="/static/search_results">
+                <div class="form_section">
+                    <img src="../img/search/resource.png">
+                    <span class="type_title">Resource type</span><br>
+                    <span class="type_des">(Required) Please select at least one resource type to let us provide the information you want.</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy">Economy</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law">law</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A3" id="emergency"><label for="emergency">Emergency</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A4" id="education"><label for="education">Education</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A5" id="career"><label for="career">Career</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A6" id="medical"><label for="medical">Medical</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology">Psychology</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/member.png">
+                    <span class="type_title">Applicant status</span><br>
+                    <span class="type_des">(Check) Each identity has its own resources.</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">New resident</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">Children of new residents</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">Aboriginal people</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">Middle/low-income households </label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A5" id="identity5"><label for="identity5">Job-seeking youth</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A6" id="identity6"><label for="identity6">One-parent family</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A7" id="identity7"><label for="identity7">Disability</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A8" id="identity8"><label for="identity8">Disabled children</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A9" id="identity9"><label for="identity9">families in special circumstances</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B1" id="identity10"><label for="identity10">Victims of Violence/Bullying</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B2" id="identity11"><label for="identity11">pregnant girl</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/school.png">
+                    <span class="type_title">Study status</span><br>
+                    <span class="type_des">(Single choice) The school has many resources for us to apply for. Let us know your current study status.</span><br>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1">Not in school</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2">Elementary school</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A3" id="school3" onclick="SchoolCheck(2)"><label for="school3">junior high school</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A4" id="school4" onclick="SchoolCheck(3)"><label for="school4">high school</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A5" id="school5" onclick="SchoolCheck(4)"><label for="school5">junior college</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A6" id="school6" onclick="SchoolCheck(5)"><label for="school6">college</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A7" id="school7" onclick="SchoolCheck(6)"><label for="school7">university</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8">Study after graduation</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/location.png">
+                    <span class="type_title">Applicant's area</span>
+                    <span class="type_des">Some resources have regional restrictions.</span><br>
+                    <div class="row">
+                        <div class="col form-floating">
+                            <select class="form-select" name="R_City" id="city" onchange="setDistrict()">
+                                <option value="A0">Not limited</option>
+                                <option value="A1">Taipei</option>
+                                <option value="A2">New Taipei</option>
+                                <option value="A3">Taoyuan</option>
+                                <option value="A4">Taichung</option>
+                                <option value="B5">Tainan</option>
+                                <option value="B6">Kaohsiung</option>
+                                <option value="A7">Keelung</option>
+                                <option value="A8">Hsinchu</option>
+                                <option value="A9">Hsinchu County</option>
+                                <option value="B1">Miaoli</option>
+                                <option value="B2">Changhua</option>
+                                <option value="B3">Nantou</option>
+                                <option value="B4">Yunlin</option>               
+                                <option value="B5">Chiayi</option>
+                                <option value="B6">Chiayi County</option>
+                                <option value="B7">Pingtung</option>
+                                <option value="B8">Yilan</option>
+                                <option value="B9">Hualien</option>
+                                <option value="C1">Taitung</option>
+                                <option value="C2">Penghu</option>
+                                <option value="C3">Kinmen</option>
+                                <option value="C4">Lianjiang</option>
+                            </select>
+                            <label class="floatingSelect" for="city">Applicant’s county or city of residence</label>
+                        </div>
+                        
+                        <div class="col form-floating">
+                            <select class="form-select district" name="R_District" id="district"><option>Not limited</option></select>
+                            <label class="floatingSelect" for="district">Applicant’s administrative region of residence</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn_area">
+                    <a style="display: none" id="aa" href="#data_form"></a>
+                    <button type="button" onclick="check_search_data()" class="btn btn-primary btn-lg">search</button>
+                </div>
+            </form>
+            `;
+        }
+        
+
         body.appendChild(screen);
         body.appendChild(window);
     }

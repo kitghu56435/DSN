@@ -1,3 +1,33 @@
+.header-image {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  height: 500px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.centered-text {
+  position: absolute;
+  width:100%;
+  margin-top:-15%;
+  text-align: center;
+  color: #fff;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.testsmall {
+  font-size: 20px;
+  font-weight: lighter;
+}
+
+.title-container {
+  text-align: center;
+  margin-top: 3%;
+}
+
+
 .article1 {
   text-align: center;
   width: 100%;
@@ -24,7 +54,7 @@ h1 {
 }
 h2 {
   margin-top: 10px;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
 }
 

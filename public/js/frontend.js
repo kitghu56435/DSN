@@ -172,8 +172,71 @@ function setSearch_results(data){
 }
 
 
-
-
+function getR_Label_leng(str,L_ID){
+    if(L_ID == 'L000000002'){
+        switch(str){
+            case '未選擇' : return 'Not selected';
+            //demand
+            case '經濟資訊' : return 'Economy';
+            case '法律資訊' : return 'law';
+            case '緊急資訊' : return 'Emergency';
+            case '教育資訊' : return 'Education';
+            case '職涯資訊' : return 'Career';
+            case '醫療資訊' : return 'Medical';
+            case '心理資訊' : return 'Psychology';
+            //IdentityText
+            case '所有身分' : return 'All Identity';
+            case '新住民' : return 'New resident';
+            case '新住民子女' : return 'Children of new residents';
+            case '原住民' : return 'Aboriginal people';
+            case '中/低收入戶' : return 'Middle/low-income households';
+            case '就職青年' : return 'Job-seeking youth';
+            case '單親家庭' : return 'One-parent family';
+            case '身心障礙者' : return 'Disability';
+            case '身心障礙子女' : return 'Disabled children';
+            case '特殊境遇家庭' : return 'families in special circumstances';
+            case '暴力/霸凌受害者' : return 'Victims of Violence/Bullying';
+            case '懷孕少女' : return 'pregnant girl';
+            //SchoolText
+            case '不限就學' : return 'All Study status';
+            case '未就學' : return 'Not in school';
+            case '國小' : return 'Elementary school';
+            case '國中' : return 'junior high school';
+            case '高中' : return 'high school';
+            case '五專' : return 'junior college';
+            case '大學' : return 'college';
+            case '研究所' : return 'university';
+            case '畢業就學' : return 'Study after graduation';
+            //CityText
+            case '所有縣市' : return 'All City';
+            case '臺北市' : return 'Taipei';
+            case '新北市' : return 'New Taipei';
+            case '桃園市' : return 'Taoyuan';
+            case '台中市' : return 'Taichung';
+            case '台南市' : return 'Tainan';
+            case '高雄市' : return 'Kaohsiung';
+            case '基隆市' : return 'Keelung';
+            case '新竹市' : return 'Hsinchu';
+            case '新竹縣' : return 'Hsinchu County';
+            case '苗栗縣' : return 'Miaoli';
+            case '彰化縣' : return 'Changhua';
+            case '南投縣' : return 'Nantou';
+            case '雲林縣' : return 'Yunlin';
+            case '嘉義市' : return 'Chiayi';
+            case '嘉義縣' : return 'Chiayi County';
+            case '屏東縣' : return 'Pingtung';
+            case '宜蘭縣' : return 'Yilan';
+            case '花蓮縣' : return 'Hualien';
+            case '台東縣' : return 'Taitung';
+            case '澎湖縣' : return 'Penghu';
+            case '金門縣' : return 'Kinmen';
+            case '連江縣' : return 'Lianjiang';
+        }
+    }else{
+        //預設中文
+        return str;
+    }
+}
 function getSearch_Label(label){
     let str = '';
     for(ss = 0;ss < label.length ; ss++){
@@ -184,25 +247,25 @@ function getSearch_Label(label){
 function getSearch_Data_Text(data,type){
     if(typeof data == 'string'){
         switch(type){
-            case 'demand' : return getDemandText(data); break;
-            case 'identity' : return getIdentityText(data); break;
-            case 'school' : return getSchoolText(data); break;
-            case 'city' : return getCityText(data); break;
+            case 'demand' : return getR_Label_leng(getDemandText(data),search_window_L_ID); break;
+            case 'identity' : return getR_Label_leng(getIdentityText(data),search_window_L_ID); break;
+            case 'school' : return getR_Label_leng(getSchoolText(data),search_window_L_ID); break;
+            case 'city' : return getR_Label_leng(getCityText(data),search_window_L_ID); break;
         }
     }else if(typeof data == 'object'){
         let str = '';
         for(f = 0;f < data.length;f++){
             switch(type){
-                case 'demand' : str += getDemandText(data[f]) + '、'; break;
-                case 'identity' : str += getIdentityText(data[f]) + '、'; break;
-                case 'school' : str += getSchoolText(data[f]) + '、'; break;
-                case 'city' : str += getCityText(data[f]) + '、'; break;
+                case 'demand' : str += getR_Label_leng(getDemandText(data[f]),search_window_L_ID) + '、'; break;
+                case 'identity' : str += getR_Label_leng(getIdentityText(data[f]),search_window_L_ID) + '、'; break;
+                case 'school' : str += getR_Label_leng(getSchoolText(data[f]),search_window_L_ID) + '、'; break;
+                case 'city' : str += getR_Label_leng(getCityText(data[f]),search_window_L_ID) + '、'; break;
             }
         }
 
         return str.substring(0,(str.length-1));
     }else{
-        return '未選擇';
+        return getR_Label_leng('未選擇',search_window_L_ID);
     }
 }
 function getDemandText(code){

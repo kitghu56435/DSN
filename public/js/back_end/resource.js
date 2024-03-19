@@ -557,7 +557,7 @@ function setResource_edit(data){
             <div class="item">
                 <div class="item_title">${data.container[i].id[0]}(標題)</div>
                 <div class="item_label">
-                    <span>項目提示：${data.container[i].note[0]}</span>
+                    <span>提示：${data.container[i].note[0]}</span>
                 </div>
                 <div class="item_content">
                     <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
@@ -575,7 +575,7 @@ function setResource_edit(data){
                     <div class="item">
                         <div class="item_title">${data.container[i].id[j]}(文字)</div>
                         <div class="item_label">
-                            <span>項目提示：${data.container[i].note[j]}</span>
+                            <span>提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
                             <textarea name="${data.container[i].id[j]}" placeholder="請輸入文字內容">${data.container[i].content[j]}</textarea>
@@ -587,7 +587,7 @@ function setResource_edit(data){
                     <div class="item">
                         <div class="item_title">${data.container[i].id[j]}(連結)</div>
                         <div class="item_label">
-                            <span>項目提示：${data.container[i].note[j]}</span>
+                            <span>提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
                             <textarea name="${data.container[i].id[j]}" placeholder="請輸入URL或是網址">${data.container[i].content[j]}</textarea>
@@ -599,7 +599,7 @@ function setResource_edit(data){
                     <div class="item">
                         <div class="item_title">${data.container[i].id[j]}(照片)</div>
                         <div class="item_label">
-                            <span>項目提示：${data.container[i].note[j]}</span>
+                            <span>提示：${data.container[i].note[j]}</span>
                         </div>
                         <div class="item_content">
                             <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
