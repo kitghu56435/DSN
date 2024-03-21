@@ -86,6 +86,9 @@ p {
     margin-bottom:2%;
     width:80%;
   }
+  .centered-text {
+    margin-top: -30%;
+  }
   .article1 {
     width: 100%;
     flex-direction: column;
@@ -100,6 +103,9 @@ p {
   .article1 {
     width: 100%;
     flex-direction: column;
+  }
+  .centered-text {
+    margin-top: -70%;
   }
   h1 {
     margin-top: 40px;

@@ -7,7 +7,6 @@ const moment = require('moment-timezone');
 
 
 
-//先搞定頁首頁尾的切換語言。
 router.get('/',(req,res)=>{
     let R_ID = req.query.ID;
     let T_Path = '';

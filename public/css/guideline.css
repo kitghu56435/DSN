@@ -55,6 +55,9 @@
   margin-top: 5%;
   margin-bottom: 1%;
 }
+.flow_pic > img{
+  width: 100%;
+}
 .flow_pic h3 img{
   position: relative;
   top:-4px;

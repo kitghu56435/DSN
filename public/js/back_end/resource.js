@@ -793,7 +793,14 @@ function setResource_setting(data){
     sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.R_ID);
     sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
     btn[0].setAttribute('onclick',`saveResource('${data.R_ID}')`);
+    btn[1].setAttribute('onclick',`shelfResource('${data.R_ID}')`);
     L_ID.setAttribute('value',data.L_ID);
+
+    if(data.R_Shelf){
+        btn[1].innerHTML = '下架資源';
+    }else{
+        btn[1].innerHTML = '上架資源';
+    }
 
     
     let L_Name_array = [];

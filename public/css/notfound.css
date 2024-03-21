@@ -11,13 +11,24 @@
 .section > .img{
     padding:5%;
 }
+.section > .img > img{
+    height: 300px;
+    width:300px;
+}
 .section > .text{
     padding: 5%;
+    padding-top:15%;
 }
 
 @media (max-width:768px){   
     .section{
         flex-direction: column;
         text-align: center;
+    }
+}
+@media (max-width:1280px){   
+    .section > .text{
+        padding: 3%;
+        padding-top:15%;
     }
 }

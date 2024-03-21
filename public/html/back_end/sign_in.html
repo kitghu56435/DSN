@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="../img/icon.ico" type="image/x-icon">
     <link href="../../css/back_end/sign_in.css" rel="stylesheet">
     <script src="../../js/back_end/sign_in.js"></script>
-    <title>DSN管理登入</title>
+    <title>DSN後臺登入</title>
 </head>
 <body>
+    <div class="bg"></div>
     <form method="post" action="/sign_in/data">
-        <img src="../img/logo.png">
-        <h1>DSN管理系統</h1>
-        <h3>請輸入您的帳號密碼</h3>
-        <input name="Userid" id="id" placeholder="請輸入帳號"><br>
-        <input name="Password" id="pw" type="password" placeholder="請輸入密碼"><br>
-        <input class="submit" type="submit" value='登入'>
-    <form>      
+        <img src="../../img/search/resource.png">
+        <h1>DSN資源管理系統後臺登入</h1>
+        <h5>請輸入您的帳號密碼</h5>
+        <div class="form-floating mb-3">
+            <input type="text" name="Userid" class="form-control" id="floatingInput" placeholder="請輸入帳號">
+            <label for="floatingInput">請輸入帳號</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="Password" class="form-control" id="floatingPassword" placeholder="請輸入密碼">
+            <label for="floatingPassword">請輸入密碼</label>
+        </div>
+        <input class="submit" type="submit" value='登入系統'>
+    <form> 
+    <script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

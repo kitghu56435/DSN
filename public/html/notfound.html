@@ -44,11 +44,11 @@
     <main>
         <div class="container">
             <div class="section">
-                <div class="text">
-                    <h1>糟糕!</h1>
-                    <p>您想要找的網頁可能已經下架或是刪除了!<br>請稍後再嘗試重新整理，或是聯繫我們讓我們知道。</p>
+                <div class="text container2">
+                    <h1 class="T-text" dsnid="01" dsnnote="糟糕!">糟糕!</h1>
+                    <p class="T-text" dsnid="02" dsnnote="下方文字">您想要找的網頁可能已經下架或是刪除了!<br>請稍後再嘗試重新整理，或是聯繫我們讓我們知道。</p>
                 </div>
-                <div class="img"><img src="../img/p1.jpg"></div>
+                <div class="img"><img src="../img/Nofound.png"></div>
             </div>
             <hr class="featurette-divider container2">
         </div>
@@ -118,10 +118,12 @@
         </div>                
     </main>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/ajax.js"></script>
     <script src="../js/header.js"></script>
     <script>
         header_nav_check();
         getHeader_data('notfound');
+        getNotFound();
     </script>
 </body>
 </html>

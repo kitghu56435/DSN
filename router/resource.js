@@ -690,6 +690,7 @@ router.post('/demand/setting/data',(req,res)=>{
         "R_ID" : R_ID,
         "L_ID" : L_ID,
         "R_Name" : "",
+        "R_Shelf" : "",
         "T_ID" : "",
         "D_Name" : "",
         "D_ID" : "",
@@ -702,7 +703,7 @@ router.post('/demand/setting/data',(req,res)=>{
     }
 
     
-    db.execute(`SELECT Resources.D_ID,D_Name,T_ID,R_Img FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
+    db.execute(`SELECT Resources.D_ID,D_Name,T_ID,R_Img,R_Shelf FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
     AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -712,6 +713,7 @@ router.post('/demand/setting/data',(req,res)=>{
             data.T_ID = results[0].T_ID;
             data.D_ID = results[0].D_ID;
             data.R_Img = results[0].R_Img;
+            data.R_Shelf = results[0].R_Shelf;
         }
     })
     db.execute(`SELECT RD_Content R_Name,RD_Type FROM Resource_data WHERE R_ID = ? AND L_ID = ? AND ( RD_Type = 3 OR RD_Type = 2) ORDER BY RD_Type;`,[R_ID,L_ID],(err,results)=>{

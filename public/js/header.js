@@ -74,6 +74,9 @@ function getHeader_data(page_name){
 
 
 function setHeader_data(data){
+    //目錄頁名稱
+    let catalogue_page = ['economy','emergency','law','education','career','medical','psychology'];
+
     //動態nav
     let collapse = document.getElementsByClassName('collapse')[0];
     collapse.innerHTML = '';
@@ -84,14 +87,14 @@ function setHeader_data(data){
         let str = '';
         
         for(j = 0;j<data.data[i].resource.length;j++){
-            str += `<li><a class="dropdown-hover-item" style="white-space: normal;" href="#">${data.data[i].resource[j].R_Name}</a></li>`;
+            str += `<li><a class="dropdown-hover-item" style="white-space: normal;" href="/resource?ID=${data.data[i].resource[j].R_ID}">${data.data[i].resource[j].R_Name}</a></li>`;
             if(data.data[i].resource.length-1  != j){
                 str += `<li><hr class="nav-link-hr"></li>`;
             }
         }
         str2 += `
         <li class="nav-item nav-num dropdown">
-            <a class="nav-link nav-link-hover" href="#" data-bs-toggle="dropdown" aria-expanded="false">${data.data[i].D_Name}</a>
+            <a class="nav-link nav-link-hover" href="#" onclick="url('/static/${catalogue_page[i]}')" data-bs-toggle="dropdown" aria-expanded="false">${data.data[i].D_Name}</a>
             <ul class="nav-link-hover-menu">
             ${str}
             </ul>
@@ -232,6 +235,7 @@ function setLanguage(L_ID,Page){
                     case "medical" : getMedical_data(); break;
                     case "search" : getSearch_data(); break;
                     case "search_results" : getSearch_results_data(); break;
+                    case "notfound" : getNotFound(); break;
                 }
             }
         }

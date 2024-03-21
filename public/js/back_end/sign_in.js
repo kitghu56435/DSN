@@ -2,7 +2,7 @@
 
 
 function setMsg(info){
-    let h3 = document.getElementsByTagName('h3')[0];
+    let h3 = document.getElementsByTagName('h5')[0];
 
     let msg = '';
     switch(info){

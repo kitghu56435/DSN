@@ -5,8 +5,7 @@ const db = require('../db');
 const {Required_Resource,setMsgbox,checkData,NextID,find} = require('../function');
 const moment = require('moment-timezone');
 
-let identity_num = 11;   //使用者申請身分選項數量(關係到編碼)
-let school_num = 8;   //使用者在校狀況選項數量(關係到編碼)
+
 
 //這個API是為了開發測試header語言切換而再的
 router.get('/header',(req,res)=>{
@@ -44,33 +43,35 @@ router.post('/header_data',(req,res)=>{
             console.log(err);
             res.json({"msg":"dberr"});
         }else{
-            let D_data = {};
-            let now = results[0].D_ID;
-            let resource = [];
-
-            D_data.D_ID = results[0].D_ID;
-            D_data.D_Name = results[0].D_Name;
-            for(i = 0;i<results.length;i++){
-                resource.push({
-                    "R_ID" : results[i].R_ID,
-                    "R_Name" : results[i].RD_Content,
-                });
-                if(i != results.length - 1){
-                    if(results[i+1].D_ID != now){
+            if(results.length != 0){
+                let D_data = {};
+                let now = results[0].D_ID;
+                let resource = [];
+    
+                D_data.D_ID = results[0].D_ID;
+                D_data.D_Name = results[0].D_Name;
+                for(i = 0;i<results.length;i++){
+                    resource.push({
+                        "R_ID" : results[i].R_ID,
+                        "R_Name" : results[i].RD_Content,
+                    });
+                    if(i != results.length - 1){
+                        if(results[i+1].D_ID != now){
+                            D_data.resource = resource;
+                            data.data.push(D_data);
+        
+                            D_data = {};
+                            resource = [];
+                            D_data.D_ID = results[i+1].D_ID;
+                            D_data.D_Name = results[i+1].D_Name;
+                            now = results[i+1].D_ID;
+                        }
+                    }else{
                         D_data.resource = resource;
                         data.data.push(D_data);
-    
-                        D_data = {};
-                        resource = [];
-                        D_data.D_ID = results[i+1].D_ID;
-                        D_data.D_Name = results[i+1].D_Name;
-                        now = results[i+1].D_ID;
                     }
-                }else{
-                    D_data.resource = resource;
-                    data.data.push(D_data);
+                    
                 }
-                
             }
         }
     })
@@ -80,7 +81,6 @@ router.post('/header_data',(req,res)=>{
             res.json({"msg":"dberr"});
         }else{
             data.static_data = results;
-            console.log(data);
             res.json(data);
         }
     })
@@ -315,6 +315,32 @@ router.post('/search_results_data',(req,res)=>{
 })
 
 
+router.get('/notfound',(req,res)=>{
+    let html = readFileSync('./public/html/notfound.html','utf-8');
+    html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
+    if(req.cookies.accept == 'null'){
+        html +=  `<script>cookie_msg()</script>`;
+    }
+    res.end(html);
+})
+router.post('/notfound_data',(req,res)=>{
+    let L_ID = req.cookies.leng;
+    if(L_ID == undefined) L_ID = 'L000000001';
+    
+    db.execute(`SELECT RD_Template_ID,RD_Content FROM Resource_data WHERE L_ID = ? AND R_ID = 'SP00000016';`,[L_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.json({"msg":"dberr"});
+        }else{
+            res.json({
+                "msg" : "success",
+                "L_ID" : L_ID,
+                "data" : results
+            })
+            
+        }
+    })
+})
 
 
 
@@ -806,7 +832,7 @@ function getMultiple_LocationText(City,R_City){
 }
 async function searchResource_location(R_City){
     return new Promise((resolve,reject)=>{
-        db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND (R_City LIKE ? OR R_City LIKE '%A0%')`,['%' + R_City + '%'],(err,results)=>{
+        db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND Resources.R_Shelf = 1 AND (R_City LIKE ? OR R_City LIKE '%A0%')`,['%' + R_City + '%'],(err,results)=>{
             if(err){
                 console.log(err);
                 reject();
@@ -835,7 +861,7 @@ async function searchResource_identity(identity,L_ID){
 
     str +=` )) Depiction
     WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 2 AND ( R_Identity LIKE '%A0%' `;
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( R_Identity LIKE '%A0%' `;
 
     parameter.push(L_ID);
     parameter.push(L_ID);
@@ -883,7 +909,7 @@ async function searchResource_school(school,L_ID){
 
     str +=` )) Depiction
     WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 2 AND ( R_School LIKE '%A0%' `;
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( R_School LIKE '%A0%' `;
 
 
     parameter.push(L_ID);
@@ -917,7 +943,7 @@ async function searchResource_school(school,L_ID){
 }
 async function searchResource_suitable(demand){
     let parameter = [];
-    str = `SELECT R_ID,Resources.D_ID FROM Resources,Demand WHERE R_Delete = 0 AND Demand.D_ID = Resources.D_ID AND L_ID = 'L000000001' AND ( FALSE `;
+    str = `SELECT R_ID,Resources.D_ID FROM Resources,Demand WHERE  R_Delete = 0 AND Resources.R_Shelf = 1 AND Demand.D_ID = Resources.D_ID AND L_ID = 'L000000001' AND ( FALSE `;
 
     if(typeof demand == 'string'){
         str += 'OR Demand.D_ID = ? ';
@@ -977,7 +1003,7 @@ async function searchResource_requestData(identity,L_ID){
 
     str += ` AND RD_Type = 3) Depiction
     WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 2 AND ( FALSE `;
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( FALSE `;
 
     parameter.push(L_ID);
     parameter.push(L_ID);
