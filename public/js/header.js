@@ -4,8 +4,9 @@ window.addEventListener('resize', function() {
     header_nav_check();
 });
 
-
+let catalogue_page = ['economy','emergency','law','education','career','medical','psychology','application'];
 function header_nav_check(){
+    
     let nav_item = document.getElementsByClassName('nav-item');
     let nav_num = document.getElementsByClassName('nav-num');
     let logo_name = document.getElementsByTagName('span')[0];
@@ -17,8 +18,9 @@ function header_nav_check(){
             let ul_a = ul.getElementsByTagName('a');
 
             a.setAttribute('class','nav-link nav-link-hover T-title');
+            a.setAttribute('onclick',`url('/static/${catalogue_page[i]}')`);
             ul.setAttribute('class','nav-link-hover-menu container2');
-
+            
             
             logo_name.style['display'] = 'inline';
             
@@ -38,6 +40,7 @@ function header_nav_check(){
             }
 
             a.setAttribute('class','nav-link dropdown-toggle T-title');
+            a.setAttribute('onclick','');
             ul.setAttribute('class','dropdown-menu container2');
 
             for(j=0;j<ul_a.length;j++){
@@ -74,8 +77,6 @@ function getHeader_data(page_name){
 
 
 function setHeader_data(data){
-    //目錄頁名稱
-    let catalogue_page = ['economy','emergency','law','education','career','medical','psychology'];
 
     //動態nav
     let collapse = document.getElementsByClassName('collapse')[0];
@@ -285,7 +286,7 @@ function setDistrict(){
     if(search_window_L_ID == 'L000000001'){
         cityDistrictsMap = {
             'A0' : ['不限區'],  
-            'A1': ['中正區', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
+            'A1': ['中正區', '大同區', '中山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
             'A2': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
             'A3': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
             'A4': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
@@ -295,9 +296,9 @@ function setDistrict(){
             'A8': ['東區', '北區', '香山區'],
             'A9': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
             'B1': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
-            'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
+            'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
             'B3': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
-            'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
+            'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '臺西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
             'B5': ['東區', '西區'],
             'B6': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
             'B7': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
@@ -311,28 +312,28 @@ function setDistrict(){
     }else if(search_window_L_ID == 'L000000002'){
         cityDistrictsMap = {
             'A0' : ['Not limited'],  
-            'A1': ['Zhongzheng', '大同區', '中山區', '松山區', '文山區', '萬華區', '信義區', '松山區', '大安區', '南港區', '內湖區', '士林區', '北投區'],
-            'A2': ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '土城區', '蘆洲區', '汐止區', '樹林區', '鶯歌區', '三峽區', '淡水區', '瑞芳區', '五股區', '泰山區', '林口區','八里區','深坑區','石碇區','坪林區','三芝區','石門區','金山區','萬里區','平溪區','雙溪區','貢寮區','烏來區'],
-            'A3': ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龜山區', '大園區', '觀音區', '新屋區','龍潭區','復興區'],
-            'A4': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區','和平區'],
-            'A5': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
-            'A6': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '左營區', '楠梓區', '小港區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
-            'A7': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
-            'A8': ['東區', '北區', '香山區'],
-            'A9': ['竹北市', '竹東鎮', '新埔鎮','關西鎮','新豐鄉','峨眉鄉','寶山鄉','五峰鄉','橫山鄉','北埔鄉','尖石鄉','芎林鄉','湖口鄉'],
-            'B1': ['苗栗市', '頭份市', '苑裡鎮', '通霄鎮', '竹南鎮', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '南庄鄉', '頭屋鄉','獅潭鄉','泰安鄉'],
-            'B2': ['彰化市', '員林市', '永靖鄉', '社頭鄉', '埔心鄉', '花壇鄉', '秀水鄉', '大村鄉', '埔鹽鄉', '鹿港鎮', '和美鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '大城鄉', '芳苑鄉', '二林鎮', '埔心鄉', '埔鹽鄉', '溪湖鎮', '北斗鎮', '田中鎮', '田尾鄉', '芬園鄉', '二水鄉'],
-            'B3': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
-            'B4': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '莿桐鄉', '林內鄉', '古坑鄉', '大埤鄉', '崙背鄉', '二崙鄉', '麥寮鄉', '台西鄉', '東勢鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉','褒忠鄉'],
-            'B5': ['東區', '西區'],
-            'B6': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
-            'B7': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉','牡丹鄉'],
-            'B8': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
-            'B9': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
-            'C1': ['台東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉','東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
-            'C2': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
-            'C3': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
-            'C4': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
+            'A1': ['Zhongzheng', 'Datong', 'Zhongshan', 'Wenshan', 'Wanhua', 'Xinyi', 'Songshan', 'Da’an', 'Nangang', 'Neihu', 'Shilin', 'Beitou'],
+            'A2': ['Banqiao', 'Sanchong', 'Zhonghe', 'Yonghe', 'Xinzhuang', 'Xindian', 'Tucheng', 'Luzhou', 'Xizhi', 'Shulin', 'Y ingge', 'Sanxia', 'Tamsui ', 'Ruifang', 'Wugu', 'Taishan', 'Linkou','Bali','Shenkeng','Shiding','Pinglin','Sanzhi','Shimen','Jinshan','W anli','Pingxi','Shuangxi','Gongliao','Wulai'],
+            'A3': ['Taoyuan', 'Zhongli', 'Pingzhen', 'Bade', 'Yangmei', 'Luzhu', 'Daxi', 'Guishan', 'Dayuan', 'Guanyin', 'Xinwu','Longtan','Fuxing'],
+            'A4': ['Central', 'East', 'South', 'West', 'North', 'Beitun', 'Xitun', 'Nantun', 'Taiping', 'Dali', 'Wufeng', 'Wuri', 'Fengyuan', 'Houli', 'Shigang', 'Dongshi', 'Xinshe', 'Tanzi', 'Daya', 'Shengang', 'Dadu', 'Shalu', 'Longjing', 'Wuqi', 'Qingshui', 'Dajia', 'Waipu', 'Da’an','Heping'],
+            'A5': ['West Central', 'East', 'South', 'North', 'Anping', 'Annan', 'Yongkang', 'Guiren', 'Xinhua', 'Zuozhen', 'Yujing', 'Nanxi', 'Nanhua', 'Rende', 'Guanmiao', 'Guanmiao', 'Guantian', 'Madou', 'Jiali', 'Xigang', 'Qigu', 'Jiangjun', 'Xuejia', 'Beimen', 'Xinying', 'Houbi', 'Baihe', 'Dongshan', 'Liujia', 'Xiaying', 'Liuying', 'Yanshui', 'Shanhua', 'Danei', 'Shanshang', 'Xinshi', 'Anding'],
+            'A6': ['Xinxing', 'Qianjin', 'Lingya', 'Yancheng', 'Gushan', 'Qijin', 'Qianzhen', 'Sanmin', 'Zuoying', 'Nanzi', 'Xiaogang', 'Renwu', 'Dashe', 'Gangshan', 'Luzhu', 'Alian', 'Alian', 'Yanchao', 'Qiaotou', 'Ziguan', 'Mituo', 'Yong’an', 'Hunei', 'Fengshan', 'Daliao', 'Linyuan', 'Niaosong', 'Dashu', 'Qishan', 'Meinong', 'Liugui', 'Neimen', 'Shanlin', 'Jiaxian', 'Taoyuan', 'Namaxia', 'Maolin', 'Qieding'],
+            'A7': ['Ren’ai', 'Xinyi', 'Zhongzheng', 'Zhongshan', 'Anle', 'Nuannuan', 'Qidu'],
+            'A8': ['East', 'North', 'Xiangshan'],
+            'A9': ['Zhubei', 'Zhudong', 'Xinpu','Guanxi','Xinfeng','Emei','Baoshan','Wufeng','Hengshan','Beipu','Jianshi','Qionglin','Hukou'],
+            'B1': ['Miaoli', 'Toufen', 'Yuanli', 'Tongxiao', 'Zhunan', 'Houlong', 'Zhuolan', 'Dahu', 'Gongguan', 'Tongluo', 'Sanyi', 'Xihu', 'Zaoqiao', 'Sanwan', 'Nanzhuang', 'Touwu','Shitan','Tai’an'],
+            'B2': ['Changhua', 'Yuanlin', 'Yongjing', 'Shetou', 'Puxin', 'Huatan', 'Dacun', 'Puyan', 'Lukang', 'Hemei', 'Hemei', 'Shengang', 'Fuxing', 'Xiushui', 'Dacheng', 'Fangyuan', 'Erlin', 'Puxin', 'Puyan', 'Xihu', 'Beidou', 'Tianzhong', 'Tianwei', 'Fenyuan', 'Ershui'],
+            'B3': ['Nantou', 'Puli', 'Caotun', 'Zhushan', 'Jiji', 'Mingjian', 'Lugu', 'Zhongliao', 'Yuchi', 'Guoxing', 'Shuili', 'Xinyi', 'Ren’ai'],
+            'B4': ['Douliu', 'Dounan', 'Huwei', 'Xiluo', 'Tuku', 'Beigang', 'Citong', 'Linnei', 'Gukeng', 'Dapi', 'Lunbei', 'Erlun', 'Mailiao', 'Taixi', 'Dongshi', 'Yuanzhang', 'Sihu', 'Kouhu', 'Shuilin','Baozhong'],
+            'B5': ['East', 'West'],
+            'B6': ['Taibao', 'Puzi', 'Budai', 'Budai', 'Minxiong', 'Xikou', 'Xingang', 'Liujiao', 'Dongshi', 'Yizhu', 'Lucao', 'Shuishang', 'Zhongpu', 'Zhuqi', 'Meishan', 'Fanlu', 'Dapu', 'Alishan'],
+            'B7': ['Pingtung', 'Chaozhou', 'Donggang', 'Hengchun', 'Wandan', 'Changzhi', 'Linluo', 'Jiuru', 'Ligang', 'Yanpu', 'Gaoshu', 'Wanluan', 'Neipu', 'Zhutian', 'Xinpi', 'Fangliao', 'Xinyuan', 'Kanding', 'Linbian', 'Nanzhou', 'Jiadong', 'Liuqiu', 'Checheng', 'Manzhou', 'Fangshan', 'Sandimen', 'Wutai', 'Majia', 'Taiwu', '來義鄉', 'Laiyi', 'Shizi','Mudan'],
+            'B8': ['Yilan', 'Luodong', 'Su’ao', 'Toucheng', 'Jiaoxi', 'Zhuangwei', 'Yuanshan', 'Dongshan', 'Wujie', 'Sanxing', 'Datong', 'Nan’ao'],
+            'B9': ['Hualien', 'Fenglin', 'Yuli', 'Xincheng', 'Ji’an', 'Shoufeng', 'Guangfu', 'Fengbin', 'Ruisui', 'Fuli', 'Xiulin', 'Wanrong', 'Zhuoxi'],
+            'C1': ['Taitung', 'Chenggong', 'Guanshan', 'Beinan', 'Dawu', 'Taimali','Donghe', 'Changbin', 'Luye', 'Chishang', 'Lüdao', 'Yanping', 'Haiduan', 'Daren', 'Jinfeng', 'Lanyu'],
+            'C2': ['Magong', 'Huxi', 'Baisha', 'Xiyu', 'Wang’an', 'Qimei'],
+            'C3': ['Jincheng', 'Jinhu', 'Jinsha', 'Jinning', 'Lieyu', 'Wuqiu'],
+            'C4': ['Nangan', 'Beigan', 'Juguang', 'Dongyin']
         }
     }
     
