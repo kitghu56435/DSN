@@ -40,22 +40,43 @@ const Administrator_verafication = (req,res,next) => {
 
 //coolie變數設置
 //leng 語言序號
+//utoken 使用者序號
 //accept 對cookie的接受程度 none/accept/null/delete
 
 const setCookie = (req,res,next) =>{
     if(req.cookies.leng == undefined){
         res.cookie('leng', 'L000000001',{
             httpOnly : true,
+            sameSite : 'lax',
         });
     }
     if(req.cookies.accept == undefined){
         res.cookie('accept', 'null',{
             httpOnly : true,
+            sameSite : 'lax',
+        });
+    }
+    if(req.cookies.utoken == undefined){
+        res.cookie('utoken', create_utoken(),{
+            httpOnly : true,
+            sameSite : 'lax',
+            maxAge: 1000 * 60 * 60 * 24 * 365,
         });
     }
     next();
 }
 
+function create_utoken(){
+    let date = new Date();
+    let number1 = date.getSeconds();  //秒
+    let number2 = date.getDate();  //日
+    let number3 = Math.random();  //日
+    let key = ((number1*number2)/number3)*number2-number3; 
+    let session = sha(String(key));
+
+
+    return session;
+}
 
 async function create_Sessionid(){
     let date = new Date();

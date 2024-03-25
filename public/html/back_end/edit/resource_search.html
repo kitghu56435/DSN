@@ -17,7 +17,7 @@
 <body>
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
-            <a href="./" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
+            <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
             <img src="../../../img/backend/resource.png" style="margin-right:5%">
             <span class="fs-2 fw-semibold">DSN管理後臺</span>
             </a>
@@ -151,7 +151,7 @@
             </div>
             <div class="btn_area">
                 <button onclick="saveResource_search('')">儲存</button>
-                <button>下架資源</button>
+                <button><span style="color:red">●</span>下架中</button>
                 <button>查看資源</button>
             </div>
             <form class="content">
@@ -162,17 +162,17 @@
                             <table id="identity_table">
                                 <tr><th>身分名稱</th><th>勾選</th></tr>
                                 <tr onclick="checkbox('i0'),CheckAll('identity_table','i0')"><td>不限身分</th><td><input id="i0" value="A0" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i1'),CancelAll('i0')"><td>新住民</th><td><input id="i1" value="A1" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i2'),CancelAll('i0')"><td>新住民子女</th><td><input id="i2" value="A2" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i3'),CancelAll('i0')"><td>原住民</th><td><input id="i3" value="A3" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i4'),CancelAll('i0')"><td>中/低收入戶</th><td><input id="i4" value="A4" name="R_Identity" type="checkbox"></th></tr>  
-                                <tr onclick="checkbox('i5'),CancelAll('i0')"><td>就職青年</th><td><input id="i5" value="A5" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i6'),CancelAll('i0')"><td>單親家庭</th><td><input id="i6" value="A6" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i7'),CancelAll('i0')"><td>身心障礙</th><td><input id="i7" value="A7" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i8'),CancelAll('i0')"><td>身心障礙子女</th><td><input id="i8" value="A8" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i9'),CancelAll('i0')"><td>特殊境遇家庭</th><td><input id="i9" value="A9" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i10'),CancelAll('i0')"><td>暴力/霸凌受害者</th><td><input id="i10" value="B1" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i11'),CancelAll('i0')"><td>懷孕少女</th><td><input id="i11" value="B2" name="R_Identity" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('i1'),CancelAll('identity_table','i0')"><td>新住民</th><td><input id="i1" value="A1" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i2'),CancelAll('identity_table','i0')"><td>新住民子女</th><td><input id="i2" value="A2" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i3'),CancelAll('identity_table','i0')"><td>原住民</th><td><input id="i3" value="A3" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i4'),CancelAll('identity_table','i0')"><td>中/低收入戶</th><td><input id="i4" value="A4" name="R_Identity" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('i5'),CancelAll('identity_table','i0')"><td>就職青年</th><td><input id="i5" value="A5" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i6'),CancelAll('identity_table','i0')"><td>單親家庭</th><td><input id="i6" value="A6" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i7'),CancelAll('identity_table','i0')"><td>身心障礙</th><td><input id="i7" value="A7" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i8'),CancelAll('identity_table','i0')"><td>身心障礙子女</th><td><input id="i8" value="A8" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i9'),CancelAll('identity_table','i0')"><td>特殊境遇家庭</th><td><input id="i9" value="A9" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i10'),CancelAll('identity_table','i0')"><td>暴力/霸凌受害者</th><td><input id="i10" value="B1" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i11'),CancelAll('identity_table','i0')"><td>懷孕少女</th><td><input id="i11" value="B2" name="R_Identity" type="checkbox"></th></tr> 
                             </table>
                         </div>
                     </div>
@@ -184,14 +184,14 @@
                             <table id="school_table">
                                 <tr><th>在校狀況</th><th>勾選</th></tr>
                                 <tr onclick="checkbox('s0'),CheckAll('school_table','s0')"><td>不限就學</th><td><input id="s0" value="A0" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s1'),CancelAll('s0')"><td>未就學</th><td><input id="s1" value="A1" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s2'),CancelAll('s0')"><td>國小</th><td><input id="s2" value="A2" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s3'),CancelAll('s0')"><td>國中</th><td><input id="s3" value="A3" name="R_School" type="checkbox"></th></tr>  
-                                <tr onclick="checkbox('s4'),CancelAll('s0')"><td>高中</th><td><input id="s4" value="A4" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s5'),CancelAll('s0')"><td>五專</th><td><input id="s5" value="A5" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s6'),CancelAll('s0')"><td>大學</th><td><input id="s6" value="A6" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s7'),CancelAll('s0')"><td>研究所</th><td><input id="s7" value="A7" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s8'),CancelAll('s0')"><td>畢業就學</th><td><input id="s8" value="A8" name="R_School" type="checkbox"></th></tr>    
+                                <tr onclick="checkbox('s1'),CancelAll('school_table','s0')"><td>未就學</th><td><input id="s1" value="A1" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s2'),CancelAll('school_table','s0')"><td>國小</th><td><input id="s2" value="A2" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s3'),CancelAll('school_table','s0')"><td>國中</th><td><input id="s3" value="A3" name="R_School" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('s4'),CancelAll('school_table','s0')"><td>高中</th><td><input id="s4" value="A4" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s5'),CancelAll('school_table','s0')"><td>五專</th><td><input id="s5" value="A5" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s6'),CancelAll('school_table','s0')"><td>大學</th><td><input id="s6" value="A6" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s7'),CancelAll('school_table','s0')"><td>研究所</th><td><input id="s7" value="A7" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s8'),CancelAll('school_table','s0')"><td>畢業就學</th><td><input id="s8" value="A8" name="R_School" type="checkbox"></th></tr>    
                             </table>
                         </div>
                     </div>
@@ -201,28 +201,28 @@
                             <table id="city_table">
                                 <tr><th>縣市名稱</th><th>勾選</th></tr>
                                 <tr onclick="checkbox('c1'),CheckAll('city_table','c1')"><td>不限縣市</th><td><input id="c1" value="A0" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c2'),CancelAll('c1')"><td>臺北市</th><td><input id="c2" value="A1" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c3'),CancelAll('c1')"><td>新北市</th><td><input id="c3" value="A2" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c4'),CancelAll('c1')"><td>桃園市</th><td><input id="c4" value="A3" name="R_City" type="checkbox"></th></tr>  
-                                <tr onclick="checkbox('c5'),CancelAll('c1')"><td>台中市</th><td><input id="c5" value="A4" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c6'),CancelAll('c1')"><td>台南市</th><td><input id="c6" value="A5" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c7'),CancelAll('c1')"><td>高雄市</th><td><input id="c7" value="A6" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c8'),CancelAll('c1')"><td>基隆市</th><td><input id="c8" value="A7" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c9'),CancelAll('c1')"><td>新竹市</th><td><input id="c9" value="A8" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c10'),CancelAll('c1')"><td>新竹縣</th><td><input id="c10" value="A9" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c11'),CancelAll('c1')"><td>苗栗縣</th><td><input id="c11" value="B1" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c12'),CancelAll('c1')"><td>彰化縣</th><td><input id="c12" value="B2" name="R_City" type="checkbox"></th></tr>  
-                                <tr onclick="checkbox('c13'),CancelAll('c1')"><td>南投縣</th><td><input id="c13" value="B3" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c14'),CancelAll('c1')"><td>雲林縣</th><td><input id="c14" value="B4" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c15'),CancelAll('c1')"><td>嘉義市</th><td><input id="c15" value="B5" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c16'),CancelAll('c1')"><td>嘉義縣</th><td><input id="c16" value="B6" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c17'),CancelAll('c1')"><td>屏東縣</th><td><input id="c17" value="B7" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c18'),CancelAll('c1')"><td>宜蘭縣</th><td><input id="c18" value="B8" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c19'),CancelAll('c1')"><td>花蓮縣</th><td><input id="c19" value="B9" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c20'),CancelAll('c1')"><td>台東縣</th><td><input id="c20" value="C1" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c21'),CancelAll('c1')"><td>澎湖縣</th><td><input id="c21" value="C2" name="R_City" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('c22'),CancelAll('c1')"><td>金門縣</th><td><input id="c22" value="C3" name="R_City" type="checkbox"></th></tr> 
-                                <tr onclick="checkbox('c23'),CancelAll('c1')"><td>連江縣</th><td><input id="c23" value="C4" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c2'),CancelAll('city_table','c1')"><td>臺北市</th><td><input id="c2" value="A1" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c3'),CancelAll('city_table','c1')"><td>新北市</th><td><input id="c3" value="A2" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c4'),CancelAll('city_table','c1')"><td>桃園市</th><td><input id="c4" value="A3" name="R_City" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('c5'),CancelAll('city_table','c1')"><td>台中市</th><td><input id="c5" value="A4" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c6'),CancelAll('city_table','c1')"><td>台南市</th><td><input id="c6" value="A5" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c7'),CancelAll('city_table','c1')"><td>高雄市</th><td><input id="c7" value="A6" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c8'),CancelAll('city_table','c1')"><td>基隆市</th><td><input id="c8" value="A7" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c9'),CancelAll('city_table','c1')"><td>新竹市</th><td><input id="c9" value="A8" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c10'),CancelAll('city_table','c1')"><td>新竹縣</th><td><input id="c10" value="A9" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c11'),CancelAll('city_table','c1')"><td>苗栗縣</th><td><input id="c11" value="B1" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c12'),CancelAll('city_table','c1')"><td>彰化縣</th><td><input id="c12" value="B2" name="R_City" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('c13'),CancelAll('city_table','c1')"><td>南投縣</th><td><input id="c13" value="B3" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c14'),CancelAll('city_table','c1')"><td>雲林縣</th><td><input id="c14" value="B4" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c15'),CancelAll('city_table','c1')"><td>嘉義市</th><td><input id="c15" value="B5" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c16'),CancelAll('city_table','c1')"><td>嘉義縣</th><td><input id="c16" value="B6" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c17'),CancelAll('city_table','c1')"><td>屏東縣</th><td><input id="c17" value="B7" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c18'),CancelAll('city_table','c1')"><td>宜蘭縣</th><td><input id="c18" value="B8" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c19'),CancelAll('city_table','c1')"><td>花蓮縣</th><td><input id="c19" value="B9" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c20'),CancelAll('city_table','c1')"><td>台東縣</th><td><input id="c20" value="C1" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c21'),CancelAll('city_table','c1')"><td>澎湖縣</th><td><input id="c21" value="C2" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c22'),CancelAll('city_table','c1')"><td>金門縣</th><td><input id="c22" value="C3" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c23'),CancelAll('city_table','c1')"><td>連江縣</th><td><input id="c23" value="C4" name="R_City" type="checkbox"></th></tr> 
                             </table>
                         </div>
                     </div>

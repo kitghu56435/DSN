@@ -21,7 +21,11 @@ function show_feedback(n){
 
 function checkbox(id){
     let checkbox = document.getElementById(id);
-    checkbox.click();
+    if(checkbox.checked){
+        checkbox.checked = false;
+    }else{
+        checkbox.checked = true;
+    }
 }
 
 
@@ -246,9 +250,9 @@ function shelfResource(R_ID){
                     msgbox(1,'查無資源，請嘗試重新整理頁面');
                 }else if(jsonResponse.msg == 'success'){
                     if(jsonResponse.shelf){
-                        btn[1].innerHTML = '下架資源';
+                        btn[1].innerHTML = '<span style="color:green">●</span>上架中';
                     }else{
-                        btn[1].innerHTML = '上架資源';
+                        btn[1].innerHTML = '<span style="color:red">●</span>下架中';
                     }
                 }
             }else{
@@ -528,12 +532,13 @@ function setResource_edit(data){
     sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.resource.R_ID);
 
     if(data.resource.R_Shelf){
-        btn[1].innerHTML = '下架資源';
+        btn[1].innerHTML = '<span style="color:green">●</span>上架中';
     }else{
-        btn[1].innerHTML = '上架資源';
+        btn[1].innerHTML = '<span style="color:red">●</span>下架中';
     }
     btn[0].setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
     btn[1].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
+    btn[2].setAttribute('onclick',`url('/resource?ID=${data.resource.R_ID}')`);
     
     let L_Name_array = [];
     let L_ID_array = [];
@@ -701,6 +706,14 @@ function setResource_search(data){
     sidebars2_a[3].setAttribute('href','/backend/resource/demand/feedback?R_ID=' + data.R_ID);
     sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
     btn[0].setAttribute('onclick',`saveResource_search('${data.R_ID}')`);
+    btn[1].setAttribute('onclick',`shelfResource('${data.R_ID}')`);
+    btn[2].setAttribute('onclick',`url('/resource?ID=${data.R_ID}')`);
+
+    if(data.R_Shelf){
+        btn[1].innerHTML = '<span style="color:green">●</span>上架中';
+    }else{
+        btn[1].innerHTML = '<span style="color:red">●</span>下架中';
+    }
 
     
     
@@ -794,12 +807,13 @@ function setResource_setting(data){
     sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
     btn[0].setAttribute('onclick',`saveResource('${data.R_ID}')`);
     btn[1].setAttribute('onclick',`shelfResource('${data.R_ID}')`);
+    btn[2].setAttribute('onclick',`url('/resource?ID=${data.R_ID}')`);
     L_ID.setAttribute('value',data.L_ID);
 
     if(data.R_Shelf){
-        btn[1].innerHTML = '下架資源';
+        btn[1].innerHTML = '<span style="color:green">●</span>上架中';
     }else{
-        btn[1].innerHTML = '上架資源';
+        btn[1].innerHTML = '<span style="color:red">●</span>下架中';
     }
 
     
@@ -910,10 +924,26 @@ function CheckAll(table_id,check_id){
     
     
 }
-function CancelAll(check_id){
+function CancelAll(table_id,check_id){
+    let table = document.getElementById(table_id);
+    let input = table.getElementsByTagName('input');
     let check = document.getElementById(check_id);
+    console.log('click')
     if(check.checked){
         check.checked = false;
+    }else{
+        let all_input_num = input.length;
+        let check_input = 0;
+
+
+        for(i = 0;i < input.length;i++){
+            if(input[i].checked){
+                check_input ++;
+            }
+        }
+        if(check_input == (all_input_num-1)){
+            check.checked = true;
+        }
     }
 }
 function deleteRecordMessage(RF_ID,page,R_ID){

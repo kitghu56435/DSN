@@ -45,7 +45,7 @@ router.get('/',(req,res)=>{
         }
     })
     //總資源留言量
-    db.execute(`SELECT R_ID,COUNT(R_ID) RF_Num FROM Resource_feedback WHERE R_ID IS NOT null;`,(err,results)=>{
+    db.execute(`SELECT R_ID,COUNT(R_ID) RF_Num FROM Resource_feedback WHERE R_ID IS NOT null GROUP BY R_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -56,6 +56,10 @@ router.get('/',(req,res)=>{
                         data.R_Message[j].RF_Num = results[i].RF_Num;
                         RF_Num += Number(results[i].RF_Num);
                     }
+                }
+            }
+            for(i = 0;i<results.length;i++){
+                for(j = 0;j<data.R_Message.length;j++){
                     if(results[i].R_ID == data.R_Message[j].R_ID){
                         data.R_Message[j].RF_Proportion = Proportion(RF_Num,data.R_Message[j].RF_Num);
                     }
@@ -134,9 +138,6 @@ router.get('/',(req,res)=>{
     }) 
 })
 
-
-
-
 router.get('/record/resource',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/message_record_r.html','utf-8');
     let msgbox = '';
@@ -171,7 +172,6 @@ router.get('/record/resource',(req,res)=>{
     })
 })
 
-
 router.get('/record/page',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/message_record_p.html','utf-8');
     let msgbox = '';
@@ -201,9 +201,6 @@ router.get('/record/page',(req,res)=>{
         res.end(html)         
     })
 })
-
-
-
 
 router.post('/record/delete',(req,res)=>{
     let RF_ID = req.body.RF_ID;
@@ -284,6 +281,8 @@ router.post('/record/delete',(req,res)=>{
         res.json(data);
     })
 })
+
+
 
 
 

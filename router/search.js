@@ -17,14 +17,6 @@ const moment = require('moment-timezone');
 
 
 
-router.post('/',(req,res)=>{
-    
-    res.end();
-})
-
-
-
-
 
 
 

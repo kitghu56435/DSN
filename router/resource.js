@@ -806,7 +806,7 @@ router.post('/demand/setting/save',(req,res)=>{
         db.execute(`SELECT L_ID FROM Languages WHERE L_ID = ?;`,[L_ID],(err,results)=>{  //確認是否有此語言續號
             if(err){
                 console.log(err);
-                res.json({"msg" : "dberr"})
+                res.json({"msg" : "dberr"});
             }else if(results.length == 0){
                 res.json({"msg" : "nodata"});
             }else{
@@ -853,6 +853,7 @@ router.post('/demand/search/data',(req,res)=>{
         "D_Name" : "",
         "D_ID" : "",
         "R_ID" : R_ID,
+        "R_Shelf" : '',
         "R_Identity" : [],
         "R_School" : [],
         "R_City" : [],
@@ -860,7 +861,7 @@ router.post('/demand/search/data',(req,res)=>{
     }
 
     
-    db.execute(`SELECT Resources.D_ID,D_Name,R_City,R_School,R_Identity FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
+    db.execute(`SELECT Resources.D_ID,D_Name,R_City,R_School,R_Identity,R_Shelf FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
     AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -868,6 +869,7 @@ router.post('/demand/search/data',(req,res)=>{
         }else{
             data.D_Name = results[0].D_Name;
             data.D_ID = results[0].D_ID;
+            data.R_Shelf = results[0].R_Shelf;
 
             data.R_Identity = setCode_to_Array(results[0].R_Identity);
             data.R_School = setCode_to_Array(results[0].R_School);
@@ -2072,11 +2074,11 @@ async function update_Resource(data){
 
     
 
-    
+    console.log(S_ID);
     await delete_Supplier_binding(R_ID);  //刪除供應商綁定
     if(checkData(S_ID)){
-        for(c = 0;c<S_ID.length;c++){
-            await create_Supplier_binding(R_ID,S_ID[c]);
+        for(cc = 0;cc<S_ID.length;cc++){
+            await create_Supplier_binding(R_ID,S_ID[cc]);
         }  
     } 
 

@@ -39,6 +39,84 @@ function setDSNdata(data,L_ID){
         }
     }
 }
+function setResourceInfo_data(data){   //資源頁面專用的
+    let RF_Btn = document.getElementById('RF_Btn');
+    let numb = document.getElementsByClassName('numb')[0]; //like num
+    let Like_btn = document.getElementById('Like_btn');
+    RF_Btn.setAttribute('onclick',`sendMsg('${data.R_ID}')`);
+    Like_btn.setAttribute('onclick',`R_Like('${data.R_ID}')`);
+    numb.innerHTML = data.R_Like_Num;
+    setLike_Btn(data.R_Like);
+
+
+    let T_title = document.getElementsByClassName('T-title');
+    let T_text = document.getElementsByClassName('T-text');
+    let T_img = document.getElementsByClassName('T-img');
+    let T_url = document.getElementsByClassName('T-url');
+    for(i = 0;i<T_title.length;i++){
+        let dsnid = T_title[i].getAttribute('dsnid');
+        for(j = 0;j<data.RD_Data.length;j++){
+            if(dsnid == data.RD_Data[j].RD_Template_ID){
+                if(data.RD_Data[j].RD_Content == ""){
+                    T_title[i].setAttribute('style','display:none');
+                }else{
+                    T_title[i].innerHTML = data.RD_Data[j].RD_Content;
+                }
+            }
+        }
+    }
+    for(i = 0;i<T_text.length;i++){
+        let dsnid = T_text[i].getAttribute('dsnid');
+        for(j = 0;j<data.RD_Data.length;j++){
+            if(dsnid == data.RD_Data[j].RD_Template_ID){
+                if(data.RD_Data[j].RD_Content == ""){
+                    T_text[i].setAttribute('style','display:none');
+                }else{
+                    T_text[i].innerHTML = data.RD_Data[j].RD_Content;
+                }
+                
+            }
+        }
+    }
+    for(i = 0;i<T_img.length;i++){
+        let T_img_found = false;
+        let dsnid = T_img[i].getAttribute('dsnid');
+        for(j = 0;j<data.RD_Data.length;j++){
+            if(dsnid == data.RD_Data[j].RD_Template_ID){
+                T_img_found = true
+                T_img[i].setAttribute('src','/img/resource/' + data.RD_Data[j].RD_Content)
+            }
+        }
+        if(!T_img_found){
+            T_img[i].setAttribute('style','display:none');
+        }
+    }
+    for(i = 0;i<T_url.length;i++){
+        let dsnid = T_url[i].getAttribute('dsnid');
+        for(j = 0;j<data.RD_Data.length;j++){
+            if(dsnid == data.RD_Data[j].RD_Template_ID){
+                if(data.RD_Data[j].RD_Content == ''){
+                    T_url[i].setAttribute('style','display:none');
+                }else{
+                    T_url[i].setAttribute('href',data.RD_Data[j].RD_Content)
+                }
+                
+            }
+        }
+    }
+}
+function setLike_Btn(clike){
+    let content = document.getElementsByClassName('content')[0];
+    let heart = document.getElementsByClassName('heart')[0];
+    let like_text = document.getElementsByClassName('like_text')[0];
+    let numb = document.getElementsByClassName('numb')[0];
+    if(clike){
+        content.setAttribute('class','content heart-active');
+        heart.setAttribute('class','heart heart-active');
+        like_text.setAttribute('class','like_text heart-active');
+        numb.setAttribute('class','numb heart-active');
+    }
+}
 
 
 
@@ -374,3 +452,71 @@ function getNotFound(){
 }
 
 
+
+function sendMsg(type){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('留言失敗使稍後嘗試');
+                }else{
+                    alert('您的留言已成功送出，謝謝您的回饋');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+
+    let msg = '';
+    let R_ID = undefined;
+    if(type == 'page'){
+        let text = document.getElementById('newsletter1');
+        msg = text.value;
+        text.value = '';
+        text.setAttribute('value','');
+    }else{
+        let text = document.getElementById('RF_Content');
+        msg = text.value;
+        text.value = '';
+        R_ID = type;
+    }
+
+    if(msg == ''){
+        alert('請先再輸入框輸入留言，在點擊送出');
+    }else{
+        httpRequest.open('POST','/static/msg');
+        httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        httpRequest.send('msg=' + msg + '&R_ID=' + R_ID);
+    }
+    
+    
+}
+
+function R_Like(R_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('案讚失敗');
+                }else{
+                    let numb = document.getElementsByClassName('numb')[0]; //like num
+                    numb.innerHTML = jsonResponse.R_Like;
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+
+
+    httpRequest.open('POST','/static/like');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID=' + R_ID);
+}

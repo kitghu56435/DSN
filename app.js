@@ -21,10 +21,11 @@ const search = require('./router/search');
 
 
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:false,limit:'300M'}));
+app.use(express.urlencoded({extended:false,limit:'50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(cookieParser(process.env.cookieSecret));
-app.use(setCookie);   //初始化cookie
 app.use(bodyParser.json());
+app.use(setCookie);   //初始化cookie
 app.use(cookieSession({
     name:'session',
     keys:['key1'],
@@ -32,6 +33,7 @@ app.use(cookieSession({
     maxAge: cookie_time,
     sameSite : 'lax'
 }));
+
 
 
 

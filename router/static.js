@@ -664,6 +664,39 @@ router.post('/medical_data',(req,res)=>{
 
 
 
+//傳入留言API
+router.post('/msg',(req,res)=>{
+    let utoken = req.cookies.utoken;
+    let msg = req.body.msg;
+    let R_ID = req.body.R_ID;
+    console.log(req.body);
+
+    
+    new Promise((resolve,reject)=>{
+        resolve(createResource_feedback(msg,utoken,R_ID))
+    }).then(()=>{
+        res.json({'msg':'done'});
+    }).catch(()=>{
+        res.json({'msg':'dberr'});
+    })
+})
+
+
+//傳入Like API
+router.post('/like',(req,res)=>{
+    let utoken = req.cookies.utoken;
+    let R_ID = req.body.R_ID;
+    
+    new Promise((resolve,reject)=>{
+        resolve(setResource_Like(R_ID,utoken))
+    }).then((R_Like)=>{
+        res.json({'msg':'done','R_Like':R_Like});
+    }).catch(()=>{
+        res.json({'msg':'dberr'});
+    })
+})
+
+
 
 function getR_Label_leng(str,L_ID){
     if(L_ID == 'L000000002'){
@@ -1040,6 +1073,71 @@ async function searchResource_requestData(identity,L_ID){
                 reject();
             }else{
                 resolve(results)
+            }
+        })
+    })
+}
+async function createResource_feedback(msg,utoken,R_ID){
+    let RF_ID = await NextID('Resource_feedback','RF_ID','RF');
+    let RF_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+    if(R_ID == undefined || R_ID == 'undefined'){
+        R_ID = null;
+    }
+
+    return new Promise((resolve,reject)=>{
+
+
+        db.execute(`INSERT INTO Resource_feedback VALUES(?,?,?,?,?);`,[RF_ID,R_ID,msg,RF_Date,utoken],(err,results)=>{
+            if(err){
+                console.log(err);
+                reject();
+            }else{
+                resolve()
+            }
+        })
+    })
+}
+async function setResource_Like(R_ID,utoken){
+    let RL_ID = await NextID('Resources_like','RL_ID','RL');
+    let RL_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+    
+
+    return new Promise((resolve,reject)=>{
+
+        db.execute('SELECT COUNT(*) Num FROM Resources_like WHERE R_ID = ? AND RL_Cookie = ?',[R_ID,utoken],(err,results)=>{
+            if(err){
+                console.log(err);
+                reject();
+            }else{
+                let sql = '';
+                let parameter = [];
+                if(results[0].Num == 0){  //沒有案讚，這次是要按讚
+                    sql = `INSERT INTO Resources_like VALUES(?,?,?,?);`;
+                    parameter = [RL_ID,utoken,R_ID,RL_Date];
+                }else{ //有案讚，取消按讚
+                    sql = `DELETE FROM Resources_like WHERE R_ID = ? AND RL_Cookie = ?`;
+                    parameter = [R_ID,utoken];
+                }
+
+                db.execute(sql,parameter,(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        reject();
+                    }else{
+
+                        db.execute('SELECT COUNT(*) Num FROM Resources_like WHERE R_ID = ?',[R_ID],(err,results)=>{
+                            if(err){
+                                console.log(err);
+                                reject();
+                            }else{
+                                resolve(results[0].Num);
+                            }
+                        })
+
+
+                    }
+                })
+                
             }
         })
     })

@@ -296,14 +296,14 @@ router.post('/resource/data',(req,res)=>{
                         "D_Name" : results[i].D_Name,
                         "R_ID" : results[i].R_ID,
                         "R_Name" : results[i].RD_Content,
-                        "R_Check" : false
+                        "R_Check" : true
                     })
                 }else{
                     data.R_List.push({
                         "D_Name" : results[i].D_Name,
                         "R_ID" : results[i].R_ID,
                         "R_Name" : results[i].RD_Content,
-                        "R_Check" : true
+                        "R_Check" : false
                     })
                 }
                 
