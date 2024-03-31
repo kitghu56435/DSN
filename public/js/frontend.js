@@ -78,7 +78,7 @@ function setSearch_results(data){
                     }
                     str0 += `
                     <div class="r_box">
-                        <img class="r_box_img" src="../img/R_Img/${data.R_List[j].R_Img}">
+                        <img class="r_box_img" onclick="url('/resource?ID=${data.R_List[j].R_ID}')" src="../img/R_Img/${data.R_List[j].R_Img}">
                         <div class="r_box_text">
                             <h4>${data.R_List[j].R_Name}</h4>
                             <p>
@@ -98,7 +98,7 @@ function setSearch_results(data){
 
                     str1 += `
                     <div class="r_box">
-                        <img class="r_box_img" src="../img/p1.jpg">
+                        <img class="r_box_img" onclick="url('/resource?ID=${data.R_List[j].R_ID}')" src="../img/R_Img/${data.R_List[j].R_Img}">
                         <div class="r_box_text">
                             <h4>${data.R_List[j].R_Name}</h4>
                             <p>

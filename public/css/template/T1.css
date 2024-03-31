@@ -29,6 +29,9 @@
 .section1 .step-text{
     margin-bottom:2%;
 }
+.section1 .label > div{
+    display: inline;
+}
 .section1 > .section1-text  span {
     margin-top: 0.5%;
     display: inline-block;

@@ -10,16 +10,9 @@ const moment = require('moment-timezone');
 router.get('/',(req,res)=>{
     let R_ID = req.query.ID;
     let T_Path = '';
-    let L_ID = req.cookies.leng;
-    let utoken = req.cookies.utoken;
-    let data = {
-        "RD_Data" : undefined,
-        "R_ID" : R_ID,
-        "R_Like_Num" : 0,
-        "R_Like" : false
-    }
+    
 
-    db.execute(`SELECT T_Path FROM Resources,Template WHERE Resources.R_ID = ? AND Resources.T_ID = Template.T_ID AND R_Delete = 0 AND R_Shelf = 1;`,[R_ID],(err,results)=>{
+    db.execute(`SELECT DATE_FORMAT(R_Update,'%Y年%m月%d日') R_Update,T_Path FROM Resources,Template WHERE Resources.R_ID = ? AND Resources.T_ID = Template.T_ID AND R_Delete = 0 AND R_Shelf = 1;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             res.end();
@@ -29,6 +22,45 @@ router.get('/',(req,res)=>{
                 res.end(html);
             }else{
                 T_Path = results[0].T_Path;
+                let html = readFileSync('./public/html/template/' + T_Path,'utf-8');
+                html += `
+                <script>
+                    getHeader_data('${R_ID}');
+                    getTemplate_data('${R_ID}');
+                </script>`;
+                res.end(html);              
+            }
+        }   
+    })
+})
+
+
+
+router.post('/data',(req,res)=>{
+    let R_ID = req.body.R_ID;
+    let T_Path = '';
+    let L_ID = req.cookies.leng;
+    let utoken = req.cookies.utoken;
+    let data = {
+        "RD_Data" : undefined,
+        "R_ID" : R_ID,
+        "R_Like_Num" : 0,
+        "R_Like" : false,
+        "R_Update" : undefined,
+        "msg" : ""
+    }
+
+    db.execute(`SELECT DATE_FORMAT(R_Update,'%Y年%m月%d日') R_Update,T_Path FROM Resources,Template WHERE Resources.R_ID = ? AND Resources.T_ID = Template.T_ID AND R_Delete = 0 AND R_Shelf = 1;`,[R_ID],(err,results)=>{
+        if(err){
+            console.log(err);
+            res.end();
+        }else{
+            if(results.length == 0){  //資源已下架或刪除
+                let html = readFileSync('./public/html/notfound.html','utf-8');
+                res.end(html);
+            }else{
+                T_Path = results[0].T_Path;
+                data.R_Update = results[0].R_Update;
                 let html = readFileSync('./public/html/template/' + T_Path,'utf-8');
                 
                 db.execute('SELECT COUNT(*) Num FROM Resources_like WHERE R_ID = ?',[R_ID],(err,results)=>{
@@ -55,11 +87,7 @@ router.get('/',(req,res)=>{
                         res.end('資料庫錯誤');
                     }else{
                         data.RD_Data = results;
-                        html += `
-                        <script>
-                            setResourceInfo_data(${JSON.stringify(data)});
-                        </script>`;
-                        res.end(html);
+                        res.json(data);
                     }
                 })
             }

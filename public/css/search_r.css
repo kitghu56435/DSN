@@ -62,6 +62,7 @@ h4 > img{
     width:200px;
     height:200px;
     border-radius: 10px;
+    cursor: pointer;
 }
 .data_resource > .r_box > .r_box_text{
     width:70%;

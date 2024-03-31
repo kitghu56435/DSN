@@ -237,6 +237,7 @@ function setLanguage(L_ID,Page){
                     case "search" : getSearch_data(); break;
                     case "search_results" : getSearch_results_data(); break;
                     case "notfound" : getNotFound(); break;
+                    default : getTemplate_data(Page);break; //資源頁面
                 }
             }
         }
@@ -414,14 +415,22 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">新住民</label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">新住民子女</label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">原住民</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">中/低收入戶</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A5" id="identity5"><label for="identity5">就職青年</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A6" id="identity6"><label for="identity6">單親家庭</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A7" id="identity7"><label for="identity7">身心障礙</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A8" id="identity8"><label for="identity8">身心障礙子女</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A9" id="identity9"><label for="identity9">特殊境遇家庭</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B1" id="identity10"><label for="identity10">暴力/霸凌受害者</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B2" id="identity11"><label for="identity11">懷孕少女</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">以上皆否</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/condition.png">
+                    <span class="type_title">申請者狀況</span><br>
+                    <span class="type_des">(複選)給我們更多您的狀況，讓我們給你更精確地資訊。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A1" id="condition0"><label for="condition0">身心障礙</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A2" id="condition1"><label for="condition1">經濟弱勢</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A3" id="condition2"><label for="condition2">就職青年</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A4" id="condition3"><label for="condition3">單親家庭</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A5" id="condition4"><label for="condition4">家事糾紛</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A6" id="condition5"><label for="condition5">暴力/霸凌受害者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A7" id="condition6"><label for="condition6">心理患者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A8" id="condition7"><label for="condition7">醫院患者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A9" id="condition8"><label for="condition8">懷孕少女</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="B1" id="condition9"><label for="condition9">租屋者</label></span>
                 </div>
                 <div class="form_section">
                     <img src="../img/search/school.png">
@@ -507,19 +516,27 @@ function search_window(){
                 </div>
                 <div class="form_section">
                     <img src="../img/search/member.png">
-                    <span class="type_title">Applicant status</span><br>
-                    <span class="type_des">(Check) Each identity has its own resources.</span><br>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">New resident</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">Children of new residents</label></span>
+                    <span class="type_title">Applicant identity</span><br>
+                    <span class="type_des">(Choices) Each identity has its own resources.</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">New resident </label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">Children of new residents </label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">Aboriginal people</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">Middle/low-income households </label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A5" id="identity5"><label for="identity5">Job-seeking youth</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A6" id="identity6"><label for="identity6">One-parent family</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A7" id="identity7"><label for="identity7">Disability</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A8" id="identity8"><label for="identity8">Disabled children</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A9" id="identity9"><label for="identity9">families in special circumstances</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B1" id="identity10"><label for="identity10">Victims of Violence/Bullying</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="B2" id="identity11"><label for="identity11">pregnant girl</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">None of the above</label></span>
+                </div>
+                <div class="form_section">
+                    <img src="../img/search/condition.png">
+                    <span class="type_title">Applicant status</span><br>
+                    <span class="type_des">(Choices) Give us more information about your situation so we can give you more accurate information.</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A1" id="condition0"><label for="condition0">Disability</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A2" id="condition1"><label for="condition1">Economically disadvantaged</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A3" id="condition2"><label for="condition2">Job-seeking youth</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A4" id="condition3"><label for="condition3">one-parent family</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A5" id="condition4"><label for="condition4">Family dispute</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A6" id="condition5"><label for="condition5">Victims of Violence/Bullying</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A7" id="condition6"><label for="condition6">Psychological patient</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A8" id="condition7"><label for="condition7">hospital patient</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A9" id="condition8"><label for="condition8">pregnant girl</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="B1" id="condition9"><label for="condition9">renter</label></span>
                 </div>
                 <div class="form_section">
                     <img src="../img/search/school.png">

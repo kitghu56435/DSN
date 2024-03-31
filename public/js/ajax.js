@@ -43,6 +43,7 @@ function setResourceInfo_data(data){   //資源頁面專用的
     let RF_Btn = document.getElementById('RF_Btn');
     let numb = document.getElementsByClassName('numb')[0]; //like num
     let Like_btn = document.getElementById('Like_btn');
+    let update_time = document.getElementsByClassName('update_time')[0];
     RF_Btn.setAttribute('onclick',`sendMsg('${data.R_ID}')`);
     Like_btn.setAttribute('onclick',`R_Like('${data.R_ID}')`);
     numb.innerHTML = data.R_Like_Num;
@@ -59,7 +60,10 @@ function setResourceInfo_data(data){   //資源頁面專用的
             if(dsnid == data.RD_Data[j].RD_Template_ID){
                 if(data.RD_Data[j].RD_Content == ""){
                     T_title[i].setAttribute('style','display:none');
+                    T_title[i].parentElement.setAttribute('style','display:none');
                 }else{
+                    T_title[i].setAttribute('style','');
+                    T_title[i].parentElement.setAttribute('style','');
                     T_title[i].innerHTML = data.RD_Data[j].RD_Content;
                 }
             }
@@ -71,6 +75,14 @@ function setResourceInfo_data(data){   //資源頁面專用的
             if(dsnid == data.RD_Data[j].RD_Template_ID){
                 if(data.RD_Data[j].RD_Content == ""){
                     T_text[i].setAttribute('style','display:none');
+                    T_text[i].parentElement.setAttribute('style','display:none');
+                    
+                    if(T_text[i].parentElement.parentElement.getAttribute('class') == 'section1 container2' || 
+                    T_text[i].parentElement.parentElement.getAttribute('class') == 'section2 container2'){
+                        T_text[i].parentElement.parentElement.setAttribute('style','display:none');
+                    }
+                }else if(dsnid == '142'){   //目前142是回饋textarea的placeholder
+                    T_text[i].setAttribute('placeholder',data.RD_Data[j].RD_Content);
                 }else{
                     T_text[i].innerHTML = data.RD_Data[j].RD_Content;
                 }
@@ -85,10 +97,13 @@ function setResourceInfo_data(data){   //資源頁面專用的
             if(dsnid == data.RD_Data[j].RD_Template_ID){
                 T_img_found = true
                 T_img[i].setAttribute('src','/img/resource/' + data.RD_Data[j].RD_Content)
+                T_img[i].setAttribute('style','');
+                T_img[i].parentElement.setAttribute('style','');
             }
         }
         if(!T_img_found){
             T_img[i].setAttribute('style','display:none');
+            T_img[i].parentElement.setAttribute('style','display:none');
         }
     }
     for(i = 0;i<T_url.length;i++){
@@ -97,13 +112,18 @@ function setResourceInfo_data(data){   //資源頁面專用的
             if(dsnid == data.RD_Data[j].RD_Template_ID){
                 if(data.RD_Data[j].RD_Content == ''){
                     T_url[i].setAttribute('style','display:none');
+                    //T_url[i].parentElement.setAttribute('style','display:none');
                 }else{
+                    T_url[i].setAttribute('style','');
                     T_url[i].setAttribute('href',data.RD_Data[j].RD_Content)
                 }
                 
             }
         }
     }
+
+
+    update_time.innerHTML += ' ' + data.R_Update;
 }
 function setLike_Btn(clike){
     let content = document.getElementsByClassName('content')[0];
@@ -449,6 +469,28 @@ function getNotFound(){
     httpRequest.open('POST','/static/notfound_data');
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send(null);
+}
+function getTemplate_data(R_ID){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('Template_data資料錯誤');
+                }else{
+                    setResourceInfo_data(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/resource/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('R_ID=' + R_ID);
 }
 
 

@@ -144,7 +144,8 @@ router.post('/search_results',(req,res)=>{
     let school = req.body.school;
     let R_City = req.body.R_City;
     let R_District = req.body.R_District;
-    let temp_R_List = [];    //暫時存放的列表
+    let temp_R_List = [];    //暫時存放的列表1
+    let temp_R_List2 = [];    //暫時存放的列表2
     let data = {
         "Search_data" : {
             "demand" : demand,
@@ -182,8 +183,9 @@ router.post('/search_results',(req,res)=>{
         resolve(searchResource_identity(identity,L_ID));
     }).then((results)=>{
         let match = false;
+        let add_num = 0;
         for(i = 0;i<results.length;i++){
-            for(j = 0;j<temp_R_List.length;j++){
+            for(j = 0;j<temp_R_List.length-add_num;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
                     temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_IdentityText(identity,results[i].R_Identity),L_ID));
                     match = true;
@@ -191,6 +193,7 @@ router.post('/search_results',(req,res)=>{
                 }
             }
             if(!match){
+                add_num++;
                 temp_R_List.push({
                     "D_ID" : results[i].D_ID,
                     "D_Name" : results[i].D_Name,
@@ -217,7 +220,9 @@ router.post('/search_results',(req,res)=>{
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
+                    
                     temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_SchoolText(school,results[i].R_School),L_ID));
+                    temp_R_List2.push(temp_R_List[j]); 
                     //match = true;
                     break;
                 }
@@ -236,9 +241,12 @@ router.post('/search_results',(req,res)=>{
             // }
             // match = false;
         }
+        temp_R_List = temp_R_List2;
+        temp_R_List2 = [];
         //console.log(temp_R_List);
     })
 
+    
 
     //申請者地區過濾(適合資料)(不符合需要刪掉)
     new Promise((resolve,reject)=>{
@@ -669,7 +677,6 @@ router.post('/msg',(req,res)=>{
     let utoken = req.cookies.utoken;
     let msg = req.body.msg;
     let R_ID = req.body.R_ID;
-    console.log(req.body);
 
     
     new Promise((resolve,reject)=>{
@@ -831,6 +838,7 @@ function getMultiple_IdentityText(identity,R_Identity){
     }else{
         if(typeof identity == 'string'){
             if(find(identity,R_Identity)){
+                //console.log(identity,R_Identity);
                 return getIdentityText(identity);
             }
         }else if(typeof identity == 'object'){
@@ -909,8 +917,8 @@ async function searchResource_identity(identity,L_ID){
         }
     }
     str += ')';
-    // console.log(str);
-    // console.log(parameter);
+    //console.log(str);
+    //console.log(parameter);
 
     return new Promise((resolve,reject)=>{
         db.execute(str,parameter,(err,results)=>{

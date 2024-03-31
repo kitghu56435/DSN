@@ -288,7 +288,7 @@ router.post('/demand/edit/data',(req,res)=>{
 
     db.execute(`SELECT Resources.R_ID,R_Shelf,Resources.D_ID,D_Name,T_Path,RD_Content R_Name FROM Resources,Demand,Template,Resource_data
     WHERE Resources.D_ID = Demand.D_ID AND Template.T_ID = Resources.T_ID AND Resources.R_ID = Resource_data.R_ID 
-    AND R_Delete = 0 AND Resources.R_ID = ? AND RD_Type = 2 AND Resource_data.L_ID = 'L000000001';`,[R_ID],(err,results)=>{
+    AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ? AND RD_Type = 2 AND Resource_data.L_ID = 'L000000001';`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             data.msgbox += '資料庫錯誤<br>';
@@ -930,7 +930,7 @@ router.get('/demand/feedback',(req,res)=>{
 
 
     db.execute(`SELECT RD_Content R_Name,Resources.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Demand.D_ID = Resources.D_ID 
-    AND Resources.R_ID = Resource_data.R_ID AND RD_Type = 2 AND Resource_data.L_ID = 'L000000001' AND R_Delete = 0 AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
+    AND Resources.R_ID = Resource_data.R_ID AND Demand.L_ID = 'L000000001' AND RD_Type = 2 AND Resource_data.L_ID = 'L000000001' AND R_Delete = 0 AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -979,7 +979,7 @@ router.get('/demand/supplier',(req,res)=>{
 
     db.execute(`SELECT RD_Content R_Name,Resources.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Demand.D_ID = Resources.D_ID 
     AND Resources.R_ID = Resource_data.R_ID AND RD_Type = 2 AND R_Delete = 0 AND Resources.R_ID = ? 
-    AND Resource_data.L_ID = 'L000000001'`,[R_ID],(err,results)=>{
+    AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001'`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -1993,6 +1993,7 @@ async function create_Supplier_binding(R_ID,S_ID){
     })
 }
 async function update_Resource_data(data){
+    let R_Update = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let R_ID = data.R_ID;
     let L_ID = data.L_ID;
 
@@ -2000,8 +2001,16 @@ async function update_Resource_data(data){
         await create_Resource_data(R_ID,L_ID,data.Template_ID[x],data[data.Template_ID[x]]);
     }
 
-    return new Promise((resolve)=>{
-        resolve();
+    return new Promise((resolve,rejects)=>{
+        //更新資源更新時間
+        db.execute(`UPDATE Resources SET R_Update = ? WHERE R_ID = ?`,[R_Update,R_ID],(err)=>{
+            if(err){
+                console.log(err);
+                rejects();
+            }else{
+                resolve();
+            }
+        })
     })
 }
 async function create_Resource_data(R_ID,L_ID,Template_ID,Content){
@@ -2074,7 +2083,7 @@ async function update_Resource(data){
 
     
 
-    console.log(S_ID);
+    
     await delete_Supplier_binding(R_ID);  //刪除供應商綁定
     if(checkData(S_ID)){
         for(cc = 0;cc<S_ID.length;cc++){
