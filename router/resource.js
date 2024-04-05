@@ -84,7 +84,7 @@ router.get('/',(req,res)=>{
             }
         }
     })
-    db.execute('SELECT Resources.T_ID,COUNT(T_ID) T_Num FROM Resources WHERE R_Delete = 0 GROUP BY T_ID ORDER BY R_ID;',(err,results)=>{
+    db.execute('SELECT Resources.T_ID,COUNT(R_ID) T_Num FROM Resources  WHERE R_Delete = 0 GROUP BY Resources.T_ID ORDER BY T_ID;',(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -855,13 +855,14 @@ router.post('/demand/search/data',(req,res)=>{
         "R_ID" : R_ID,
         "R_Shelf" : '',
         "R_Identity" : [],
+        "R_Condition" : [],
         "R_School" : [],
         "R_City" : [],
         "msgbox" : ""
     }
 
     
-    db.execute(`SELECT Resources.D_ID,D_Name,R_City,R_School,R_Identity,R_Shelf FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
+    db.execute(`SELECT Resources.D_ID,D_Name,R_City,R_School,R_Identity,R_Condition,R_Shelf FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
     AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
@@ -872,6 +873,7 @@ router.post('/demand/search/data',(req,res)=>{
             data.R_Shelf = results[0].R_Shelf;
 
             data.R_Identity = setCode_to_Array(results[0].R_Identity);
+            data.R_Condition = setCode_to_Array(results[0].R_Condition);
             data.R_School = setCode_to_Array(results[0].R_School);
             data.R_City = setCode_to_Array(results[0].R_City);
         }
@@ -889,7 +891,6 @@ router.post('/demand/search/data',(req,res)=>{
 })
 router.post('/demand/search/save',(req,res)=>{ 
     let R_ID = req.body.R_ID;
-    console.log(req.body);
     
     
     db.execute(`SELECT T_ID FROM Resources WHERE R_ID = ? AND R_Delete = 0;`,[R_ID],(err,results)=>{  //確認是否有此資源
@@ -923,18 +924,20 @@ router.get('/demand/feedback',(req,res)=>{
             "D_Name" : "",
             "D_ID" : "",
             "R_Name" : "",
-            "R_ID" : R_ID
+            "R_ID" : R_ID,
+            "R_Shelf" : '',
         },
         "feedback":[]
     }
 
 
-    db.execute(`SELECT RD_Content R_Name,Resources.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Demand.D_ID = Resources.D_ID 
+    db.execute(`SELECT RD_Content R_Name,Resources.D_ID,D_Name,R_Shelf FROM Resources,Demand,Resource_data WHERE Demand.D_ID = Resources.D_ID 
     AND Resources.R_ID = Resource_data.R_ID AND Demand.L_ID = 'L000000001' AND RD_Type = 2 AND Resource_data.L_ID = 'L000000001' AND R_Delete = 0 AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
+            data.resource.R_Shelf = results[0].R_Shelf;
             data.resource.D_Name = results[0].D_Name;
             data.resource.R_Name = results[0].R_Name;
             data.resource.D_ID = results[0].D_ID;
@@ -971,19 +974,21 @@ router.get('/demand/supplier',(req,res)=>{
             "D_Name" : "",
             "D_ID" : "",
             "R_Name" : "",
-            "R_ID" : R_ID
+            "R_ID" : R_ID,
+            "R_Shelf" : '',
         },
         "S_Info" : [],
         "S_Info_p" : []
     }
 
-    db.execute(`SELECT RD_Content R_Name,Resources.D_ID,D_Name FROM Resources,Demand,Resource_data WHERE Demand.D_ID = Resources.D_ID 
+    db.execute(`SELECT RD_Content R_Name,Resources.D_ID,D_Name,R_Shelf FROM Resources,Demand,Resource_data WHERE Demand.D_ID = Resources.D_ID 
     AND Resources.R_ID = Resource_data.R_ID AND RD_Type = 2 AND R_Delete = 0 AND Resources.R_ID = ? 
     AND Demand.L_ID = 'L000000001' AND Resource_data.L_ID = 'L000000001'`,[R_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
+            data.resource.R_Shelf = results[0].R_Shelf;
             data.resource.D_Name = results[0].D_Name;
             data.resource.R_Name = results[0].R_Name;
             data.resource.D_ID = results[0].D_ID;
@@ -1391,7 +1396,8 @@ router.get('/template/edit',(req,res)=>{
     let data = {
         "template": {
             "T_ID" : T_ID,
-            "T_Name" : ""
+            "T_Name" : "",
+            "T_Path" : "",
         },
         "all_label" : 0,
         "text_label" : 0,
@@ -1407,6 +1413,7 @@ router.get('/template/edit',(req,res)=>{
             msgbox += '資料庫錯誤<br>';
         }else{
             data.template.T_Name = results[0].T_Name;
+            data.template.T_Path = results[0].T_Path;
             T_Path = results[0].T_Path;
             try{
                 let template_html = readFileSync('./public/html/template/' + T_Path,'utf-8');
@@ -1709,15 +1716,17 @@ router.get('/template/setting',(req,res)=>{
     let msgbox = '';
     let data = {
         "T_ID" : T_ID,
-        "T_Name" : ""
+        "T_Name" : "",
+        "T_Path" : ""
     }
     
-    db.execute(`SELECT T_Name FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
+    db.execute(`SELECT T_Name,T_Path FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
             data.T_Name = results[0].T_Name;
+            data.T_Path = results[0].T_Path;
         }
 
         html += `<script>
@@ -1728,30 +1737,61 @@ router.get('/template/setting',(req,res)=>{
         res.end(html)
     })
 })
+router.post('/template/setting/save',(req,res)=>{
+    let T_ID = req.body.T_ID;
+    let T_Name = req.body.T_Name;
+    let data = {
+        "T_Name" : T_Name,
+        "msg" : "success",
+    }
+    
+    if(checkData(T_ID) && checkData(T_Name)){
+        db.execute(`SELECT T_ID FROM Template WHERE T_ID = ?`,[T_ID],(err,results)=>{  //確認是否有此模板
+            if(err){
+                console.log(err);
+                res.json({"msg" : "dberr"});
+            }else if(results.length == 0){
+                res.json({"msg" : "nodata"});
+            }else{
+                
+                db.execute('UPDATE Template SET T_Name = ? WHERE T_ID = ?;',[T_Name,T_ID],(err,results)=>{
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "nodata"});
+                    }else{
+                        res.json(data);
+                    }
+                })
+            }
+        })   
+    }
+    
+})
 router.get('/template/use',(req,res)=>{
     let html = readFileSync('./public/html/back_end/edit/template_r.html','utf-8');
     let T_ID = req.query.T_ID;
-    let all_t = 0;
     let msgbox = '';
     let data = {
         "template": {
             "T_ID" : T_ID,
-            "T_Name" : ""
+            "T_Name" : "",
+            "T_Path" : ""
         },
         "resource" : []
     }
     
-    db.execute(`SELECT T_Name FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
+    db.execute(`SELECT T_Name,T_Path FROM Template WHERE T_ID = ?;`,[T_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
             data.template.T_Name = results[0].T_Name;
+            data.template.T_Path = results[0].T_Path;
         }
     })
     db.execute(`SELECT Resources.R_ID,RD_Content R_Name,D_Name FROM Template,Resources,Demand,Resource_data WHERE Template.T_ID = Resources.T_ID 
     AND Resources.R_ID = Resource_data.R_ID AND Demand.D_ID = Resources.D_ID AND RD_Type = 2 AND R_Delete = 0 
-    AND Resource_data.L_ID = 'L000000001' AND Template.T_ID = ?;`,[T_ID],(err,results)=>{
+    AND Resource_data.L_ID = 'L000000001' AND Demand.L_ID = 'L000000001' AND Template.T_ID = ?;`,[T_ID],(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -1952,7 +1992,7 @@ async function create_Resource(data){
 
    
     return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,null,null,null,0);`,
+        db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,null,null,null,null,0);`,
         [R_ID,D_ID,T_ID,R_Date,R_Date,R_Img],(err)=>{
             if(err){
                 console.log(err)
@@ -2144,13 +2184,14 @@ async function update_Resource_search(data){
     let R_Identity_code = setArray_to_Code(data.R_Identity);
     let R_School_code = setArray_to_Code(data.R_School);
     let R_City_code = setArray_to_Code(data.R_City);
+    let R_Condition_code = setArray_to_Code(data.R_Condition);
 
 
 
 
     return new Promise((resolve,rejects)=>{
         //資源需求與模板
-        db.execute(`UPDATE Resources SET R_Identity = ?,R_School = ?,R_City = ? WHERE R_ID = ?`,[R_Identity_code,R_School_code,R_City_code,R_ID],(err)=>{
+        db.execute(`UPDATE Resources SET R_Identity = ?,R_School = ?,R_City = ?,R_Condition = ? WHERE R_ID = ?`,[R_Identity_code,R_School_code,R_City_code,R_Condition_code,R_ID],(err)=>{
             if(err){
                 console.log(err)
                 rejects();

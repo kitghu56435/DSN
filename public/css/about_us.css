@@ -8,10 +8,17 @@
     background-size: 100% 100%;
 }
 .title{
+    font-weight: bold;
     color:white;
     font-size: 3em;
 }
 .title2{
+    font-weight: bold;
+    color: white;
+    font-size: 2em;
+}
+.title3{
+    font-weight: bold;
     color: white;
     font-size: 1.5em;
 }
@@ -64,6 +71,9 @@
     max-width: 350px;   
     display: inline-block;
 }
+.column > img{
+    max-width: 300px;   
+}
 .contact_column{
     padding-left: 5%;
     padding-right: 5%;
@@ -99,6 +109,15 @@
     .container1{
         background-image: url(../img/index/index_poster_768_1.png);
     }
+    .title{
+        font-size: 2.5em;
+    }
+    .title2{
+        font-size: 2em;
+    }
+    .title3{
+        font-size: 1.5em;
+    }
     .letterp_content {
         padding-left: 10%;
         padding-right: 10%;
@@ -111,10 +130,7 @@
         max-width: 700px;   
     }
     .bottom-left{
-        top:72%;
-    }
-    .title{
-        font-size: 2em;
+        top:35%;
     }
     .letterp{
         margin-top: 2%;
@@ -130,20 +146,32 @@
     .container1{
         background-image: url(../img/index/index_poster_560_1.png);
     }
+    .title{
+        font-size: 2em;
+    }
+    .title2{
+        font-size: 1.5em;
+    }
+    .title3{
+        font-size: 1em;
+    }
     .letter{
         padding-left: 0.01%;
     }
     .bottom-left{
-        top:60%;
+        top:35%;
     }
     .container{
         padding-left: 1.5%;
     }
-    .title{
-        font-size: 1.5em;
-        font-weight: bold;
-    }
     .text{
         padding-left: 3%;
+    }
+}
+
+
+@media(max-width:390px){  
+    .container1{
+        background-image: url(../img/index/index_poster_390_1.png);
     }
 }

@@ -250,9 +250,18 @@ function shelfResource(R_ID){
                     msgbox(1,'查無資源，請嘗試重新整理頁面');
                 }else if(jsonResponse.msg == 'success'){
                     if(jsonResponse.shelf){
-                        btn[1].innerHTML = '<span style="color:green">●</span>上架中';
+                        if(btn.length != 2){
+                            btn[1].innerHTML = '<span style="color:green">●</span>上架中';
+                        }else{
+                            btn[0].innerHTML = '<span style="color:green">●</span>上架中';
+                        }
+                        
                     }else{
-                        btn[1].innerHTML = '<span style="color:red">●</span>下架中';
+                        if(btn.length != 2){
+                            btn[1].innerHTML = '<span style="color:red">●</span>下架中';
+                        }else{
+                            btn[0].innerHTML = '<span style="color:red">●</span>下架中';
+                        }
                     }
                 }
             }else{
@@ -282,10 +291,13 @@ function saveResource_data(R_ID){
 
     let httpRequest = new XMLHttpRequest();
 
+    show_loading();
     httpRequest.onreadystatechange = function(){
         if(httpRequest.readyState === 4){
+            hidden_loading();
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
+                
                 msgbox(); //先刪除目前視窗
                 if(jsonResponse.msg == 'dberr'){
                     msgbox(1,'伺服器錯誤');
@@ -377,8 +389,10 @@ function saveResource(R_ID){
 
     let httpRequest = new XMLHttpRequest();
 
+    show_loading();
     httpRequest.onreadystatechange = function(){
         if(httpRequest.readyState === 4){
+            hidden_loading();
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
                 msgbox(); //先刪除目前視窗
@@ -460,6 +474,7 @@ function saveResource_search(R_ID){
     let R_Identity = [];
     let R_School = [];
     let R_City = [];
+    let R_Condition = [];
     let formObject = {};
     
 
@@ -470,19 +485,25 @@ function saveResource_search(R_ID){
             R_School.push(value);
         }else if(key == 'R_City'){
             R_City.push(value);
+        }else if(key == 'R_Condition'){
+            R_Condition.push(value);
         }
     });
     formObject.R_Identity = R_Identity;
     formObject.R_School = R_School;
     formObject.R_City = R_City;
+    formObject.R_Condition = R_Condition;
     formObject.R_ID = R_ID;
 
     let httpRequest = new XMLHttpRequest();
 
+    show_loading();
     httpRequest.onreadystatechange = function(){
         if(httpRequest.readyState === 4){
+            hidden_loading();
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
+                
                 msgbox(); //先刪除目前視窗
                 if(jsonResponse.msg == 'dberr'){
                     msgbox(1,'伺服器錯誤');
@@ -538,7 +559,7 @@ function setResource_edit(data){
     }
     btn[0].setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
     btn[1].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
-    btn[2].setAttribute('onclick',`url('/resource?ID=${data.resource.R_ID}')`);
+    btn[2].setAttribute('onclick',`url_blank('/resource?ID=${data.resource.R_ID}')`);
     
     let L_Name_array = [];
     let L_ID_array = [];
@@ -565,7 +586,7 @@ function setResource_edit(data){
                     <span>提示：${data.container[i].note[0]}</span>
                 </div>
                 <div class="item_content">
-                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
+                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value='${data.container[i].content[0]}'>
                 </div>
             </div>
             `;
@@ -630,6 +651,19 @@ function setResource_feedback(data){
     let R_Name_bar = document.getElementById('R_Name_bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
+    btn[0].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
+    btn[1].setAttribute('onclick',`url_blank('/resource?ID=${data.resource.R_ID}')`);
+
+
+    if(data.resource.R_Shelf){
+        btn[0].innerHTML = '<span style="color:green">●</span>上架中';
+    }else{
+        btn[0].innerHTML = '<span style="color:red">●</span>下架中';
+    }
+
+
     if(data.resource.D_ID != undefined){
         sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
         sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
@@ -688,10 +722,13 @@ function setResource_search(data){
 
     let identity_table = document.getElementById('identity_table');
     let identity_option = identity_table.getElementsByTagName('input');
+    let condition_table = document.getElementById('condition_table');
+    let condition_option = condition_table.getElementsByTagName('input');
     let school_table = document.getElementById('school_table');
     let school_option = school_table.getElementsByTagName('input');
     let city_table = document.getElementById('city_table');
     let city_option = city_table.getElementsByTagName('input');
+
     
 
     
@@ -707,7 +744,7 @@ function setResource_search(data){
     sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
     btn[0].setAttribute('onclick',`saveResource_search('${data.R_ID}')`);
     btn[1].setAttribute('onclick',`shelfResource('${data.R_ID}')`);
-    btn[2].setAttribute('onclick',`url('/resource?ID=${data.R_ID}')`);
+    btn[2].setAttribute('onclick',`url_blank('/resource?ID=${data.R_ID}')`);
 
     if(data.R_Shelf){
         btn[1].innerHTML = '<span style="color:green">●</span>上架中';
@@ -734,7 +771,21 @@ function setResource_search(data){
                     }
                 }
             }
-            
+        }
+
+        for(i = 0;i<data.R_Condition.length;i++){
+            if(data.R_Condition[i] == 'A0'){
+                for(j = 0;j < condition_option.length;j++){
+                    condition_option[j].checked = true;
+                }
+                break;
+            }else{
+                for(j = 0;j < condition_option.length;j++){
+                    if(data.R_Condition[i] == condition_option[j].value){
+                        condition_option[j].checked = true;
+                    }
+                }
+            }
         }
 
         for(i = 0;i<data.R_School.length;i++){
@@ -807,7 +858,7 @@ function setResource_setting(data){
     sidebars2_a[4].setAttribute('href','/backend/resource/demand/supplier?R_ID=' + data.R_ID);
     btn[0].setAttribute('onclick',`saveResource('${data.R_ID}')`);
     btn[1].setAttribute('onclick',`shelfResource('${data.R_ID}')`);
-    btn[2].setAttribute('onclick',`url('/resource?ID=${data.R_ID}')`);
+    btn[2].setAttribute('onclick',`url_blank('/resource?ID=${data.R_ID}')`);
     L_ID.setAttribute('value',data.L_ID);
 
     if(data.R_Shelf){
@@ -866,6 +917,8 @@ function setResource_supplier(data){
     let R_Name_bar = document.getElementById('R_Name_bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
     sidebars2_a[0].setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
     sidebars2_a[1].setAttribute('href','/backend/resource/demand/setting?R_ID=' + data.resource.R_ID);
     sidebars2_a[2].setAttribute('href','/backend/resource/demand/search?R_ID=' + data.resource.R_ID);
@@ -875,7 +928,16 @@ function setResource_supplier(data){
     D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
     R_Name_bar.innerHTML = data.resource.R_Name;
     R_Name_bar.setAttribute('href','/backend/resource/demand/edit?R_ID=' + data.resource.R_ID);
+    
+    btn[0].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
+    btn[1].setAttribute('onclick',`url_blank('/resource?ID=${data.resource.R_ID}')`);
+
     let str = '';
+    if(data.resource.R_Shelf){
+        btn[0].innerHTML = '<span style="color:green">●</span>上架中';
+    }else{
+        btn[0].innerHTML = '<span style="color:red">●</span>下架中';
+    }
 
     if(data == undefined){
         number.innerHTML = '供應商數量：0';

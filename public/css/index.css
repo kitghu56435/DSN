@@ -71,6 +71,22 @@
     display: block !important;
 }
 
+.poster1{
+    background-image: url('../img/index/index_poster_1900_1.png');
+    background-repeat:round;
+    background-size: cover;
+}
+.poster2{
+    background-image: url('../img/index/index_poster_1900_2.png');
+    background-repeat: round;
+    background-size: cover;
+}
+.poster3{
+    background-image: url('../img/index/index_poster_1900_3.png');
+    background-repeat: round;
+    background-size: cover;
+}
+
 
 .carousel_img_div{
     width:100%;
@@ -94,22 +110,50 @@
     height:100%
 }
 
-@media (max-width:1600px){   
+@media (max-width:1600px){ 
+    .poster1{
+        background-image: url('../img/index/index_poster_1600_1.png');
+    } 
+    .poster2{
+        background-image: url('../img/index/index_poster_1600_2.png');
+    } 
+    .poster3{
+        background-image: url('../img/index/index_poster_1600_3.png');
+    }  
     .featurette_img_div{
         height: 450px;
         width:450px;
     }
 }
 @media (max-width:1280px){   
+    .poster1{
+        background-image: url('../img/index/index_poster_1280_1.png');
+    } 
+    .poster2{
+        background-image: url('../img/index/index_poster_1280_2.png');
+    } 
+    .poster3{
+        background-image: url('../img/index/index_poster_1280_3.png');
+    }  
     .featurette_img_div{
         height: 400px;
         width:400px;
     }
 }
 @media (max-width:768px){   
+    .poster1{
+        background-image: url('../img/index/index_poster_768_1.png');
+    }
+    .poster2{
+        background-image: url('../img/index/index_poster_768_2.png');
+    } 
+    .poster3{
+        background-image: url('../img/index/index_poster_768_3.png');
+    }   
     .featurette_img_div{
         height: 250px;
         width:250px;
+        margin: auto;
     }
     .col-lg-4{
         width:50%;
@@ -119,13 +163,36 @@
     }
 }
 @media (max-width:560px){  
+    .poster1{
+        background-image: url('../img/index/index_poster_560_1.png');
+    }
+    .poster2{
+        background-image: url('../img/index/index_poster_560_2.png');
+    }
+    .poster3{
+        background-image: url('../img/index/index_poster_560_3.png');
+    }
     .featurette_img_div{
         height: 350px;
         width:350px;
     }
     .carousel_h1{
-        font-size: 1.7em;
+        font-size: 1.5em;
     }
 }
+@media (max-width:390px){  
+    .poster1{
+        background-image: url('../img/index/index_poster_390_1.png');
+    }
+    .poster2{
+        background-image: url('../img/index/index_poster_390_2.png');
+    }
+    .poster3{
+        background-image: url('../img/index/index_poster_390_3.png');
+    }  
+    
+}
+
+
 
 

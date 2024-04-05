@@ -44,8 +44,6 @@ function setTemplate(data){
     }
 }
 
-
-
 function setTemplate_edit(data){
     let lable_area = document.getElementsByClassName('lable_area')[0];
     let span = lable_area.getElementsByTagName('span');
@@ -53,7 +51,10 @@ function setTemplate_edit(data){
     let T_Name_Bar = document.getElementById('T_Name_Bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
 
+    btn[0].setAttribute('onclick',`url_blank('/html/template/${data.template.T_Path}')`);
     span[0].innerHTML = '標籤數量：' + data.all_label;
     span[1].innerHTML = '文字標籤：' + data.text_label;
     span[2].innerHTML = '照片標籤：' + data.img_label;
@@ -79,7 +80,7 @@ function setTemplate_edit(data){
                     <span>項目提示：${data.container[i].note[0]}</span>
                 </div>
                 <div class="item_content">
-                    <input placeholder="請輸入標題" value="${data.container[i].content[0]}">
+                    <input placeholder="請輸入標題" value='${data.container[i].content[0]}'>
                 </div>
             </div>
             `;
@@ -136,8 +137,6 @@ function setTemplate_edit(data){
     }
 }
 
-
-
 function setTemplate_r(data){
     let r_table_div = document.getElementsByClassName('r_table')[0];
     let r_table = r_table_div.getElementsByTagName('table')[0];
@@ -145,6 +144,10 @@ function setTemplate_r(data){
     let T_Name_Bar = document.getElementById('T_Name_Bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
+
+    btn[0].setAttribute('onclick',`url_blank('/html/template/${data.template.T_Path}')`);
     sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.template.T_ID);
     sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.template.T_ID);
     sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.template.T_ID);
@@ -167,28 +170,84 @@ function setTemplate_r(data){
             str = `
             <tr><th>資源名稱</th><th>需求名稱</th><th>查看資源</th></tr>`;
             for(i = 0;i<data.resource.length;i++){
-                str += `<tr><td>${data.resource[i].R_Name}</td><td>${data.resource[i].D_Name}</td><td><img src="../../../img/backend/language.png"></td></tr>`
-            }  //這邊要加上href
+                str += `<tr><td>${data.resource[i].R_Name}</td><td>${data.resource[i].D_Name}</td><td><img onclick="url_blank('/resource?ID=${data.resource[i].R_ID}')" src="../../../img/backend/language.png"></td></tr>`
+            } 
             r_table.innerHTML = str;
         }
     }
 }
 
-
 function setTemplate_setting(data){
+    let T_ID = document.getElementById('T_ID');
+    let T_Path = document.getElementById('T_Path');
     let T_Name = document.getElementsByName('T_Name')[0];
     let T_Name_Bar = document.getElementById('T_Name_Bar');
     let sidebars2 = document.getElementsByClassName('sidebars2')[0];
     let sidebars2_a = sidebars2.getElementsByTagName('a');
+    let btn_area = document.getElementsByClassName('btn_area')[0];
+    let btn = btn_area.getElementsByTagName('button');
+
+    
 
     if(data != undefined){
+        T_ID.innerHTML = data.T_ID;
+        T_Path.innerHTML = data.T_Path;
         T_Name.setAttribute('value',data.T_Name);
         T_Name_Bar.innerHTML = data.T_Name;
         T_Name_Bar.setAttribute('href','/backend/resource/template/edit?T_ID=' + data.T_ID);
         sidebars2_a[0].setAttribute('href','/backend/resource/template/edit?T_ID=' + data.T_ID);
         sidebars2_a[1].setAttribute('href','/backend/resource/template/setting?T_ID=' + data.T_ID);
         sidebars2_a[2].setAttribute('href','/backend/resource/template/use?T_ID=' + data.T_ID);
+        btn[0].setAttribute('onclick',`saveTemplate_setting('${data.T_ID}')`);
+        btn[1].setAttribute('onclick',`url_blank('/html/template/${data.T_Path}')`);
     }
+}
+
+
+function saveTemplate_setting(T_ID){
+    let form = document.getElementsByClassName('content')[0];
+    let formData = new FormData(form);
+    let formObject = {};
+    
+
+    formData.forEach(function(value, key){
+        formObject[key] = value;
+    });
+    formObject.T_ID = T_ID;
+
+    let httpRequest = new XMLHttpRequest();
+
+    show_loading();
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            hidden_loading();
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                msgbox(); //先刪除目前視窗
+                if(jsonResponse.msg == 'dberr'){
+                    msgbox(1,'伺服器錯誤');
+                }else if(jsonResponse.msg == 'dataerr'){
+                    msgbox(1,'資料缺失');
+                }else if(jsonResponse.msg == 'nodata'){
+                    msgbox(1,'查無資源，請嘗試重新整理頁面');
+                }else if(jsonResponse.msg == 'err'){
+                    msgbox(1,'更新錯誤');
+                }else if(jsonResponse.msg == 'success'){
+                    let T_Name_Bar = document.getElementById('T_Name_Bar');
+                    T_Name_Bar.innerHTML = jsonResponse.T_Name;
+                    msgbox(1,'更新完成');
+                }else{
+                    msgbox(1,'伺服器無法反應，請稍後再嘗試');
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/backend/resource/template/setting/save');
+    httpRequest.setRequestHeader('Content-Type','application/json');
+    httpRequest.send(JSON.stringify(formObject));
 }
 
 function deleteTemplate(T_ID){
@@ -221,6 +280,13 @@ function deleteTemplate(T_ID){
     httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
     httpRequest.send('T_ID='+ T_ID);
 }
+
+
+
+
+
+
+
 
 
 function Select_Option_HTML(value,value_array,id_array){

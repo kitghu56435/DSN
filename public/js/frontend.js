@@ -1,29 +1,20 @@
-function guideline_poster_check(){
-    let carousel_img = document.getElementsByClassName('carousel_img');
-
-    if(window.innerWidth <= 560){
-        carousel_img[0].setAttribute('src','../img/index/index_poster_560_2.png');
-    }else if(window.innerWidth <= 768){
-        carousel_img[0].setAttribute('src','../img/index/index_poster_768_2.png');
-    }else if(window.innerWidth <= 1280){
-        carousel_img[0].setAttribute('src','../img/index/index_poster_1280_2.png');
-    }else if(window.innerWidth <= 1600){
-        carousel_img[0].setAttribute('src','../img/index/index_poster_1600_2.png');
-    }else{
-        carousel_img[0].setAttribute('src','../img/index/index_poster_1900_2.png');
-    }
-}
-
-
-
 function show_a(n){
     let a = document.getElementsByClassName('a')[n];
     let q_img = document.getElementsByClassName('q_img')[n];
 
+    let height = 0;
+    if(window.innerWidth <= 560){
+        height = 300;
+    }else if(window.innerWidth <= 768){
+        height = 250;
+    }else{
+        height = 200;
+    }
+
     if(a.style['height'] == '0px'){
         q_img.style['transform'] = 'rotate(180deg)';
-        a.style['padding'] = `0.5em 1.5em 0.5em 1.5em`;
-        a.style['height'] = `100px`;
+        a.style['padding'] = `1em 1.5em 1em 1.5em`;
+        a.style['height'] = height + `px`;
     }else{
         q_img.style['transform'] = 'rotate(0deg)';
         a.style['padding'] = `0`;
@@ -38,11 +29,13 @@ function setSearch_results(data){
     let demand = document.getElementById('demand');
     let identity = document.getElementById('identity');
     let school = document.getElementById('school');
+    let condition = document.getElementById('condition');
     let R_City = document.getElementById('R_City');
     
     //搜尋條件
     demand.innerHTML = getSearch_Data_Text(data.Search_data.demand,'demand');
     identity.innerHTML = getSearch_Data_Text(data.Search_data.identity,'identity');
+    condition.innerHTML = getSearch_Data_Text(data.Search_data.condition,'condition');
     school.innerHTML = getSearch_Data_Text(data.Search_data.school,'school');
     R_City.innerHTML = getSearch_Data_Text(data.Search_data.R_City,'city') + data.Search_data.R_District;
 
@@ -61,20 +54,22 @@ function setSearch_results(data){
     let demand_ID = ['D000000001','D000000002','D000000003','D000000004'
     ,'D000000005','D000000006',"D000000007"];
     console.log(data)
-    let title = false;   //是否放上標題了
+    let title0 = false;   //適合資訊是否放上標題了
+    let title1 = false;   //建議資訊是否放上標題了
     let suggestion = false; //是否有建議資源
     let data_html = document.getElementsByClassName('data');  // 0 是適合資訊 1 是建議資訊
     let str0 = '';
     let str1 = '';
     for(i = 0;i < demand_ID.length;i++){
-        title = false;
+        title0 = false;
+        title1 = false;
         for(j = 0;j<data.R_List.length;j++){
             if(demand_ID[i] == data.R_List[j].D_ID){
                 if(data.R_List[j].Search_Type == 'search' || data.R_List[j].Search_Type == 'required'){
-                    if(!title){ //先看要不要放標題
+                    if(!title0){ //先看要不要放標題
                         str0 += `<h3><div><img src="../img/index/${data.R_List[j].D_ID}.png"></div>${data.R_List[j].D_Name}</h3>
                         <div class="data_resource">`;
-                        title = true;
+                        title0 = true;
                     }
                     str0 += `
                     <div class="r_box">
@@ -90,10 +85,10 @@ function setSearch_results(data){
                     `;
                 }else if(data.R_List[j].Search_Type == 'suggestion'){
                     suggestion = true;
-                    if(!title){ //先看要不要放標題
+                    if(!title1){ //先看要不要放標題
                         str1 += `<h3><div><img src="../img/index/${data.R_List[j].D_ID}.png"></div>${data.R_List[j].D_Name}</h3>
                         <div class="data_resource">`;
-                        title = true;
+                        title1 = true;
                     }
 
                     str1 += `
@@ -129,28 +124,24 @@ function setSearch_results(data){
 function getR_Label_leng(str,L_ID){
     if(L_ID == 'L000000002'){
         switch(str){
-            case '未選擇' : return 'Not selected';
-            //demand
-            case '經濟資訊' : return 'Economy';
-            case '法律資訊' : return 'law';
-            case '緊急資訊' : return 'Emergency';
-            case '教育資訊' : return 'Education';
-            case '職涯資訊' : return 'Career';
-            case '醫療資訊' : return 'Medical';
-            case '心理資訊' : return 'Psychology';
+            case '強烈建議' : return 'Recommend';
             //IdentityText
             case '所有身分' : return 'All Identity';
             case '新住民' : return 'New resident';
             case '新住民子女' : return 'Children of new residents';
             case '原住民' : return 'Aboriginal people';
-            case '中/低收入戶' : return 'Middle/low-income households';
+            case '以上皆否' : return 'None of the above';
+            //Condition
+            case '身心障礙' : return 'Disability';
+            case '經濟弱勢' : return 'Economically disadvantaged';
             case '就職青年' : return 'Job-seeking youth';
             case '單親家庭' : return 'One-parent family';
-            case '身心障礙者' : return 'Disability';
-            case '身心障礙子女' : return 'Disabled children';
-            case '特殊境遇家庭' : return 'families in special circumstances';
+            case '家事糾紛' : return 'Family dispute';
             case '暴力/霸凌受害者' : return 'Victims of Violence/Bullying';
+            case '心理患者' : return 'Psychological patient';
+            case '醫院患者' : return 'hospital patient';
             case '懷孕少女' : return 'pregnant girl';
+            case '租屋者' : return 'renter';
             //SchoolText
             case '不限就學' : return 'All Study status';
             case '未就學' : return 'Not in school';
@@ -203,6 +194,7 @@ function getSearch_Data_Text(data,type){
         switch(type){
             case 'demand' : return getR_Label_leng(getDemandText(data),search_window_L_ID); break;
             case 'identity' : return getR_Label_leng(getIdentityText(data),search_window_L_ID); break;
+            case 'condition' : return getR_Label_leng(getConditionText(data),search_window_L_ID); break;
             case 'school' : return getR_Label_leng(getSchoolText(data),search_window_L_ID); break;
             case 'city' : return getR_Label_leng(getCityText(data),search_window_L_ID); break;
         }
@@ -212,6 +204,7 @@ function getSearch_Data_Text(data,type){
             switch(type){
                 case 'demand' : str += getR_Label_leng(getDemandText(data[f]),search_window_L_ID) + '、'; break;
                 case 'identity' : str += getR_Label_leng(getIdentityText(data[f]),search_window_L_ID) + '、'; break;
+                case 'condition' : str += getR_Label_leng(getConditionText(data[f]),search_window_L_ID) + '、'; break;
                 case 'school' : str += getR_Label_leng(getSchoolText(data[f]),search_window_L_ID) + '、'; break;
                 case 'city' : str += getR_Label_leng(getCityText(data[f]),search_window_L_ID) + '、'; break;
             }
@@ -240,15 +233,22 @@ function getIdentityText(code){
         case 'A1' : return '新住民';
         case 'A2' : return '新住民子女';
         case 'A3' : return '原住民';
-        case 'A4' : return '中/低收入戶';
-        case 'A5' : return '就職青年';
-        case 'A6' : return '單親家庭';
-        case 'A7' : return '身心障礙者';
-        case 'A8' : return '身心障礙子女';
-        case 'A9' : return '特殊境遇家庭';
-        case 'B1' : return '暴力/霸凌受害者';
-        case 'B2' : return '懷孕少女';
-        default : return '未選擇';
+        case 'A4' : return '以上皆否';
+    }
+}
+function getConditionText(code){
+    switch(code){
+        case 'A0' : return '所有狀況';
+        case 'A1' : return '身心障礙';
+        case 'A2' : return '經濟弱勢';
+        case 'A3' : return '就職青年';
+        case 'A4' : return '單親家庭';
+        case 'A5' : return '家事糾紛';
+        case 'A6' : return '暴力/霸凌受害者';
+        case 'A7' : return '心理患者';
+        case 'A8' : return '醫院患者';
+        case 'A9' : return '懷孕少女';
+        case 'B1' : return '租屋者';
     }
 }
 function getSchoolText(code){

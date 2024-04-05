@@ -42,10 +42,9 @@
     </header>
     <main>
         <div class="container_fullscreen">
-            <img class="pic1 carousel_img" src="../img/index/index_poster_1900_2.png">
             <div class="middle_text container2">
-                <h1 class="T-text" dsnid="1" dsnnote="上方標題">新手指南</h1> 
-                <p class="T-text" dsnid="2" dsnnote="上方標題文字">透過我們的新手指南，讓您從我們的網站上找到更多符合你的資訊</p>
+                <h1 class="T-text" dsnid="1" dsnnote="上方標題"></h1> 
+                <p class="T-text" dsnid="2" dsnnote="上方標題文字"></p>
             </div>
         </div>
         <div class = "container container2" id="introduction">
@@ -246,13 +245,8 @@
     <script src="../js/ajax.js"></script>
     <script>
         header_nav_check();
-        guideline_poster_check();
         getHeader_data('guideline');
-        //getGuideline_data();
-        setLanguage('L000000001','guideline')
-        window.addEventListener('resize', function() {
-            guideline_poster_check();
-        });
+        getGuideline_data();
     </script>
 </body>
 </html>

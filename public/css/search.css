@@ -4,7 +4,7 @@
     width: 100%;
     position: relative;
     text-align: center;
-    background-image: url(../img/index/index_poster_1900_1.png);
+    background-image: url(../img/search/search_poster_1900.png);
     background-size: 100% 100%;
 }
 .bottom-left > .title{
@@ -25,7 +25,7 @@
     position: absolute;
     text-align: left;
     top: 37%;
-    left: 15%;
+    left: 5%;
 }
 .data_form{
     padding-left: 0%;
@@ -84,13 +84,13 @@
 /* 100% 1463px */
 @media(max-width:1600px){  
     .container1{
-        background-image: url(../img/index/index_poster_1600_1.png);
+        background-image: url(../img/search/search_poster_1600.png);
     }
 }
 /* 125% 1170px */
 @media(max-width:1280px){ 
     .container1{
-        background-image: url(../img/index/index_poster_1280_1.png);
+        background-image: url(../img/search/search_poster_1280.png);
     }
     .container{
         padding-left:2%;
@@ -106,7 +106,7 @@
 /* 200% 731px */
 @media(max-width:768px){  
     .container1{
-        background-image: url(../img/index/index_poster_768_1.png);
+        background-image: url(../img/search/search_poster_768.png);
     }
     .data_form > h2{
         margin-top:10%;
@@ -116,7 +116,7 @@
         padding-left: 3%;
     }
     .bottom-left{
-        top:72%;
+        top:20%;
     }
     .data_form > .btn_area > button{
         width:20%;
@@ -125,10 +125,14 @@
 /* 300% 487px */
 @media(max-width:560px){  
     .bottom-left > .title {
-        font-size: 2.5em;
+        font-size: 2em;
     }
     .container1{
-        background-image: url(../img/index/index_poster_560_1.png);
+        background-image: url(../img/search/search_poster_560.png);
+    }
+    .bottom-left > .title2 {
+        color: white;
+        font-size: 1.1em;
     }
     .data_form > h2{
         margin-top:15%;
@@ -142,7 +146,7 @@
         margin-bottom: 4%;
     }
     .bottom-left{
-        top:60%;
+        top:20%;
     }
     .data_form > .btn_area {
         padding-top: 15%;
@@ -150,5 +154,15 @@
     }
     .data_form > .btn_area > button{
         width:40%;
+    }
+}
+
+@media(max-width:390px){  
+    .bottom-left > .title2 {
+        color: white;
+        font-size: 1em;
+    }
+    .container1{
+        background-image: url(../img/search/search_poster_390.png);
     }
 }

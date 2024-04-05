@@ -48,31 +48,34 @@
             </div>
             <div class="carousel-inner">
             <div class="carousel-item active container2">
-                <div class="carousel_img_div"><img class="carousel_img" src="../img/index/index_poster_1900_1.png"></div>
+                <div class="carousel_img_div poster1"></div>
                 <div class="container">
                 <div class="carousel-caption text-start">
-                    <h1 class="carousel_h1 T-text" dsnid="1" dsnnote="廣告牆1">提供容易理解的資源資訊<br>給尚未得知自己權益的人</h1>
-                    <p class="opacity-75 T-text" dsnid="2">我們將資源分為7個分類，透過我們的分類，照到符合你的資源</p>
+                    <h1 class="carousel_h1 T-text" dsnid="A1" style="font-weight: bold;" dsnnote="廣告牆1-1"></h1><br>
+                    <h2 class="carousel_h1 T-text" dsnid="1" style="font-weight: bold;" dsnnote="廣告牆1-2"></h2>
+                    <p class="opacity-75 T-text" dsnid="2" style="font-weight: bold;" dsnnote="廣告牆1-3"></p>
                 </div>
                 </div>
             </div>            
             <div class="carousel-item container2">
-                <div class="carousel_img_div"><img class="carousel_img" src="../img/index/index_poster_1900_2.png"></div>
+                <div class="carousel_img_div poster2"></div>
                 <div class="container">
                 <div class="carousel-caption">
-                    <h1 class="carousel_h1 T-text" dsnid="3" dsnnote="廣告牆2">新手指南</h1>
-                    <p class="T-text" dsnid="4">透過我們的新手指南，讓您從我們的網站上找到更多符合你的資訊</p>
-                    <p><a class="btn btn-lg btn-primary T-text" dsnid="5" dsnclass="T-url" dsnid="6"  href="/static/guideline" dsnnote="查看更多連結">查看更多</a></p>
+                    <h2 class="carousel_h1 T-text" dsnid="A3" style="font-weight: bold;" dsnnote="廣告牆2-1"></h2>
+                    <h1 class="carousel_h1 T-text" dsnid="3" style="font-weight: bold;" dsnnote="廣告牆2-2"></h1>
+                    <hr style="border: 0; height:5px;background-color: blue;width:40%;margin: auto;border-radius: 10%;"><br><br>
+                    <p class="T-text" dsnid="4" style="font-weight: bold;" dsnnote="廣告牆2-3"></p>
+                    <p><a class="btn btn-lg btn-primary T-text" dsnid="5" href="/static/guideline" dsnnote="廣告牆2按鈕"></a></p>
                 </div>
                 </div>
             </div>
             <div class="carousel-item container2">
-                <div class="carousel_img_div"><img class="carousel_img" src="../img/index/index_poster_1900_3.png"></div>
+                <div class="carousel_img_div poster3"></div>
                 <div class="container">
                 <div class="carousel-caption text-end">
-                    <h1 class="carousel_h1 T-text" dsnid="7" dsnnote="廣告牆3">關於我們</h1>
-                    <p class="T-text" dsnid="8">這是我們的故事與理念</p>
-                    <p><a class="btn btn-lg btn-primary T-text" dsnid="9" dsnclass="T-url" dsnid="10" href="/static/about_us" dsnnote="查看更多連結">查看更多</a></p>
+                    <h1 class="carousel_h1 T-text" dsnid="7" dsnnote="廣告牆3-1" style="font-weight: bold;"></h1><br>
+                    <p class="T-text" dsnid="8" style="font-weight: bold;" dsnnote="廣告牆3-2"></p>
+                    <p><a class="btn btn-lg btn-primary T-text" dsnid="9" href="/static/about_us" dsnnote="廣告牆3-3"></a></p>
                 </div>
                 </div>
             </div>
@@ -258,12 +261,10 @@
         </div>
     </main>
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/index.js"></script>
     <script src="../js/header.js"></script>
     <script src="../js/ajax.js"></script>
     <script>
         header_nav_check();
-        index_poster_check();
         getHeader_data('index');
         getIndex_data();
     </script>

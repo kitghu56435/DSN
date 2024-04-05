@@ -142,6 +142,7 @@ router.post('/search_results',(req,res)=>{
     let demand = req.body.demand;
     let identity = req.body.identity;
     let school = req.body.school;
+    let condition = req.body.condition;
     let R_City = req.body.R_City;
     let R_District = req.body.R_District;
     let temp_R_List = [];    //暫時存放的列表1
@@ -150,6 +151,7 @@ router.post('/search_results',(req,res)=>{
         "Search_data" : {
             "demand" : demand,
             "identity" : identity,
+            "condition" : condition,
             "school" : school,
             "R_City" : R_City,
             "R_District" : R_District,
@@ -157,24 +159,7 @@ router.post('/search_results',(req,res)=>{
         "R_List" : [],
     }
 
-    //加入強制資源(強制資料)
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_requestData(identity,L_ID));
-    }).then((results)=>{
-        for(i = 0;i<results.length;i++){
-            temp_R_List.push({
-                "D_ID" : results[i].D_ID,
-                "D_Name" : results[i].D_Name,
-                "R_ID" : results[i].R_ID,
-                "R_Name" : results[i].R_Name,
-                "R_Depiction" : results[i].R_Depiction,
-                "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
-                "R_Img" : results[i].R_Img,
-                "Search_Type" : "required"
-            })              
-        }
-        //console.log(temp_R_List)
-    })
+
     
     
     
@@ -212,6 +197,37 @@ router.post('/search_results',(req,res)=>{
 
     
 
+    //申請者狀況過濾(適合資料)(不符合需要刪掉，如果申請狀況沒有提供，就保留符合資源需求的資源)
+    new Promise((resolve,reject)=>{
+        resolve(searchResource_condition(condition,L_ID));
+    }).then((results)=>{
+        for(i = 0;i<results.length;i++){
+            for(j = 0;j<temp_R_List.length;j++){
+                if(temp_R_List[j].R_ID == results[i].R_ID){
+                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_ConditionText(condition,results[i].R_Condition),L_ID));
+                    temp_R_List2.push(temp_R_List[j]); 
+                    break;
+                }
+            }
+        }
+        //如果申請狀況沒有提供，就保留符合資源需求的資源
+        if(!condition){
+            for(j = 0;j<temp_R_List.length;j++){
+                if(checkDemand(demand,temp_R_List[j].D_ID)){
+                    //temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_ConditionText(condition,results[i].R_Condition),L_ID));
+                    temp_R_List2.push(temp_R_List[j]); 
+                }
+            }
+        }
+        
+        
+        temp_R_List = temp_R_List2;
+        temp_R_List2 = [];
+        //console.log(temp_R_List);
+    })
+
+
+
     //申請者在學狀況過濾(適合資料)(不符合需要刪掉)
     new Promise((resolve,reject)=>{
         resolve(searchResource_school(school,L_ID));
@@ -220,30 +236,14 @@ router.post('/search_results',(req,res)=>{
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
-                    
                     temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_SchoolText(school,results[i].R_School),L_ID));
                     temp_R_List2.push(temp_R_List[j]); 
-                    //match = true;
                     break;
                 }
             }
-            // if(!match){
-            //     temp_R_List.push({
-            //         "D_ID" : results[i].D_ID,
-            //         "D_Name" : results[i].D_Name,
-            //         "R_ID" : results[i].R_ID,
-            //         "R_Name" : results[i].R_Name,
-            //         "R_Depiction" : results[i].R_Depiction,
-            //         "R_Label" : [getMultiple_SchoolText(school,results[i].R_School)],
-            //         "R_Img" : results[i].R_Img,
-            //         "Search_Type" : "search"
-            //     })
-            // }
-            // match = false;
         }
         temp_R_List = temp_R_List2;
         temp_R_List2 = [];
-        //console.log(temp_R_List);
     })
 
     
@@ -264,6 +264,55 @@ router.post('/search_results',(req,res)=>{
         //console.log(data.R_List);
     })
 
+
+    //加入強制資源(強制資料)
+    new Promise((resolve,reject)=>{
+        resolve(searchResource_requestData(condition,L_ID));
+    }).then((results)=>{
+        let match = false;
+        let add_num = 0;
+        for(i = 0;i<results.length;i++){
+            for(j = 0;j<data.R_List.length-add_num;j++){
+                if(data.R_List[j].R_ID == results[i].R_ID){
+                    data.R_List[j].R_Label.push(getR_Label_leng('強烈建議',L_ID));
+                    data.R_List[j].Search_Type = 'required';
+                    match = true;
+                    break;
+                }
+            }
+            if(!match){
+                add_num++;
+                data.R_List.push({
+                    "D_ID" : results[i].D_ID,
+                    "D_Name" : results[i].D_Name,
+                    "R_ID" : results[i].R_ID,
+                    "R_Name" : results[i].R_Name,
+                    "R_Depiction" : results[i].R_Depiction,
+                    "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
+                    "R_Img" : results[i].R_Img,
+                    "Search_Type" : "required"
+                })
+            }
+            match = false;
+        }
+
+
+
+        // for(i = 0;i<results.length;i++){
+        //     data.R_List.push({
+        //         "D_ID" : results[i].D_ID,
+        //         "D_Name" : results[i].D_Name,
+        //         "R_ID" : results[i].R_ID,
+        //         "R_Name" : results[i].R_Name,
+        //         "R_Depiction" : results[i].R_Depiction,
+        //         "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
+        //         "R_Img" : results[i].R_Img,
+        //         "Search_Type" : "required"
+        //     })              
+        // }
+        //console.log(temp_R_List)
+    })
+
     
     
     //使用需求序號，尋找全部適合資源
@@ -280,7 +329,10 @@ router.post('/search_results',(req,res)=>{
                 }
             }
             if(!match){
-                data.R_List[i].Search_Type = 'suggestion';
+                if(data.R_List[i].Search_Type == 'search'){  //略過強制資源
+                    data.R_List[i].Search_Type = 'suggestion';
+                }
+                
             }
             match = false;
         }
@@ -714,14 +766,18 @@ function getR_Label_leng(str,L_ID){
             case '新住民' : return 'New resident';
             case '新住民子女' : return 'Children of new residents';
             case '原住民' : return 'Aboriginal people';
-            case '中/低收入戶' : return 'Middle/low-income households';
+            case '以上皆否' : return 'None of the above';
+            //Condition
+            case '身心障礙' : return 'Disability';
+            case '經濟弱勢' : return 'Economically disadvantaged';
             case '就職青年' : return 'Job-seeking youth';
             case '單親家庭' : return 'One-parent family';
-            case '身心障礙者' : return 'Disability';
-            case '身心障礙子女' : return 'Disabled children';
-            case '特殊境遇家庭' : return 'families in special circumstances';
+            case '家事糾紛' : return 'Family dispute';
             case '暴力/霸凌受害者' : return 'Victims of Violence/Bullying';
+            case '心理患者' : return 'Psychological patient';
+            case '醫院患者' : return 'hospital patient';
             case '懷孕少女' : return 'pregnant girl';
+            case '租屋者' : return 'renter';
             //SchoolText
             case '不限就學' : return 'All Study status';
             case '未就學' : return 'Not in school';
@@ -780,14 +836,7 @@ function getIdentityText(code){
         case 'A1' : return '新住民';
         case 'A2' : return '新住民子女';
         case 'A3' : return '原住民';
-        case 'A4' : return '中/低收入戶';
-        case 'A5' : return '就職青年';
-        case 'A6' : return '單親家庭';
-        case 'A7' : return '身心障礙者';
-        case 'A8' : return '身心障礙子女';
-        case 'A9' : return '特殊境遇家庭';
-        case 'B1' : return '暴力/霸凌受害者';
-        case 'B2' : return '懷孕少女';
+        case 'A4' : return '以上皆否';
     }
 }
 function getSchoolText(code){
@@ -801,6 +850,21 @@ function getSchoolText(code){
         case 'A6' : return '大學';
         case 'A7' : return '研究所';
         case 'A8' : return '畢業就學';
+    }
+}
+function getConditionText(code){
+    switch(code){
+        case 'A0' : return '所有狀況';
+        case 'A1' : return '身心障礙';
+        case 'A2' : return '經濟弱勢';
+        case 'A3' : return '就職青年';
+        case 'A4' : return '單親家庭';
+        case 'A5' : return '家事糾紛';
+        case 'A6' : return '暴力/霸凌受害者';
+        case 'A7' : return '心理患者';
+        case 'A8' : return '醫院患者';
+        case 'A9' : return '懷孕少女';
+        case 'B1' : return '租屋者';
     }
 }
 function getCityText(code){
@@ -853,6 +917,28 @@ function getMultiple_IdentityText(identity,R_Identity){
     }
     
 }
+function getMultiple_ConditionText(condition,R_Condition){
+    //condition   使用者搜尋的序號
+    //R_Condition 資源的狀況序號
+    if(R_Condition == 'A0'){
+        return getConditionText(R_Condition);
+    }else{
+        if(typeof condition == 'string'){
+            if(find(condition,R_Condition)){
+                //console.log(condition,R_Condition);
+                return getConditionText(condition);
+            }
+        }else if(typeof condition == 'object'){
+            let str = '';
+            for(h = 0;h<condition.length;h++){
+                if(find(condition[h],R_Condition)){
+                    str +=  getConditionText(condition[h]) + "、";
+                }
+            }
+            return str.substring(0,(str.length - 1));
+        }
+    }
+}
 function getMultiple_SchoolText(school,R_School){
     if(R_School == 'A0'){
         return getSchoolText(R_School);
@@ -863,7 +949,7 @@ function getMultiple_SchoolText(school,R_School){
     }
 }
 function getMultiple_LocationText(City,R_City){
-    if(R_City == 'A0'){
+    if(R_City == 'A0' || City == 'A0'){
         return getCityText(R_City);
     }else{
         if(find(City,R_City)){
@@ -871,16 +957,47 @@ function getMultiple_LocationText(City,R_City){
         }
     }
 }
+function checkDemand(demand,D_ID){
+    let found = false;
+
+    if(typeof demand == 'string'){
+        if(getDemandID(demand) == D_ID){
+            found = true;
+        }
+    }else if(typeof demand == 'object'){
+        let str = '';
+        for(h = 0;h<demand.length;h++){
+            if(getDemandID(demand[i]) == D_ID){
+                found = true;
+                break;
+            }
+        }
+    }
+
+    return found;
+}
 async function searchResource_location(R_City){
     return new Promise((resolve,reject)=>{
-        db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND Resources.R_Shelf = 1 AND (R_City LIKE ? OR R_City LIKE '%A0%')`,['%' + R_City + '%'],(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve(results)
-            }
-        })
+        if(R_City == 'A0'){
+            db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND Resources.R_Shelf = 1`,(err,results)=>{
+                if(err){
+                    console.log(err);
+                    reject();
+                }else{
+                    resolve(results)
+                }
+            })
+        }else{
+            db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND Resources.R_Shelf = 1 AND (R_City LIKE ? OR R_City LIKE '%A0%')`,['%' + R_City + '%'],(err,results)=>{
+                if(err){
+                    console.log(err);
+                    reject();
+                }else{
+                    resolve(results)
+                }
+            })
+        }
+        
     })
 }
 async function searchResource_identity(identity,L_ID){
@@ -982,6 +1099,57 @@ async function searchResource_school(school,L_ID){
         })
     })
 }
+async function searchResource_condition(condition,L_ID){
+    let parameter = [L_ID];
+    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Condition,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
+    (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
+    AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 3 AND ( R_Condition LIKE '%A0%' `
+
+    if(typeof condition == 'string'){
+        str += 'OR R_Condition LIKE ? ';
+        parameter.push(`%${condition}%`);
+    }else if(typeof condition == 'object'){
+        for(i = 0;i<condition.length;i++){
+            str += 'OR R_Condition LIKE ? ';
+            parameter.push(`%${condition[i]}%`);
+        }
+    }
+
+
+    str +=` )) Depiction
+    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
+    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( R_Condition LIKE '%A0%' `;
+
+
+    parameter.push(L_ID);
+    parameter.push(L_ID);
+
+
+    if(typeof condition == 'string'){
+        str += 'OR R_Condition LIKE ? ';
+        parameter.push(`%${condition}%`);
+    }else if(typeof condition == 'object'){
+        for(i = 0;i<condition.length;i++){
+            str += 'OR R_Condition LIKE ? ';
+            parameter.push(`%${condition[i]}%`);
+        }
+    }
+    str += ')';
+    // console.log(str);
+    // console.log(parameter);
+    
+
+    return new Promise((resolve,reject)=>{
+        db.execute(str,parameter,(err,results)=>{
+            if(err){
+                console.log(err);
+                reject();
+            }else{
+                resolve(results)
+            }
+        })
+    })
+}
 async function searchResource_suitable(demand){
     let parameter = [];
     str = `SELECT R_ID,Resources.D_ID FROM Resources,Demand WHERE  R_Delete = 0 AND Resources.R_Shelf = 1 AND Demand.D_ID = Resources.D_ID AND L_ID = 'L000000001' AND ( FALSE `;
@@ -1014,27 +1182,27 @@ async function searchResource_suitable(demand){
     })
     
 }
-async function searchResource_requestData(identity,L_ID){
+async function searchResource_requestData(condition,L_ID){
     let parameter = [L_ID];
     str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
     (SELECT R_ID,RD_Content R_Depiction FROM Resource_data WHERE L_ID = ? `
 
-    if(typeof identity == 'string'){
-        if(Required_Resource[identity]){
+    if(typeof condition == 'string'){
+        if(Required_Resource[condition]){
 
-            for(i = 0;i<Required_Resource[identity].length;i++){
+            for(i = 0;i<Required_Resource[condition].length;i++){
                 str += 'AND R_ID = ? ';
-                parameter.push(Required_Resource[identity][i]);
+                parameter.push(Required_Resource[condition][i]);
             }
             
         }
-    }else if(typeof identity == 'object'){
-        for(i = 0;i<identity.length;i++){
+    }else if(typeof condition == 'object'){
+        for(i = 0;i<condition.length;i++){
 
-            if(Required_Resource[identity[i]]){
-                for(j = 0;j<Required_Resource[identity[i]].length;j++){
+            if(Required_Resource[condition[i]]){
+                for(j = 0;j<Required_Resource[condition[i]].length;j++){
                     str += 'AND R_ID = ? ';
-                    parameter.push(Required_Resource[identity[i]][j]);
+                    parameter.push(Required_Resource[condition[i]][j]);
                 }
             }
 
@@ -1049,22 +1217,22 @@ async function searchResource_requestData(identity,L_ID){
     parameter.push(L_ID);
     parameter.push(L_ID);
 
-    if(typeof identity == 'string'){
-        if(Required_Resource[identity]){
+    if(typeof condition == 'string'){
+        if(Required_Resource[condition]){
 
-            for(i = 0;i<Required_Resource[identity].length;i++){
+            for(i = 0;i<Required_Resource[condition].length;i++){
                 str += 'OR Resources.R_ID LIKE ? ';
-                parameter.push(`%${Required_Resource[identity][i]}%`);
+                parameter.push(`%${Required_Resource[condition][i]}%`);
             }
             
         }
-    }else if(typeof identity == 'object'){
-        for(i = 0;i<identity.length;i++){
+    }else if(typeof condition == 'object'){
+        for(i = 0;i<condition.length;i++){
 
-            if(Required_Resource[identity[i]]){
-                for(j = 0;j<Required_Resource[identity[i]].length;j++){
+            if(Required_Resource[condition[i]]){
+                for(j = 0;j<Required_Resource[condition[i]].length;j++){
                     str += 'OR Resources.R_ID LIKE ? ';
-                    parameter.push(`%${Required_Resource[identity[i]][j]}%`);
+                    parameter.push(`%${Required_Resource[condition[i]][j]}%`);
                 }
             }
 

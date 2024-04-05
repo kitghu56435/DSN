@@ -24,10 +24,10 @@
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
                     <img src="../../../img/backend/resource.png">
-                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
                     資源管理
                     </button>
-                    <div class="collapse show" id="home-collapse">
+                    <div class="collapse" id="home-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
                         <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
@@ -108,6 +108,9 @@
                     </button>
                     <div class="collapse" id="account-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">返回首頁</a></li>
+                        </ul>
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
                         </ul>
                     </div>
@@ -165,19 +168,10 @@
                                 <tr onclick="checkbox('i1'),CancelAll('identity_table','i0')"><td>新住民</th><td><input id="i1" value="A1" name="R_Identity" type="checkbox"></th></tr>
                                 <tr onclick="checkbox('i2'),CancelAll('identity_table','i0')"><td>新住民子女</th><td><input id="i2" value="A2" name="R_Identity" type="checkbox"></th></tr>
                                 <tr onclick="checkbox('i3'),CancelAll('identity_table','i0')"><td>原住民</th><td><input id="i3" value="A3" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i4'),CancelAll('identity_table','i0')"><td>中/低收入戶</th><td><input id="i4" value="A4" name="R_Identity" type="checkbox"></th></tr>  
-                                <tr onclick="checkbox('i5'),CancelAll('identity_table','i0')"><td>就職青年</th><td><input id="i5" value="A5" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i6'),CancelAll('identity_table','i0')"><td>單親家庭</th><td><input id="i6" value="A6" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i7'),CancelAll('identity_table','i0')"><td>身心障礙</th><td><input id="i7" value="A7" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i8'),CancelAll('identity_table','i0')"><td>身心障礙子女</th><td><input id="i8" value="A8" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i9'),CancelAll('identity_table','i0')"><td>特殊境遇家庭</th><td><input id="i9" value="A9" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i10'),CancelAll('identity_table','i0')"><td>暴力/霸凌受害者</th><td><input id="i10" value="B1" name="R_Identity" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('i11'),CancelAll('identity_table','i0')"><td>懷孕少女</th><td><input id="i11" value="B2" name="R_Identity" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('i4'),CancelAll('identity_table','i0')"><td>以上皆否</th><td><input id="i4" value="A4" name="R_Identity" type="checkbox"></th></tr>  
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="supplier_area">
                     <div class="s_table">
                         <div class="table_title">申請在校狀況</div>
                         <div class="scroll">
@@ -191,7 +185,28 @@
                                 <tr onclick="checkbox('s5'),CancelAll('school_table','s0')"><td>五專</th><td><input id="s5" value="A5" name="R_School" type="checkbox"></th></tr>
                                 <tr onclick="checkbox('s6'),CancelAll('school_table','s0')"><td>大學</th><td><input id="s6" value="A6" name="R_School" type="checkbox"></th></tr>
                                 <tr onclick="checkbox('s7'),CancelAll('school_table','s0')"><td>研究所</th><td><input id="s7" value="A7" name="R_School" type="checkbox"></th></tr>
-                                <tr onclick="checkbox('s8'),CancelAll('school_table','s0')"><td>畢業就學</th><td><input id="s8" value="A8" name="R_School" type="checkbox"></th></tr>    
+                                <tr onclick="checkbox('s8'),CancelAll('school_table','s0')"><td>畢業就學</th><td><input id="s8" value="A8" name="R_School" type="checkbox"></th></tr>     
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier_area">
+                    <div class="s_table">
+                        <div class="table_title">申請者狀況</div>
+                        <div class="scroll">
+                            <table id="condition_table">
+                                <tr><th>申請者狀況</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('co0'),CheckAll('condition_table','co0')"><td>不限狀況</th><td><input id="co0" value="A0" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co1'),CancelAll('condition_table','co0')"><td>身心障礙</th><td><input id="co1" value="A1" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co2'),CancelAll('condition_table','co0')"><td>經濟弱勢</th><td><input id="co2" value="A2" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co3'),CancelAll('condition_table','co0')"><td>就職青年</th><td><input id="co3" value="A3" name="R_Condition" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('co4'),CancelAll('condition_table','co0')"><td>單親家庭</th><td><input id="co4" value="A4" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co5'),CancelAll('condition_table','co0')"><td>家事糾紛</th><td><input id="co5" value="A5" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co6'),CancelAll('condition_table','co0')"><td>暴力/霸凌受害者</th><td><input id="co6" value="A6" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co7'),CancelAll('condition_table','co0')"><td>心理患者</th><td><input id="co7" value="A7" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co8'),CancelAll('condition_table','co0')"><td>醫院患者</th><td><input id="co8" value="A8" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co9'),CancelAll('condition_table','co0')"><td>懷孕少女</th><td><input id="co9" value="A9" name="R_Condition" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('co10'),CancelAll('condition_table','co0')"><td>租屋者</th><td><input id="co10" value="B1" name="R_Condition" type="checkbox"></th></tr>                                 
                             </table>
                         </div>
                     </div>

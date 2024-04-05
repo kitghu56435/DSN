@@ -132,7 +132,7 @@ function setStatic_edit(data){
                     <span>提示：${data.container[i].note[0]}</span>
                 </div>
                 <div class="item_content">
-                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value="${data.container[i].content[0]}">
+                    <input placeholder="請輸入標題" name="${data.container[i].id[0]}" value='${data.container[i].content[0]}'>
                 </div>
             </div>
             `;
@@ -231,8 +231,10 @@ function saveStatic_data(SP_ID){
 
     let httpRequest = new XMLHttpRequest();
 
+    show_loading();
     httpRequest.onreadystatechange = function(){
         if(httpRequest.readyState === 4){
+            hidden_loading();
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
                 msgbox(); //先刪除目前視窗
@@ -266,19 +268,21 @@ function setStatic(data){
 
     if(data == undefined){
         r_table.innerHTML = `
-        <tr><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>
+        <tr><th>頁面序號</th><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>
         <tr><td colspan="3">無資料</td></tr>`;
     }else{
         if(data.Static.length == 0){
             r_table.innerHTML = `
-            <tr><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>
+            <tr><th>頁面序號</th><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>
             <tr><td colspan="3">無資料</td></tr>`;
         }else{
             str = `
-            <tr><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>`;
+            <tr><th>頁面序號</th><th>頁面名稱</th><th>套用語言</th><th>檔案名稱</th></tr>`;
             for(i = 0;i<data.Static.length;i++){
                 str += `
-                <tr onclick="url('/backend/language/static/edit?SP_ID=${data.Static[i].SP_ID}')"><td>${data.Static[i].Static_Name}</td><td>
+                <tr onclick="url('/backend/language/static/edit?SP_ID=${data.Static[i].SP_ID}')">
+                    <td>${data.Static[i].SP_ID}</td>
+                    <td>${data.Static[i].Static_Name}</td><td>
                     <select onclick="handleChildClick(event)">
                         ${Select_Option_HTML('',data.Static[i].Static_Use,data.Static[i].Static_Use)}
                     </select>

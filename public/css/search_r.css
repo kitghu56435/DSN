@@ -59,8 +59,8 @@ h4 > img{
     overflow: hidden;
 }
 .data_resource > .r_box > .r_box_img{
-    width:200px;
-    height:200px;
+    width:180px;
+    height:180px;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -113,6 +113,15 @@ h4 > img{
         height:200px;
         width:100%
     }
+    .search_key{
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .search_key > div {
+        width: 50%;
+        padding-top: 2%;
+        padding-bottom: 2%;
+    }
     .data_resource {
         padding-top: 5%;
         padding-bottom: 5%;
@@ -131,11 +140,12 @@ h4 > img{
         height: 25px;
     }
     .search_key{
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
-    .search_key > div{
-        width:100%;
-        padding-top:2%;
+    .search_key > div {
+        width: 50%;
+        padding-top: 2%;
         padding-bottom: 2%;
     }
     .data > h3 > div {

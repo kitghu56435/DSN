@@ -139,7 +139,28 @@ function setLike_Btn(clike){
 }
 
 
+function getIndex_data(){
+    let httpRequest = new XMLHttpRequest();
 
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msg == 'dberr'){
+                    alert('Index資料錯誤');
+                }else{
+                    setDSNdata(jsonResponse.data,jsonResponse.L_ID);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);
+            }
+        }
+    }
+    
+    httpRequest.open('POST','/static/index_data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send(null);
+}
 function getCookie_policy_data(){
     let httpRequest = new XMLHttpRequest();
 

@@ -5,6 +5,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('../img/index/index_poster_1900_2.png');
+  background-repeat: round;
+  background-size: cover;
 }
 .container {
   text-align: center;
@@ -30,12 +33,14 @@
   color: white;
 }
 
-.middle_text h1 {
-  font-size: 3.5em;
+.middle_text > h1{
+  font-weight: bold;
 }
 
+
 .middle_text p {
-  font-size: 1.2em;
+  font-weight: bold;
+  font-size: 1em;
 }
 .flow_pic {
   margin-top: 2em;
@@ -132,9 +137,16 @@
 
 /* 100% */
 @media (max-width: 1600px) {
+  .container_fullscreen{
+    background-image: url('../img/index/index_poster_1600_2.png');
+  }
+  
 }
 /* 125% */
 @media (max-width: 1280px) {
+  .container_fullscreen{
+    background-image: url('../img/index/index_poster_1280_2.png');
+  }
   .pic2{
     width:100%;
     height: 450px;
@@ -142,6 +154,9 @@
 }
 /* 200% */
 @media (max-width: 768px) {
+  .container_fullscreen{
+    background-image: url('../img/index/index_poster_768_2.png');
+  }
   .container_fullscreen {
     align-items: flex-end;
   }
@@ -159,11 +174,17 @@
       height: 150px;
   }
   .middle_text {
-    margin-bottom: 10%;
+    top:45%;
   }
-  .middle_text h1 {
-    font-size: 3.2em;
+  .que {
+    padding-left: 3%;
+    padding-right: 3%;
   }
+  .que img {
+    width: 30px;
+    height: 15px;
+  }
+
   
   .b2 {
     border-color: gray;
@@ -175,18 +196,25 @@
 }
 /* 300%  */
 @media (max-width: 560px) {
-  .middle_text h1 {
-    font-size: 3em;
+  .container_fullscreen{
+    background-image: url('../img/index/index_poster_560_2.png');
   }
   .b2 {
    
     border-color: gray;
   }
   .pic2{
-    background-image: url(../img/guideline/guideline_poster_350.png);
+    background-image: url(../img/guideline/guideline_poster_560.png);
     width:100%;
     height: 500px;
     padding-bottom: 3%;
+  }
+  .que {
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+  .que .q {
+    font-size: 1.2em;
   }
   .content  > h1{
     margin-top: 5%;
@@ -194,6 +222,15 @@
   .flow_pic {
     padding-left: 5%;
     padding-right: 5%;
-}
+  }
   
+}
+@media (max-width: 390px) {
+  
+  .container_fullscreen{
+    background-image: url('../img/index/index_poster_390_2.png');
+  }
+  .pic2{
+    background-image: url(../img/guideline/guideline_poster_350.png);
+  }
 }

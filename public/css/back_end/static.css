@@ -11,12 +11,13 @@ section{
 
 
 .data_table{
+    padding-bottom: 5%;
     display: flex;
     width:100%;
 }
 
 .data_table > .r_table{
-    width:63%;
+    width:80%;
     border: 1px solid #D0D0D0;
     margin:2% 4% 0 4%;
     border-radius: 10px;

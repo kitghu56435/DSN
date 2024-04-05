@@ -68,7 +68,7 @@ router.get('/',(req,res)=>{
         }
     })
     //今日資源留言量
-    db.execute(`SELECT R_ID,COUNT(R_ID) RF_Num FROM Resource_feedback WHERE R_ID IS NOT null AND RF_Date BETWEEN '${DateString2} 00:00:00' AND '${DateString2} 23:59:59';`,(err,results)=>{
+    db.execute(`SELECT R_ID,COUNT(R_ID) RF_Num FROM Resource_feedback WHERE R_ID IS NOT null AND RF_Date BETWEEN '${DateString2} 00:00:00' AND '${DateString2} 23:59:59' GROUP BY R_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -83,7 +83,7 @@ router.get('/',(req,res)=>{
         }
     })
     //本月資源留言量
-    db.execute(`SELECT R_ID,COUNT(R_ID) RF_Num FROM Resource_feedback WHERE R_ID IS NOT null AND RF_Date BETWEEN '${SOM(today.getFullYear(),today.getMonth()+1)}' AND '${EOM(today.getFullYear(),today.getMonth()+1)}';`,(err,results)=>{
+    db.execute(`SELECT R_ID,COUNT(R_ID) RF_Num FROM Resource_feedback WHERE R_ID IS NOT null AND RF_Date BETWEEN '${SOM(today.getFullYear(),today.getMonth()+1)}' AND '${EOM(today.getFullYear(),today.getMonth()+1)}' GROUP BY R_ID;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';

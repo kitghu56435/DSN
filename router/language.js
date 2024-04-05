@@ -122,6 +122,12 @@ router.post('/delete',(req,res)=>{
                         res.json({"msg" : "dberr"});
                     }
                 })
+                db.execute(`DELETE FROM Demand WHERE L_ID = ?;`,[L_ID],(err)=>{
+                    if(err){
+                        console.log(err);
+                        res.json({"msg" : "dberr"});
+                    }
+                })
                 db.execute(`SELECT Languages.L_ID,L_Name,(COUNT(Languages.L_ID)-1) L_Use,DATE_FORMAT(L_Date,'%Y年%m月%d日 %H:%i:%s') L_Date_f FROM Languages 
                 LEFT JOIN Resource_data ON Resource_data.L_ID = Languages.L_ID GROUP BY Languages.L_ID;`,(err,results)=>{
                     if(err){

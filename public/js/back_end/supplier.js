@@ -132,8 +132,10 @@ function saveSupplier_edit(S_ID){
 
     let httpRequest = new XMLHttpRequest();
 
+    show_loading();
     httpRequest.onreadystatechange = function(){
         if(httpRequest.readyState === 4){
+            hidden_loading();
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
                 msgbox(); //先刪除目前視窗
@@ -230,8 +232,10 @@ function saveSupplier_r(S_ID){
 
     let httpRequest = new XMLHttpRequest();
 
+    show_loading();
     httpRequest.onreadystatechange = function(){
         if(httpRequest.readyState === 4){
+            hidden_loading();
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
                 msgbox(); //先刪除目前視窗
