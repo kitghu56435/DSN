@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,writeFile,unlink} = require('fs');
+const {readFileSync} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox,checkData,NextID} = require('../function');
-const moment = require('moment-timezone');
+
+
 
 
 
@@ -18,7 +18,7 @@ router.get('/',(req,res)=>{
             res.end();
         }else{
             if(results.length == 0){  //資源已下架或刪除
-                let html = readFileSync('./public/html/notfound.html','utf-8');
+                let html = readFileSync('./public/html/front_end/notfound.html','utf-8');
                 res.end(html);
             }else{
                 T_Path = results[0].T_Path;
@@ -56,7 +56,7 @@ router.post('/data',(req,res)=>{
             res.end();
         }else{
             if(results.length == 0){  //資源已下架或刪除
-                let html = readFileSync('./public/html/notfound.html','utf-8');
+                let html = readFileSync('./public/html/front_end/notfound.html','utf-8');
                 res.end(html);
             }else{
                 T_Path = results[0].T_Path;

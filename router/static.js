@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,writeFile,unlink} = require('fs');
+const {readFileSync} = require('fs');
 const db = require('../db');
 const {Required_Resource,setMsgbox,checkData,NextID,find} = require('../function');
 const moment = require('moment-timezone');
@@ -9,7 +9,7 @@ const moment = require('moment-timezone');
 
 //這個API是為了開發測試header語言切換而再的
 router.get('/header',(req,res)=>{
-    let html = readFileSync('./public/html/header.html');
+    let html = readFileSync('./public/html/front_end/header.html');
     res.end(html);
 })
 router.post('/header_data',(req,res)=>{
@@ -109,7 +109,7 @@ router.post('/index_data',(req,res)=>{
 
 
 router.get('/search',(req,res)=>{
-    let html = readFileSync('./public/html/search.html','utf-8');
+    let html = readFileSync('./public/html/front_end/search.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -137,7 +137,7 @@ router.post('/search_data',(req,res)=>{
 
 
 router.post('/search_results',(req,res)=>{
-    let html = readFileSync('./public/html/search_r.html','utf-8');
+    let html = readFileSync('./public/html/front_end/search_r.html','utf-8');
     let L_ID = req.cookies.leng;
     let demand = req.body.demand;
     let identity = req.body.identity;
@@ -229,89 +229,84 @@ router.post('/search_results',(req,res)=>{
 
 
     //申請者在學狀況過濾(適合資料)(不符合需要刪掉)
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_school(school,L_ID));
-    }).then((results)=>{
-        //let match = false;
-        for(i = 0;i<results.length;i++){
-            for(j = 0;j<temp_R_List.length;j++){
-                if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_SchoolText(school,results[i].R_School),L_ID));
-                    temp_R_List2.push(temp_R_List[j]); 
-                    break;
+    if(school){
+        new Promise((resolve,reject)=>{
+            resolve(searchResource_school(school,L_ID));
+        }).then((results)=>{
+            
+            //如果沒有提供在校狀況，則跳過
+            for(i = 0;i<results.length;i++){
+                for(j = 0;j<temp_R_List.length;j++){
+                    if(temp_R_List[j].R_ID == results[i].R_ID){
+                        temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_SchoolText(school,results[i].R_School),L_ID));
+                        temp_R_List2.push(temp_R_List[j]); 
+                        break;
+                    }
                 }
             }
-        }
-        temp_R_List = temp_R_List2;
-        temp_R_List2 = [];
-    })
+            temp_R_List = temp_R_List2;
+            temp_R_List2 = [];
+            
+        })
+    }
+
 
     
 
     //申請者地區過濾(適合資料)(不符合需要刪掉)
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_location(R_City));
-    }).then((results)=>{
-        for(i = 0;i<results.length;i++){
-            for(j = 0;j<temp_R_List.length;j++){
-                if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_LocationText(R_City,results[i].R_City),L_ID));
-                    data.R_List.push(temp_R_List[j])
-                    break;
+    if(R_City){
+        new Promise((resolve,reject)=>{
+            resolve(searchResource_location(R_City));
+        }).then((results)=>{
+            
+            for(i = 0;i<results.length;i++){
+                for(j = 0;j<temp_R_List.length;j++){
+                    if(temp_R_List[j].R_ID == results[i].R_ID){
+                        temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_LocationText(R_City,results[i].R_City),L_ID));
+                        data.R_List.push(temp_R_List[j])
+                        break;
+                    }
                 }
             }
-        }
-        //console.log(data.R_List);
-    })
+            //console.log(data.R_List);
+        })
+    }
+    
 
-
-    //加入強制資源(強制資料)
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_requestData(condition,L_ID));
-    }).then((results)=>{
-        let match = false;
-        let add_num = 0;
-        for(i = 0;i<results.length;i++){
-            for(j = 0;j<data.R_List.length-add_num;j++){
-                if(data.R_List[j].R_ID == results[i].R_ID){
-                    data.R_List[j].R_Label.push(getR_Label_leng('強烈建議',L_ID));
-                    data.R_List[j].Search_Type = 'required';
-                    match = true;
-                    break;
+    if(condition){
+        //加入強制資源(強制資料)
+        new Promise((resolve,reject)=>{
+            resolve(searchResource_requestData(condition,L_ID));
+        }).then((results)=>{
+            let match = false;
+            let add_num = 0;
+            for(i = 0;i<results.length;i++){
+                for(j = 0;j<data.R_List.length-add_num;j++){
+                    if(data.R_List[j].R_ID == results[i].R_ID){
+                        data.R_List[j].R_Label.push(getR_Label_leng('強烈建議',L_ID));
+                        data.R_List[j].Search_Type = 'required';
+                        match = true;
+                        break;
+                    }
                 }
+                if(!match){
+                    add_num++;
+                    data.R_List.push({
+                        "D_ID" : results[i].D_ID,
+                        "D_Name" : results[i].D_Name,
+                        "R_ID" : results[i].R_ID,
+                        "R_Name" : results[i].R_Name,
+                        "R_Depiction" : results[i].R_Depiction,
+                        "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
+                        "R_Img" : results[i].R_Img,
+                        "Search_Type" : "required"
+                    })
+                }
+                match = false;
             }
-            if(!match){
-                add_num++;
-                data.R_List.push({
-                    "D_ID" : results[i].D_ID,
-                    "D_Name" : results[i].D_Name,
-                    "R_ID" : results[i].R_ID,
-                    "R_Name" : results[i].R_Name,
-                    "R_Depiction" : results[i].R_Depiction,
-                    "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
-                    "R_Img" : results[i].R_Img,
-                    "Search_Type" : "required"
-                })
-            }
-            match = false;
-        }
+        })        
+    }
 
-
-
-        // for(i = 0;i<results.length;i++){
-        //     data.R_List.push({
-        //         "D_ID" : results[i].D_ID,
-        //         "D_Name" : results[i].D_Name,
-        //         "R_ID" : results[i].R_ID,
-        //         "R_Name" : results[i].R_Name,
-        //         "R_Depiction" : results[i].R_Depiction,
-        //         "R_Label" : [getR_Label_leng('強烈建議',L_ID)],
-        //         "R_Img" : results[i].R_Img,
-        //         "Search_Type" : "required"
-        //     })              
-        // }
-        //console.log(temp_R_List)
-    })
 
     
     
@@ -376,7 +371,7 @@ router.post('/search_results_data',(req,res)=>{
 
 
 router.get('/notfound',(req,res)=>{
-    let html = readFileSync('./public/html/notfound.html','utf-8');
+    let html = readFileSync('./public/html/front_end/notfound.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -405,7 +400,7 @@ router.post('/notfound_data',(req,res)=>{
 
 
 router.get('/guideline',(req,res)=>{
-    let html = readFileSync('./public/html/guideline.html','utf-8');
+    let html = readFileSync('./public/html/front_end/guideline.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -434,7 +429,7 @@ router.post('/guideline_data',(req,res)=>{
 
 
 router.get('/about_us',(req,res)=>{
-    let html = readFileSync('./public/html/about_us.html','utf-8');
+    let html = readFileSync('./public/html/front_end/about_us.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -462,7 +457,7 @@ router.post('/about_us_data',(req,res)=>{
 
 
 router.get('/cookie_policy',(req,res)=>{
-    let html = readFileSync('./public/html/cookie_policy.html','utf-8');
+    let html = readFileSync('./public/html/front_end/cookie_policy.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -491,7 +486,7 @@ router.post('/cookie_policy_data',(req,res)=>{
 
 
 router.get('/economy',(req,res)=>{
-    let html = readFileSync('./public/html/finance.html','utf-8');
+    let html = readFileSync('./public/html/front_end/finance.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -521,7 +516,7 @@ router.post('/economy_data',(req,res)=>{
 
 
 router.get('/emergency',(req,res)=>{
-    let html = readFileSync('./public/html/emergency.html','utf-8');
+    let html = readFileSync('./public/html/front_end/emergency.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -550,7 +545,7 @@ router.post('/emergency_data',(req,res)=>{
 
 
 router.get('/law',(req,res)=>{
-    let html = readFileSync('./public/html/law.html','utf-8');
+    let html = readFileSync('./public/html/front_end/law.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -580,7 +575,7 @@ router.post('/law_data',(req,res)=>{
 
 
 router.get('/application',(req,res)=>{
-    let html = readFileSync('./public/html/application.html','utf-8');
+    let html = readFileSync('./public/html/front_end/application.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -609,7 +604,7 @@ router.post('/application_data',(req,res)=>{
 
 
 router.get('/psychology',(req,res)=>{
-    let html = readFileSync('./public/html/psychology.html','utf-8');
+    let html = readFileSync('./public/html/front_end/psychology.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -638,7 +633,7 @@ router.post('/psychology_data',(req,res)=>{
 
 
 router.get('/education',(req,res)=>{
-    let html = readFileSync('./public/html/education.html','utf-8');
+    let html = readFileSync('./public/html/front_end/education.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -667,7 +662,7 @@ router.post('/education_data',(req,res)=>{
 
 
 router.get('/career',(req,res)=>{
-    let html = readFileSync('./public/html/career.html','utf-8');
+    let html = readFileSync('./public/html/front_end/career.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -696,7 +691,7 @@ router.post('/career_data',(req,res)=>{
 
 
 router.get('/medical',(req,res)=>{
-    let html = readFileSync('./public/html/medical.html','utf-8');
+    let html = readFileSync('./public/html/front_end/medical.html','utf-8');
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -812,6 +807,7 @@ function getR_Label_leng(str,L_ID){
             case '澎湖縣' : return 'Penghu';
             case '金門縣' : return 'Kinmen';
             case '連江縣' : return 'Lianjiang';
+            default : return '';
         }
     }else{
         //預設中文
@@ -832,7 +828,7 @@ function getDemandID(code){
 }
 function getIdentityText(code){
     switch(code){
-        case 'A0' : return '所有身分';
+        case 'A0' : return '';  //所有身分回傳空字串
         case 'A1' : return '新住民';
         case 'A2' : return '新住民子女';
         case 'A3' : return '原住民';
@@ -841,7 +837,7 @@ function getIdentityText(code){
 }
 function getSchoolText(code){
     switch(code){
-        case 'A0' : return '不限就學';
+        case 'A0' : return '';  //所有就學回傳空字串
         case 'A1' : return '未就學';
         case 'A2' : return '國小';
         case 'A3' : return '國中';
@@ -854,7 +850,7 @@ function getSchoolText(code){
 }
 function getConditionText(code){
     switch(code){
-        case 'A0' : return '所有狀況';
+        case 'A0' : return '';  //所有狀況回傳空字串
         case 'A1' : return '身心障礙';
         case 'A2' : return '經濟弱勢';
         case 'A3' : return '就職青年';
@@ -869,7 +865,7 @@ function getConditionText(code){
 }
 function getCityText(code){
     switch(code){
-        case 'A0' : return '所有縣市';
+        case 'A0' : return '';  //所有縣市回傳空字串
         case 'A1' : return '臺北市';
         case 'A2' : return '新北市';
         case 'A3' : return '桃園市';

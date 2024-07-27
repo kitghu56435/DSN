@@ -2,11 +2,12 @@ body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
 }
-
 html {
   height: -webkit-fill-available;
 }
-
+.sidebars_a{
+  width:90%;
+}
 main {
   height: 100vh;
   height: -webkit-fill-available;
@@ -150,7 +151,7 @@ main {
 
 
 .flex-shrink-0{
-  width:20vw;
+  width:17vw;
 }
 .flex-shrink-0 img{
   height:2em;
@@ -215,6 +216,9 @@ main {
 
 
 @media (max-width:1600px){
+  .sidebars_a{
+    width:80%;
+  }
   .fs-2{
       font-size: 1.7rem!important;
   }

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>DSN管理後臺-新增語言</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link rel="icon" href="../../img/icon.ico" type="image/x-icon">
+    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/back_end/resource_add.css" rel="stylesheet">
+    <link href="../../css/back_end/sidebars.css" rel="stylesheet">
+</head>
+<body>
+    <main class="d-flex flex-nowrap">
+        <div class="flex-shrink-0 p-3" style="position: fixed;">
+            <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
+            <img src="../../img/backend/resource.png" style="margin-right:5%">
+            <span class="fs-2 fw-semibold">DSN管理後臺</span>
+            </a>
+            <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <img src="../../img/backend/resource.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                    資源管理
+                    </button>
+                    <div class="collapse" id="home-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
+                        <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                        <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
+                        <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                        <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/backend/chat.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-collapse" aria-expanded="false">
+                    留言管理
+                    </button>
+                    <div class="collapse" id="chat-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/backend/message" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">留言管理</a></li>
+                            <li><a href="/backend/message/record/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源留言</a></li>
+                            <li><a href="/backend/message/record/page" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">頁面留言</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/backend/monitor.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                    監控管理
+                    </button>
+                    <div class="collapse" id="dashboard-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/backend/search.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#search-collapse" aria-expanded="false">
+                    搜尋管理
+                    </button>
+                    <div class="collapse" id="search-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/backend/supplier.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
+                    供應商管理
+                    </button>
+                    <div class="collapse" id="supplier-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/supplier" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">供應商管理</a></li>
+                        <li><a href="/backend/supplier/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增供應商</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../img/backend/language.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
+                    語言管理
+                    </button>
+                    <div class="collapse" id="language-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/backend/language" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">語言管理</a></li>
+                            <li><a href="/backend/language/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
+                            <li><a href="/backend/language/static" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <img src="../../img/backend/member.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+                    管理員
+                    </button>
+                    <div class="collapse" id="account-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">返回首頁</a></li>
+                        </ul>
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="b-example-divider b-example-vr" style="margin-left:17%;position: fixed;"></div>
+        <section>
+            <div class="container-breadcrumb my-2">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item">
+                      <a class="link-body-emphasis" href="/backend/language">
+                        <img src="../../img/backend/language.png">
+                        <span class="visually-hidden fs-4">DSN管理系統</span>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language">語言管理</a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language/add">新增語言</a>
+                    </li>
+                  </ol>
+                </nav>
+            </div>
+            <form method="post" action="/backend/language/add/data">
+                <div class="btn_area">
+                    <button>新增語言</button>
+                </div>
+                <div class="content">
+                    <table>
+                        <tr><th>語言名稱</th><td><input type="text" name="L_Name" placeholder="請輸入語言名稱"></td></tr>
+                    </table>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/back_end/sidebars.js"></script>
+</html>

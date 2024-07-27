@@ -1,0 +1,205 @@
+main{
+    overflow-y: auto !important;
+    scroll-behavior: smooth;
+}
+
+section{
+    margin-left: 29vw;
+    width:100%;
+}
+
+
+.content{
+    width:100%;
+    padding:1%;
+    font-size: 22px;
+}
+
+.data_screen{
+    width:95%;
+    margin: auto;
+}
+
+.data_screen > .action{
+    width:100%;
+    padding:1.5% 2% 1.5% 2%;
+}
+
+.data_screen > .action > button{
+    font-size: 1em;
+    width:12vw;
+    background-color: white;
+    border-radius: 30px;
+    font-weight: bold;
+    border: 2px solid #6C6C6C;
+    padding:0.2em 0.5em;
+    transition: 0.3s;
+}
+.data_screen > .action > button:hover{
+    background-color: #6C6C6C	;
+    color: white;
+}
+
+.data_screen > .action > span{
+    position: relative;
+    top:5px;
+    float: right;
+    font-size: 1em;
+    margin-right: 0.5em;
+}
+.data_screen > .action > select{
+    float: right;
+    width:8vw;
+    border-radius: 30px;
+    padding:0.2em 0.5em;
+}
+.data_screen > .action > input[type=date]{
+    float: none;
+    width:12vw;
+    border-radius: 30px;
+    padding:0.2em 0.5em;
+}
+.data_screen > .action input[type=text]{
+    width:30vw;
+    border-radius: 30px;
+    padding:0.2em 0.5em;
+}
+.data_screen > .action > .date_span{
+    float: none;
+}
+
+.data_screen > .screen{
+    height: 500px;
+    width:100%;
+    padding-right:2%;
+    padding-left:2%;
+}
+
+
+.data_table{
+    display: flex;
+    width:100%;
+    padding-bottom: 2%;
+    
+}
+.data_screen{
+    width:95%;
+    margin: auto;
+    
+}
+
+.data_table > .t_table{
+    width:100%;
+    border: 1px solid #D0D0D0;
+    margin:2% 2% 0 2%;
+    border-radius: 10px;
+    overflow-x: hidden;
+}
+
+.data_table > .t_table > .pie_box{
+    padding-top:8%;
+}
+.table_title{
+    width:100%;
+    font-size: 1.3em;
+    font-weight: bold;
+    padding:0.2em 0.1em 0.2em 1em;
+    background-color:#D0D0D0	;
+}
+.t_table > table{
+    width:100%;
+    text-align: center;
+}
+
+.t_table  th{
+    font-size: 1em;
+    padding:0.7em;
+}
+.t_table  tr{
+    transition: 0.3s;
+    cursor: pointer;
+}
+.t_table  tr:nth-child(even){
+    background-color: #F0F0F0;
+    transition: 0.3s;
+}
+.t_table  tr:hover{
+    background-color: #BEBEBE	;
+}
+.t_table  td{
+    font-size: 1em;
+    padding:0.7em;
+}
+.t_table > table  img{
+    height:1.5em;
+    width:1.5em;
+    transition: 0.3s;
+}
+.t_table  select{
+    font-size: 1em;
+    padding:0.2em;
+    width:70%;
+    border-radius: 10px;
+}
+.t_table > table  img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+.t_table > table  img:hover ~ td ~ tr,.t_table  select:hover ~ td ~ tr{
+    pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+@media (max-width:1600px){
+    section{
+        margin-left: 29vw;
+        width:100%;
+    }
+    
+    .content{
+        font-size: 18px;
+    }
+    .data_table > .t_table{
+        height: 400px;
+    }
+    .data_screen > .screen{
+        height: 400px;
+    }
+
+}
+
+@media (max-width:1280px){
+    
+    section{
+        margin-left: 29vw;
+        width:100%;
+    }
+    
+    .content{
+        font-size: 14px;
+    }
+    .data_table > .t_table{
+        height: 350px;
+    }
+    .data_screen > .screen{
+        height: 350px;
+    }
+    .data_table > .t_table > .pie_box{
+        padding-top:5%;
+        height:300px;
+    }
+    
+}
+
+
+
+
+

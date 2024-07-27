@@ -18,7 +18,7 @@ function setDSNdata(data,L_ID){
         let dsnid = T_text[i].getAttribute('dsnid');
         for(j = 0;j<data.length;j++){
             if(dsnid == data[j].RD_Template_ID){
-                T_text[i].innerHTML = data[j].RD_Content;
+                T_text[i].innerHTML = check_text(data[j].RD_Content);
             }
         }
     }
@@ -64,7 +64,7 @@ function setResourceInfo_data(data){   //資源頁面專用的
                 }else{
                     T_title[i].setAttribute('style','');
                     T_title[i].parentElement.setAttribute('style','');
-                    T_title[i].innerHTML = data.RD_Data[j].RD_Content;
+                    T_title[i].innerHTML = check_text(data.RD_Data[j].RD_Content);
                 }
             }
         }
@@ -84,7 +84,14 @@ function setResourceInfo_data(data){   //資源頁面專用的
                 }else if(dsnid == '142'){   //目前142是回饋textarea的placeholder
                     T_text[i].setAttribute('placeholder',data.RD_Data[j].RD_Content);
                 }else{
-                    T_text[i].innerHTML = data.RD_Data[j].RD_Content;
+                    T_text[i].setAttribute('style','');
+                    T_text[i].parentElement.setAttribute('style','');
+                    
+                    if(T_text[i].parentElement.parentElement.getAttribute('class') == 'section1 container2' || 
+                    T_text[i].parentElement.parentElement.getAttribute('class') == 'section2 container2'){
+                        T_text[i].parentElement.parentElement.setAttribute('style','');
+                    }
+                    T_text[i].innerHTML = check_text(data.RD_Data[j].RD_Content);
                 }
                 
             }
@@ -122,8 +129,7 @@ function setResourceInfo_data(data){   //資源頁面專用的
         }
     }
 
-
-    update_time.innerHTML += ' ' + data.R_Update;
+    update_time.innerHTML = '上次更新時間 ' + data.R_Update;
 }
 function setLike_Btn(clike){
     let content = document.getElementsByClassName('content')[0];
@@ -137,6 +143,10 @@ function setLike_Btn(clike){
         numb.setAttribute('class','numb heart-active');
     }
 }
+function check_text(str){
+    return str.replaceAll('\n', "<br>");
+}
+
 
 
 function getIndex_data(){

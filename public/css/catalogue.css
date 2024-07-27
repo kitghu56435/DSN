@@ -18,6 +18,7 @@
 }
 
 .testsmall {
+  padding:0 10% 0 10%;
   font-size: 20px;
   font-weight: lighter;
 }
@@ -25,6 +26,10 @@
 .title-container {
   text-align: center;
   margin-top: 3%;
+}
+
+.depiction{
+  height:130px;
 }
 
 
@@ -40,7 +45,7 @@
   padding: 2%;
   text-align: center;
   border-radius: 10px;
-  box-shadow: 8px 8px 8px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.1);
 }
 img {
   max-width: 250px;
@@ -72,19 +77,28 @@ p {
   margin-top: 10px;
 }
 
+@media (max-width:1600px){
+  .depiction{
+    height:100px;
+  }
+}
 
 @media(max-width: 1280px) {
   h1 {
     margin-top: 40px;
   }
+  .depiction{
+    height:100px;
+  }
 }
 
-@media(max-width: 768px) {
+
+@media(max-width: 1024px) {
   .frame {
     margin: auto;
     margin-top:2%;
     margin-bottom:2%;
-    width:80%;
+    width:60%;
   }
   .centered-text {
     margin-top: -30%;
@@ -93,13 +107,24 @@ p {
     width: 100%;
     flex-direction: column;
   }
-  h1 {
-    margin-top: 40px;
-    text-align: center;
+  .depiction{
+    height:100px;
+  }
+}
+
+@media(max-width: 768px) {
+  .frame {
+    width:70%;
   }
 }
 
 @media(max-width: 560px) {
+  .frame {
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 70%;
+  }
   .article1 {
     width: 100%;
     flex-direction: column;
@@ -110,5 +135,14 @@ p {
   h1 {
     margin-top: 40px;
     text-align: center;
+  }
+  .depiction{
+    height:120px;
+  }
+}
+
+@media(max-width:390px){  
+  .frame {
+    width: 90%;
   }
 }

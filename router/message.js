@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,writeFile,unlink} = require('fs');
+const {readFileSync} = require('fs');
+const message = require('../model/message');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,EOM,SOM,Proportion} = require('../function');
 const moment = require('moment-timezone');
@@ -12,7 +13,7 @@ router.use(Administrator_verafication);
 
 
 router.get('/',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/message.html','utf-8');
+    let html = readFileSync('./public/html/back_end/message/message.html','utf-8');
     let DateString = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let DateString2 = moment().tz('Asia/Taipei').format('YYYY-MM-DD');
     let today = new Date(DateString);
@@ -99,7 +100,7 @@ router.get('/',(req,res)=>{
         }           
     })    
     //頁面留言
-    db.execute(`SELECT DATE_FORMAT(RF_Date,'%Y年%m月%d日') RF_Date,RF_Content FROM resource_feedback WHERE R_ID IS NULL;`,(err,results)=>{
+    db.execute(`SELECT DATE_FORMAT(RF_Date,'%Y年%m月%d日') RF_Date,RF_Content FROM Resource_feedback WHERE R_ID IS NULL;`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -116,7 +117,7 @@ router.get('/',(req,res)=>{
                  
     }) 
     //本月頁面留言量
-    db.execute(`SELECT R_ID FROM Resource_feedback WHERE R_ID IS null AND RF_Date BETWEEN '${SOM(today.getFullYear(),today.getMonth()+1)}' AND '${EOM(today.getFullYear(),today.getMonth()+1)}';`,(err,results)=>{
+    db.execute(`SELECT RF_ID FROM Resource_feedback WHERE R_ID IS NULL AND RF_Date BETWEEN '${SOM(today.getFullYear(),today.getMonth()+1)}' AND '${EOM(today.getFullYear(),today.getMonth()+1)}';`,(err,results)=>{
         if(err){
             console.log(err);
             msgbox += '資料庫錯誤<br>';
@@ -139,7 +140,7 @@ router.get('/',(req,res)=>{
 })
 
 router.get('/record/resource',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/message_record_r.html','utf-8');
+    let html = readFileSync('./public/html/back_end/message/message_record_r.html','utf-8');
     let msgbox = '';
     let data = {
         "feedback":[]
@@ -173,7 +174,7 @@ router.get('/record/resource',(req,res)=>{
 })
 
 router.get('/record/page',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/message_record_p.html','utf-8');
+    let html = readFileSync('./public/html/back_end/message/message_record_p.html','utf-8');
     let msgbox = '';
     let data = {
         "feedback":[]
@@ -215,10 +216,8 @@ router.post('/record/delete',(req,res)=>{
             "R_ID" : R_ID,
         }
     }
-    
-    new Promise((resolve,reject)=>{
-        resolve(delete_Resource_feedback(RF_ID));
-    }).then(()=>{
+
+    message.Delete_Message(RF_ID).then(()=>{
         if(page == 'page'){
             db.execute(`SELECT RF_ID,RF_Content,DATE_FORMAT(RF_Date,'%Y年%m月%d日 %H:%i:%s') RF_Date FROM Resource_feedback WHERE R_ID IS NULL;`,(err,results)=>{
                 if(err){
@@ -286,23 +285,6 @@ router.post('/record/delete',(req,res)=>{
 
 
 
-
-
-async function delete_Resource_feedback(RF_ID){
-    return new Promise((resolve,reject)=>{
-        db.execute(`DELETE FROM Resource_feedback WHERE RF_ID = ?`,[RF_ID],(err,results)=>{
-            if(err){
-                console.log(err);
-                reject('dberr');
-            }else if(results.affectedRows == 0){
-                reject('nodata');
-            }else{
-                resolve();
-            }
-            
-        })
-    })
-}
 
 
 module.exports = router;

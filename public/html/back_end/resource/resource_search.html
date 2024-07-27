@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>DSN管理後臺-資源名稱</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link rel="icon" href="../../../img/icon.ico" type="image/x-icon">
+    <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/back_end/resource_search.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars2.css" rel="stylesheet">
+</head>
+<body>
+    <main class="d-flex flex-nowrap">
+        <div class="flex-shrink-0 p-3" style="position: fixed;">
+            <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
+            <img src="../../../img/backend/resource.png" style="margin-right:5%">
+            <span class="fs-2 fw-semibold">DSN管理後臺</span>
+            </a>
+            <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <img src="../../../img/backend/resource.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                    資源管理
+                    </button>
+                    <div class="collapse" id="home-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源管理</a></li>
+                        <li><a href="/backend/resource/add_d" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增需求</a></li>
+                        <li><a href="/backend/resource/add_r" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增資源</a></li>
+                        <li><a href="/backend/resource/template" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">模板管理</a></li>
+                        <li><a href="/backend/resource/add_t" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增模板</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../../img/backend/chat.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-collapse" aria-expanded="false">
+                    留言管理
+                    </button>
+                    <div class="collapse" id="chat-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/backend/message" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">留言管理</a></li>
+                            <li><a href="/backend/message/record/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源留言</a></li>
+                            <li><a href="/backend/message/record/page" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">頁面留言</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../../img/backend/monitor.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                    監控管理
+                    </button>
+                    <div class="collapse" id="dashboard-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../../img/backend/search.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#search-collapse" aria-expanded="false">
+                    搜尋管理
+                    </button>
+                    <div class="collapse" id="search-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../../img/backend/supplier.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
+                    供應商管理
+                    </button>
+                    <div class="collapse" id="supplier-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="/backend/supplier" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">供應商管理</a></li>
+                        <li><a href="/backend/supplier/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增供應商</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <img src="../../../img/backend/language.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
+                    語言管理
+                    </button>
+                    <div class="collapse" id="language-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/backend/language" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">語言管理</a></li>
+                            <li><a href="/backend/language/add" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">新增語言</a></li>
+                            <li><a href="/backend/language/static" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">靜態頁面</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
+                <li class="mb-1">
+                    <img src="../../../img/backend/member.png">
+                    <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+                    管理員
+                    </button>
+                    <div class="collapse" id="account-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">返回首頁</a></li>
+                        </ul>
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="/sign_out" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">登出</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            
+        </div>
+        <div class="b-example-divider b-example-vr" style="margin-left:17%;position: fixed;"></div>
+        <div class="sidebars2">
+            <a href="" >資源編輯</a>
+            <a href="">資源設定</a>
+            <a href="" style="background-color: #7B7B7B;color: white;">搜尋設定</a>
+            <a href="">資源回饋</a>
+            <a href="">資源供應商</a>
+           
+        </div>
+        <section>
+            <div class="container-breadcrumb my-2">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+                    <li class="breadcrumb-item">
+                      <a class="link-body-emphasis" href="#">
+                        <img src="../../../img/backend/resource.png">
+                        <span class="visually-hidden fs-4">DSN管理系統</span>
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/resource">資源管理</a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a id="D_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#"></a>
+                    </li>
+                    <li class="breadcrumb-item fs-4">
+                        <a id="R_Name_bar" class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="#"></a>
+                    </li>
+                    <!-- <li class="breadcrumb-item active" aria-current="page"> 下一個頁面
+                      Data
+                    </li> -->
+                  </ol>
+                </nav>
+            </div>
+            <div class="btn_area">
+                <button onclick="saveResource_search('')">儲存</button>
+                <button><span style="color:red">●</span>下架中</button>
+                <button>查看資源</button>
+            </div>
+            <form class="content">
+                <div class="data_area">
+                    <div class="s_table">
+                        <div class="table_title">申請身分</div>
+                        <div class="scroll">
+                            <table id="identity_table">
+                                <tr><th>身分名稱</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('i0'),CheckAll('identity_table','i0')"><td>不限身分</th><td><input id="i0" value="A0" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i1'),CancelAll('identity_table','i0')"><td>新住民</th><td><input id="i1" value="A1" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i2'),CancelAll('identity_table','i0')"><td>新住民子女</th><td><input id="i2" value="A2" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i3'),CancelAll('identity_table','i0')"><td>原住民</th><td><input id="i3" value="A3" name="R_Identity" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('i4'),CancelAll('identity_table','i0')"><td>以上皆否</th><td><input id="i4" value="A4" name="R_Identity" type="checkbox"></th></tr>  
+                            </table>
+                        </div>
+                    </div>
+                    <div class="s_table">
+                        <div class="table_title">申請在校狀況</div>
+                        <div class="scroll">
+                            <table id="school_table">
+                                <tr><th>在校狀況</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('s0'),CheckAll('school_table','s0')"><td>不限就學</th><td><input id="s0" value="A0" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s1'),CancelAll('school_table','s0')"><td>未就學</th><td><input id="s1" value="A1" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s2'),CancelAll('school_table','s0')"><td>國小</th><td><input id="s2" value="A2" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s3'),CancelAll('school_table','s0')"><td>國中</th><td><input id="s3" value="A3" name="R_School" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('s4'),CancelAll('school_table','s0')"><td>高中</th><td><input id="s4" value="A4" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s5'),CancelAll('school_table','s0')"><td>五專</th><td><input id="s5" value="A5" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s6'),CancelAll('school_table','s0')"><td>大學</th><td><input id="s6" value="A6" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s7'),CancelAll('school_table','s0')"><td>研究所</th><td><input id="s7" value="A7" name="R_School" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('s8'),CancelAll('school_table','s0')"><td>畢業就學</th><td><input id="s8" value="A8" name="R_School" type="checkbox"></th></tr>     
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier_area">
+                    <div class="s_table">
+                        <div class="table_title">申請者狀況</div>
+                        <div class="scroll">
+                            <table id="condition_table">
+                                <tr><th>申請者狀況</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('co0'),CheckAll('condition_table','co0')"><td>不限狀況</th><td><input id="co0" value="A0" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co1'),CancelAll('condition_table','co0')"><td>身心障礙</th><td><input id="co1" value="A1" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co2'),CancelAll('condition_table','co0')"><td>經濟弱勢</th><td><input id="co2" value="A2" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co3'),CancelAll('condition_table','co0')"><td>就職青年</th><td><input id="co3" value="A3" name="R_Condition" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('co4'),CancelAll('condition_table','co0')"><td>單親家庭</th><td><input id="co4" value="A4" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co5'),CancelAll('condition_table','co0')"><td>家事糾紛</th><td><input id="co5" value="A5" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co6'),CancelAll('condition_table','co0')"><td>暴力/霸凌受害者</th><td><input id="co6" value="A6" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co7'),CancelAll('condition_table','co0')"><td>心理患者</th><td><input id="co7" value="A7" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co8'),CancelAll('condition_table','co0')"><td>醫院患者</th><td><input id="co8" value="A8" name="R_Condition" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('co9'),CancelAll('condition_table','co0')"><td>懷孕少女</th><td><input id="co9" value="A9" name="R_Condition" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('co10'),CancelAll('condition_table','co0')"><td>租屋者</th><td><input id="co10" value="B1" name="R_Condition" type="checkbox"></th></tr>                                 
+                            </table>
+                        </div>
+                    </div>
+                    <div class="s_table" style="margin-top:2%">
+                        <div class="table_title">申請縣市</div>
+                        <div class="scroll">
+                            <table id="city_table">
+                                <tr><th>縣市名稱</th><th>勾選</th></tr>
+                                <tr onclick="checkbox('c1'),CheckAll('city_table','c1')"><td>不限縣市</th><td><input id="c1" value="A0" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c2'),CancelAll('city_table','c1')"><td>臺北市</th><td><input id="c2" value="A1" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c3'),CancelAll('city_table','c1')"><td>新北市</th><td><input id="c3" value="A2" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c4'),CancelAll('city_table','c1')"><td>桃園市</th><td><input id="c4" value="A3" name="R_City" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('c5'),CancelAll('city_table','c1')"><td>台中市</th><td><input id="c5" value="A4" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c6'),CancelAll('city_table','c1')"><td>台南市</th><td><input id="c6" value="A5" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c7'),CancelAll('city_table','c1')"><td>高雄市</th><td><input id="c7" value="A6" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c8'),CancelAll('city_table','c1')"><td>基隆市</th><td><input id="c8" value="A7" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c9'),CancelAll('city_table','c1')"><td>新竹市</th><td><input id="c9" value="A8" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c10'),CancelAll('city_table','c1')"><td>新竹縣</th><td><input id="c10" value="A9" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c11'),CancelAll('city_table','c1')"><td>苗栗縣</th><td><input id="c11" value="B1" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c12'),CancelAll('city_table','c1')"><td>彰化縣</th><td><input id="c12" value="B2" name="R_City" type="checkbox"></th></tr>  
+                                <tr onclick="checkbox('c13'),CancelAll('city_table','c1')"><td>南投縣</th><td><input id="c13" value="B3" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c14'),CancelAll('city_table','c1')"><td>雲林縣</th><td><input id="c14" value="B4" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c15'),CancelAll('city_table','c1')"><td>嘉義市</th><td><input id="c15" value="B5" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c16'),CancelAll('city_table','c1')"><td>嘉義縣</th><td><input id="c16" value="B6" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c17'),CancelAll('city_table','c1')"><td>屏東縣</th><td><input id="c17" value="B7" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c18'),CancelAll('city_table','c1')"><td>宜蘭縣</th><td><input id="c18" value="B8" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c19'),CancelAll('city_table','c1')"><td>花蓮縣</th><td><input id="c19" value="B9" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c20'),CancelAll('city_table','c1')"><td>台東縣</th><td><input id="c20" value="C1" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c21'),CancelAll('city_table','c1')"><td>澎湖縣</th><td><input id="c21" value="C2" name="R_City" type="checkbox"></th></tr>
+                                <tr onclick="checkbox('c22'),CancelAll('city_table','c1')"><td>金門縣</th><td><input id="c22" value="C3" name="R_City" type="checkbox"></th></tr> 
+                                <tr onclick="checkbox('c23'),CancelAll('city_table','c1')"><td>連江縣</th><td><input id="c23" value="C4" name="R_City" type="checkbox"></th></tr> 
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+<script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/back_end/sidebars.js"></script>
+<script src="../../../js/back_end/resource.js"></script>
+<!-- <script>
+    setResource_search({
+        "R_Name" : "獎(助)學金",
+        "D_Name" : "經濟需求",
+        "D_ID" : "D000000002",
+        "R_ID" : "R000000002",
+        "R_Identity" : ['A1'],
+        "R_School" : ['A2'],
+        "R_City" : ['A3']
+    })
+</script> -->
+</html>

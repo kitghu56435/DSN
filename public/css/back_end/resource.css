@@ -3,7 +3,7 @@ main{
 }
 
 section{
-    margin-left: 22vw;
+    margin-left: 19vw;
     width:100%;
 }
 
@@ -81,7 +81,7 @@ section{
 @media (max-width:1600px){
     
     section{
-        margin-left: 22vw;
+        margin-left: 19vw;
         width:100%;
     }
     
@@ -116,7 +116,7 @@ section{
 @media (max-width:1280px){
     
     section{
-        margin-left: 22vw;
+        margin-left: 19vw;
         width:100%;
     }
     .data_table > .d_table{

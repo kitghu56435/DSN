@@ -9,9 +9,9 @@ function header_nav_check(){
     
     let nav_item = document.getElementsByClassName('nav-item');
     let nav_num = document.getElementsByClassName('nav-num');
-    let logo_name = document.getElementsByTagName('span')[0];
+    //let logo_name = document.getElementsByTagName('span')[0];
     
-    if(window.innerWidth > 768){
+    if(window.innerWidth > 1024){
         for(i = 0;i<nav_num.length;i++){
             let a = nav_item[i].getElementsByTagName('a')[0];
             let ul = nav_item[i].getElementsByTagName('ul')[0];
@@ -22,7 +22,7 @@ function header_nav_check(){
             ul.setAttribute('class','nav-link-hover-menu container2');
             
             
-            logo_name.style['display'] = 'inline';
+            //logo_name.style['display'] = 'inline';
             
 
             for(j=0;j<ul_a.length;j++){
@@ -35,9 +35,9 @@ function header_nav_check(){
             let ul = nav_item[i].getElementsByTagName('ul')[0];
             let ul_a = ul.getElementsByTagName('a');
 
-            if(window.innerWidth > 560){
-                logo_name.style['display'] = 'none';
-            }
+            // if(window.innerWidth > 560){
+            //     logo_name.style['display'] = 'none';
+            // }
 
             a.setAttribute('class','nav-link dropdown-toggle T-title');
             a.setAttribute('onclick','');
@@ -177,6 +177,22 @@ function cookie_msg(){
         <div><button class="no" onclick="setCookie('none'),cookie_msg()">拒絕</button><button class="yes" onclick="setCookie('accept'),cookie_msg()">酷，我接受!</button></div>
         `
         body.appendChild(msg);
+    }
+}
+
+function checkIdentity4(obj){   //以上皆否偵測
+    if(obj.checked){
+        if(obj.id == 'identity1' || obj.id == 'identity2' || obj.id == 'identity3'){
+            let identity4 = document.getElementById('identity4');
+            identity4.checked = false;
+        }else{
+            let identity1 = document.getElementById('identity1');
+            let identity2 = document.getElementById('identity2');
+            let identity3 = document.getElementById('identity3');
+            identity1.checked = false;
+            identity2.checked = false;
+            identity3.checked = false;
+        }
     }
 }
 
@@ -393,12 +409,15 @@ function search_window(){
                 <img onclick="search_window()" src="../img/X.png">
             </div>
             <div class="text">
-                使用資源搜尋功能，快速找到符合您狀況的資源。選擇您想查詢的條件，並滑動至視窗下方點選搜尋按鈕。
+                使用資源搜尋功能，快速找到符合您狀況的資源。選擇您想查詢的條件，並滑動至視窗下方點選搜尋按鈕。<a href="/static/search#search_introduce">資源搜尋介紹</a>
             </div>
             <form class="data_form" id="data_form" method="post" action="/static/search_results">
                 <div class="form_section">
-                    <img src="../img/search/resource.png">
-                    <span class="type_title">資源種類</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/resource.png">
+                        <span class="type_title">資源種類</span>
+                        <a href="/static/search#q1"><img class="question" src="../img/search/question.png" title="資源種類介紹"></a>
+                    </div>
                     <span class="type_des">(必填)請至少選擇一種資源種類，讓我們提供您要的資訊。</span><br>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy">經濟資訊</label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law">法律資訊</label></span>
@@ -409,17 +428,23 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology">心理資訊</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/member.png">
-                    <span class="type_title">申請者身分</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/member.png">
+                        <span class="type_title">申請者身分</span>
+                        <a href="/static/search#q2"><img class="question" src="../img/search/question.png" title="申請者身分介紹"></a>
+                    </div>
                     <span class="type_des">(複選)每種身分都有屬於他們的資源。</span><br>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">新住民</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">新住民子女</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">原住民</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">以上皆否</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">新住民</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">新住民子女</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">原住民</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">以上皆否</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/condition.png">
-                    <span class="type_title">申請者狀況</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/condition.png">
+                        <span class="type_title">申請者狀況</span>
+                        <a href="/static/search#q3"><img class="question" src="../img/search/question.png" title="申請者狀況介紹"></a>
+                    </div>
                     <span class="type_des">(複選)給我們更多您的狀況，讓我們給你更精確地資訊。</span><br>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A1" id="condition0"><label for="condition0">身心障礙</label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A2" id="condition1"><label for="condition1">經濟弱勢</label></span>
@@ -433,8 +458,11 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="B1" id="condition9"><label for="condition9">租屋者</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/school.png">
-                    <span class="type_title">在學狀況</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/school.png">
+                        <span class="type_title">在學狀況</span>
+                        <a href="/static/search#q4"><img class="question" src="../img/search/question.png" title="在學狀況介紹"></a>
+                    </div>
                     <span class="type_des">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
                     <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1">未就學</label></span>
                     <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2">國小</label></span>
@@ -446,8 +474,11 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8">畢業就學</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/location.png">
-                    <span class="type_title">申請者地區</span>
+                    <div class="search_title">
+                        <img src="../img/search/location.png">
+                        <span class="type_title">申請者地區</span>
+                        <a href="/static/search#q5"><img class="question" src="../img/search/question.png" title="申請者地區介紹"></a>
+                    </div>
                     <span class="type_des">有些資源有地區限制。</span><br>
                     <div class="row">
                         <div class="col form-floating">
@@ -503,8 +534,12 @@ function search_window(){
             </div>
             <form class="data_form" id="data_form" method="post" action="/static/search_results">
                 <div class="form_section">
-                    <img src="../img/search/resource.png">
-                    <span class="type_title">Resource type</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/resource.png">
+                        <span class="type_title">Resource type</span>
+                        <a href="/static/search#q1"><img class="question" src="../img/search/question.png" title="Resource type"></a>
+                    </div>
+                    
                     <span class="type_des">(Required) Please select at least one resource type to let us provide the information you want.</span><br>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy">Economy</label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law">law</label></span>
@@ -515,17 +550,25 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology">Psychology</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/member.png">
-                    <span class="type_title">Applicant identity</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/member.png">
+                        <span class="type_title">Applicant identity</span>
+                        <a href="/static/search#q2"><img class="question" src="../img/search/question.png" title="Applicant identity"></a>
+                    </div>
+                    
                     <span class="type_des">(Choices) Each identity has its own resources.</span><br>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">New resident </label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">Children of new residents </label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">Aboriginal people</label></span>
-                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">None of the above</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1">New resident </label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2">Children of new residents </label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3">Aboriginal people</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4">None of the above</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/condition.png">
-                    <span class="type_title">Applicant status</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/condition.png">
+                        <span class="type_title">Applicant status</span>
+                        <a href="/static/search#q3"><img class="question" src="../img/search/question.png" title="Applicant status"></a>
+                    </div>
+                    
                     <span class="type_des">(Choices) Give us more information about your situation so we can give you more accurate information.</span><br>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A1" id="condition0"><label for="condition0">Disability</label></span>
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A2" id="condition1"><label for="condition1">Economically disadvantaged</label></span>
@@ -539,8 +582,12 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="B1" id="condition9"><label for="condition9">renter</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/school.png">
-                    <span class="type_title">Study status</span><br>
+                    <div class="search_title">
+                        <img src="../img/search/school.png">
+                        <span class="type_title">Study status</span>
+                        <a href="/static/search#q4"><img class="question" src="../img/search/question.png" title="Study status"></a>
+                    </div>
+                    
                     <span class="type_des">(Single choice) The school has many resources for us to apply for. Let us know your current study status.</span><br>
                     <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1">Not in school</label></span>
                     <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2">Elementary school</label></span>
@@ -552,8 +599,12 @@ function search_window(){
                     <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8">Study after graduation</label></span>
                 </div>
                 <div class="form_section">
-                    <img src="../img/search/location.png">
-                    <span class="type_title">Applicant's area</span>
+                    <div class="search_title">
+                        <img src="../img/search/location.png">
+                        <span class="type_title">Applicant's area</span>
+                        <a href="/static/search#q4"><img class="question" src="../img/search/question.png" title="Applicant's area"></a>
+                    </div>
+                    
                     <span class="type_des">Some resources have regional restrictions.</span><br>
                     <div class="row">
                         <div class="col form-floating">

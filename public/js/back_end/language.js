@@ -145,7 +145,7 @@ function setStatic_edit(data){
                 if(data.container[i].item_type[j] == 'text'){
                     str += `
                     <div class="item">
-                        <div class="item_title">${data.container[i].id[j]}(文字)</div>
+                        <div class="item_title" onclick="set_Height('${data.container[i].id[j]}')">${data.container[i].id[j]}(文字)</div>
                         <div class="item_label">
                             <span>提示：${data.container[i].note[j]}</span>
                         </div>
@@ -172,6 +172,7 @@ function setStatic_edit(data){
                         <div class="item_title">${data.container[i].id[j]}(照片)</div>
                         <div class="item_label">
                             <span>提示：${data.container[i].note[j]}</span>
+                            ${container_img_button(data.container[i].content[j],data.container[i].id[j])}
                         </div>
                         <div class="item_content">
                         <img onclick="click_file_img('${data.container[i].id[j]}')" id="${data.container[i].id[j]}_img" src="${container_img(data.container[i].content[j])}" title="上傳照片" >
@@ -316,10 +317,24 @@ function container_img(img_name){
         return '../../../img/resource/' + img_name;
     }
 }
+function container_img_button(img_name,img_id){
+    if(img_name == ''){
+        return '';
+    }else{
+        return `<button type="button" onclick="clear_img('${img_id}')">清除照片</button>`;
+    }
+}
+function clear_img(id){
+    let input = document.getElementsByName(id)[0];
+    let img = document.getElementById(id + '_img');
+    img.setAttribute('src','../../../img/backend/plus.png');
+    input.setAttribute('value','delete_img');
+}
 function setContainer2_img(RD_ID){
     let file_input = document.getElementById( RD_ID + '_input_file');
     let img = document.getElementById( RD_ID + '_img');
     let hidden_input = document.getElementsByName(RD_ID)[0];
+    let item_label = img.parentElement.parentElement.getElementsByClassName('item_label')[0]
 
 
     let reader = new FileReader();
@@ -327,12 +342,26 @@ function setContainer2_img(RD_ID){
     reader.onload = (e) =>{
         img.setAttribute('src',e.currentTarget.result);
         hidden_input.setAttribute('value',e.currentTarget.result);
+        item_label.innerHTML += `<button type="button" onclick="clear_img('${RD_ID}')">清除照片</button>`
     }
     
 }
 function click_file_img(RD_ID){
     let img = document.getElementById( RD_ID + '_input_file');
     img.click();
+}
+function set_Height(id){
+    let text = document.getElementsByName(id)[0];
+    let container2 = text.parentElement.parentElement.parentElement;
+
+    if(container2){
+        if(container2.offsetHeight < 400){
+            container2.style.height = (container2.offsetHeight*2.5) + 'px';
+        }else{
+            container2.setAttribute('style','');
+        }
+        
+    }
 }
 function handleChildClick(event) {
     event.stopPropagation();

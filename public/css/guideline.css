@@ -8,8 +8,10 @@
   background-image: url('../img/index/index_poster_1900_2.png');
   background-repeat: round;
   background-size: cover;
+  font-size: 20px;
 }
 .container {
+  font-size: 20px;
   text-align: center;
   width: 100%;
   height: 100%;
@@ -34,13 +36,14 @@
 }
 
 .middle_text > h1{
+  font-size: 2.2em;
   font-weight: bold;
 }
 
 
 .middle_text p {
   font-weight: bold;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 .flow_pic {
   margin-top: 2em;
@@ -54,9 +57,11 @@
 
 }
 .flow_pic h1{
+  font-size: 1.7em;
   margin-bottom: 3%;
 }
 .flow_pic h3{
+  font-size: 1.5em;
   margin-top: 5%;
   margin-bottom: 1%;
 }
@@ -92,6 +97,9 @@
   text-align: center;
   color: white;
 }
+.common_quesion h1{
+  font-size: 1.7em;
+}
 .que {
   margin-top: 2em;
   padding-left:5%;
@@ -100,9 +108,11 @@
   text-align: left;
 }
 .que  .q{
-  font-size:1.5em;
   padding:0.5em 1em 0.5em 1em;
   cursor: pointer;
+}
+.que  .q span{
+  font-size:1.2em;
 }
 .que  img{
   float: right;
@@ -126,7 +136,7 @@
   background-color: gray;
 }
 .common_quesion p {
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 
@@ -139,13 +149,21 @@
 @media (max-width: 1600px) {
   .container_fullscreen{
     background-image: url('../img/index/index_poster_1600_2.png');
+    font-size: 18px;
+  }
+  .container{
+    font-size: 18px;
   }
   
 }
 /* 125% */
 @media (max-width: 1280px) {
   .container_fullscreen{
+    font-size: 16px;
     background-image: url('../img/index/index_poster_1280_2.png');
+  }
+  .container{
+    font-size: 16px;
   }
   .pic2{
     width:100%;
@@ -155,26 +173,32 @@
 /* 200% */
 @media (max-width: 768px) {
   .container_fullscreen{
+    font-size: 16px;
     background-image: url('../img/index/index_poster_768_2.png');
-  }
-  .container_fullscreen {
     align-items: flex-end;
   }
-    .content{
-        margin-top: 10%;
-    }
-    .pic2{
-        background-image: url(../img/guideline/guideline_poster_700.png);
-        width:100%;
-        height: 400px;
-        padding-bottom: 3%;
-    }
-    .pic {
-      width: 150px;
-      height: 150px;
+  .container{
+    font-size: 16px;
+  }
+  .content{
+    margin-top: 10%;
+  }
+  .pic2{
+    background-image: url(../img/guideline/guideline_poster_700.png);
+    width:100%;
+    height: 400px;
+    padding-bottom: 3%;
+  }
+  .pic {
+    width: 150px;
+    height: 150px;
   }
   .middle_text {
     top:45%;
+  }
+  .flow_pic > img {
+    margin-top:2%;
+    margin-bottom: 2%;
   }
   .que {
     padding-left: 3%;
@@ -197,10 +221,13 @@
 /* 300%  */
 @media (max-width: 560px) {
   .container_fullscreen{
+    font-size: 14px;
     background-image: url('../img/index/index_poster_560_2.png');
   }
+  .container{
+    font-size: 14px;
+  }
   .b2 {
-   
     border-color: gray;
   }
   .pic2{
@@ -216,6 +243,7 @@
   .que .q {
     font-size: 1.2em;
   }
+  
   .content  > h1{
     margin-top: 5%;
   }
@@ -228,7 +256,18 @@
 @media (max-width: 390px) {
   
   .container_fullscreen{
+    font-size: 14px;
     background-image: url('../img/index/index_poster_390_2.png');
+  }
+  .flow_pic h1 {
+    margin-bottom: 5%;
+  }
+  .flow_pic h3 {
+    margin-top: 10%;
+    margin-bottom: 5%;
+  }
+  .container{
+    font-size: 14px;
   }
   .pic2{
     background-image: url(../img/guideline/guideline_poster_350.png);

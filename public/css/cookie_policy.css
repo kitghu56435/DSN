@@ -1,9 +1,45 @@
 .container {
+    font-size: 20px;
     margin-top:2%;
 }
-.title{
+.title > h1{
+    font-size: 1.7em;
     margin-bottom:1%;
+}
+h3{
+    font-size: 1.5em;
 }
 .section1{
     margin-top:3%;
+}
+
+@media(max-width:1600px){  
+    .container{
+        font-size: 18px;
+    }
+}
+
+@media(max-width:1280px){ 
+    .container{
+        font-size: 16px;
+    }
+}
+/* 200% 731px */
+@media(max-width:768px){  
+    .container{
+        font-size: 16px;
+    }
+}
+/* 300% 487px */
+@media(max-width:560px){  
+    .container{
+        font-size: 14px;
+    }
+}
+
+
+@media(max-width:390px){  
+    .container{
+        font-size: 14px;
+    }
 }

@@ -3,7 +3,9 @@ function show_a(n){
     let q_img = document.getElementsByClassName('q_img')[n];
 
     let height = 0;
-    if(window.innerWidth <= 560){
+    if(window.innerWidth <= 390){
+        height = 400;
+    }else if(window.innerWidth <= 560){
         height = 300;
     }else if(window.innerWidth <= 768){
         height = 250;
@@ -121,6 +123,20 @@ function setSearch_results(data){
 }
 
 
+function showSituational(n){
+    let Situational = document.getElementsByClassName('Situational');
+    let Situational_btn = document.getElementsByClassName('Situational_btn')[0];
+    let btn = Situational_btn.getElementsByTagName('span');
+
+    for(i = 0;i < Situational.length;i++){
+        Situational[i].classList.remove('Situational_show');
+        btn[i].setAttribute('style','color:#ADADAD');
+    }
+    btn[n].setAttribute('style','color:black;font-weight:bold');
+    Situational[n].classList.add('Situational_show');
+}
+
+
 function getR_Label_leng(str,L_ID){
     if(L_ID == 'L000000002'){
         switch(str){
@@ -176,6 +192,14 @@ function getR_Label_leng(str,L_ID){
             case '澎湖縣' : return 'Penghu';
             case '金門縣' : return 'Kinmen';
             case '連江縣' : return 'Lianjiang';
+            //demand
+            case '經濟資訊' : return 'Economy';
+            case '法律資訊' : return 'Law';
+            case '緊急資訊' : return 'Emergency';
+            case '教育資訊' : return 'Education';
+            case '職涯資訊' : return 'Career';
+            case '醫療資訊' : return 'Medical';
+            case '心理資訊' : return 'Application';
         }
     }else{
         //預設中文
@@ -185,7 +209,10 @@ function getR_Label_leng(str,L_ID){
 function getSearch_Label(label){
     let str = '';
     for(ss = 0;ss < label.length ; ss++){
-        str += `<span>${label[ss]}</span>`;
+        if(label[ss] != ''){  //所有類別的標籤，被改成空所有表示，這邊過濾掉空索引
+            str += `<span>${label[ss]}</span>`;
+        }
+        
     }
     return str;
 }

@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const {readFileSync,writeFile,unlink} = require('fs');
+const {readFileSync} = require('fs');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
 const moment = require('moment-timezone');
-const { rejects } = require('assert');
+
 
 router.use(Administrator_verafication);
 
 
 router.get('/',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/supplier.html','utf-8');
+    let html = readFileSync('./public/html/back_end/supplier/supplier.html','utf-8');
     let msgbox = '';
     let all_s = 0; //靜態數量
     let data = {
@@ -125,7 +125,7 @@ router.post('/delete',(req,res)=>{
 
 
 router.get('/add',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/supplier_add.html','utf-8');
+    let html = readFileSync('./public/html/back_end/supplier/supplier_add.html','utf-8');
     let msg = req.query.data;
     let msgbox = '';
     let data = {
@@ -181,7 +181,7 @@ router.post('/add/data',(req,res)=>{
 
 
 router.get('/edit',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/supplier_edit.html','utf-8');
+    let html = readFileSync('./public/html/back_end/supplier/supplier_edit.html','utf-8');
     let S_ID = req.query.S_ID;
 
     html += `
@@ -256,7 +256,7 @@ router.post('/edit/save',(req,res)=>{
 
 
 router.get('/resource',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/supplier_r.html','utf-8');
+    let html = readFileSync('./public/html/back_end/supplier/supplier_r.html','utf-8');
     let S_ID = req.query.S_ID;
     
     html += `

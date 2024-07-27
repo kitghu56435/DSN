@@ -6,27 +6,34 @@
     text-align: center;
     background-image: url(../img/index/index_poster_1900_1.png);
     background-size: 100% 100%;
+    font-size: 20px;
 }
-.title{
+.container1 .title{
     font-weight: bold;
     color:white;
-    font-size: 3em;
+    font-size: 2.2em;
 }
-.title2{
+.container1 .title2{
     font-weight: bold;
     color: white;
-    font-size: 2em;
+    font-size: 1.7em;
 }
-.title3{
+.container1 .title3{
     font-weight: bold;
     color: white;
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
-.container {
+
+.container{
+    font-size: 20px;
     margin-top: 3%;
     text-align: center;
     width: 100%;
     height: 100%;
+}
+.container h2{
+    font-size: 1.7em !important;
+    margin-bottom:2%;
 }
 .letterp{
     margin-top: 2%;
@@ -81,15 +88,21 @@
 /* 100% 1463px */
 @media(max-width:1600px){  
     .container1{
+        font-size: 18px;
         background-image: url(../img/index/index_poster_1600_1.png);
+    }
+    .container{
+        font-size: 18px;
     }
 }
 /* 125% 1170px */
 @media(max-width:1280px){ 
     .container1{
+        font-size: 16px;
         background-image: url(../img/index/index_poster_1280_1.png);
     }
     .container{
+        font-size: 16px;
         padding-left:2%;
     }
     .bottom-left {
@@ -103,26 +116,22 @@
     .imgs_container{
         padding-top: 3%;
     }
+    .column > img {
+        max-width: 250px;
+    }
 }
 /* 200% 731px */
 @media(max-width:768px){  
     .container1{
+        font-size: 16px;
         background-image: url(../img/index/index_poster_768_1.png);
-    }
-    .title{
-        font-size: 2.5em;
-    }
-    .title2{
-        font-size: 2em;
-    }
-    .title3{
-        font-size: 1.5em;
     }
     .letterp_content {
         padding-left: 10%;
         padding-right: 10%;
     }
     .container{
+        font-size: 16px;
         padding-left: 3%;
     }
     .column{
@@ -144,16 +153,8 @@
 /* 300% 487px */
 @media(max-width:560px){  
     .container1{
+        font-size: 14px;
         background-image: url(../img/index/index_poster_560_1.png);
-    }
-    .title{
-        font-size: 2em;
-    }
-    .title2{
-        font-size: 1.5em;
-    }
-    .title3{
-        font-size: 1em;
     }
     .letter{
         padding-left: 0.01%;
@@ -162,7 +163,11 @@
         top:35%;
     }
     .container{
+        font-size: 14px;
         padding-left: 1.5%;
+    }
+    .column > img {
+        max-width: 200px;
     }
     .text{
         padding-left: 3%;
@@ -173,5 +178,9 @@
 @media(max-width:390px){  
     .container1{
         background-image: url(../img/index/index_poster_390_1.png);
+    }
+    .container h2 {
+        margin-top: 10%;
+        margin-bottom: 5%;
     }
 }

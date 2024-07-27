@@ -217,6 +217,40 @@ async function RDNextID(table,ID_Name,ID_Type){
     })
 }
 
+async function RDNextIDs(table,ID_Name,ID_Type,num){
+    let result = [];
+    let tmep_ID = '';
+
+
+    return new Promise((resolve,reject)=>{
+        db.execute(`SELECT ${ID_Name} FROM ${table};`,(err,results)=>{
+            if(err){
+                console.log(err);
+                reject();
+            }else{
+                if(results.length == 0){
+                    result.push(RDaddID(ID_Type));
+                }else{
+                    result.push(RDaddID(ID_Type,results[results.length - 1][ID_Name]));
+                }
+                tmep_ID = result[0];
+
+
+                for(m = 0; m < num-1 ; m++){
+                    result.push(RDaddID(ID_Type,tmep_ID));
+                    tmep_ID = RDaddID(ID_Type,tmep_ID);
+                }
+
+
+                resolve(result);
+                
+            }
+        })
+    }).catch(()=>{
+        console.log('dberr');
+    })
+}
+
 function RDaddID(ID_Type,Now_ID){
     let return_value = '';    
 
@@ -357,23 +391,22 @@ function checkData(data){
 
 function EOM(year,month){   //月底日期產生函數
     let day = 0;
-
     if(year%4 == 0 && month == 2){
         day = 29;
     }else{
         switch(month){
-            case 1 : day = 31;
-            case 2 : day = 28;
-            case 3 : day = 31;
-            case 4 : day = 30;
-            case 5 : day = 31;
-            case 6 : day = 30;
-            case 7 : day = 31;
-            case 8 : day = 31;
-            case 9 : day = 30;
-            case 10 : day = 31;
-            case 11 : day = 30;
-            case 12 : day = 31;
+            case 1 : day = 31; break;
+            case 2 : day = 28; break;
+            case 3 : day = 31; break;
+            case 4 : day = 30; break;
+            case 5 : day = 31; break;
+            case 6 : day = 30; break;
+            case 7 : day = 31; break;
+            case 8 : day = 31; break;
+            case 9 : day = 30; break;
+            case 10 : day = 31; break;
+            case 11 : day = 30; break;
+            case 12 : day = 31; break;
         }
     }
 
@@ -402,6 +435,7 @@ module.exports = {
     getClientIP,
     NextID,
     RDNextID,
+    RDNextIDs,
     addID,
     create_Sessionid,
     CheckSessionRepeat,

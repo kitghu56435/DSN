@@ -3,7 +3,7 @@ main{
 }
 
 section{
-    margin-left: 22vw;
+    margin-left: 19vw;
     width:100%;
 }
 
@@ -22,7 +22,6 @@ section{
     margin:1%;
     border-radius: 10px;
     overflow-x: hidden;
-    
 }
 
 .data_table > .t_table{
@@ -31,7 +30,9 @@ section{
     font-size: 24px;
     margin:1%;
     border-radius: 10px;
-    overflow-x: hidden;
+}
+.data_table > .t_table  table{
+    width:100%;
 }
 
 .table_title{
@@ -41,7 +42,11 @@ section{
     padding:0.2em 0.1em 0.2em 1em;
     background-color:#D0D0D0	;
 }
-.t_table > table,.d_table > table{
+.table_contnet{
+    overflow-y: scroll;
+    height:700px;
+}
+.t_table  table,.d_table > table{
     width:100%;
     text-align: center;
 }
@@ -65,17 +70,17 @@ section{
     font-size: 1em;
     padding:0.7em;
 }
-.t_table > table  img,.d_table > table  img{
+.t_table  table  img,.d_table > table  img{
     height:1.5em;
     width:1.5em;
     transition: 0.3s;
 }
-.t_table > table  select{
+.t_table  table  select{
     padding:0.1em;
-    width:70%;
+    width:80%;
     border-radius: 10px;
 }
-.t_table > table  img:hover,.d_table > table  img:hover{
+.t_table  table  img:hover,.d_table > table  img:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -86,7 +91,7 @@ section{
 @media (max-width:1600px){
     
     section{
-        margin-left: 22vw;
+        margin-left: 19vw;
         width:100%;
     }
     
@@ -105,7 +110,9 @@ section{
     .table_title{
         padding:0.2em 0.1em 0.2em 1em;
     }
-    
+    .table_contnet{
+        height:600px;
+    }
     .t_table  th,.d_table  th{
         padding:0.7em;
     }
@@ -121,7 +128,7 @@ section{
 @media (max-width:1280px){
     
     section{
-        margin-left: 22vw;
+        margin-left: 19vw;
         width:100%;
     }
     .data_table > .d_table{
@@ -137,6 +144,9 @@ section{
     
     .table_title{
         padding:0.2em 0.1em 0.2em 1em;
+    }
+    .table_contnet{
+        height:500px;
     }
     
     .t_table  th,.d_table  th{

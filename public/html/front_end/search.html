@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>DSN弱勢支援網</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link rel="icon" href="../img/icon.ico" type="image/x-icon">
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+    <link href="../css/header.css" rel="stylesheet">
+    <link href="../assets/dist/css/carousel.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/search.css">
+</head>
+<body>
+    <header data-bs-theme="light">
+        <nav class="navbar navbar-expand-md navbar-primary fixed-top" style="background-color: #B9B9FF;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="../img/logo.png" width="50" height="50" alt="">
+                    <span class="T-title" dsnid="h000" dsnnote="網頁名稱">DSN弱勢支援網</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                </div>
+            </div>
+        </nav> 
+            <div class="nav-scroller bg-body shadow-sm">
+                <nav class="nav" aria-label="Secondary navigation">
+                    <a class="nav-link T-text"  dsnid="h082" dsnnote="資源搜尋" href="/static/search">資源搜尋</a>
+                    <a class="nav-link T-text"  dsnid="h052" dsnnote="關於我們" href="/static/about_us">關於我們</a>
+                    <a class="nav-link T-text"  dsnid="h053" dsnnote="聯絡資訊" href="/static/about_us#content">聯絡資訊</a>
+                    <a class="nav-link T-text"  dsnid="h054" dsnnote="新手指南" href="/static/guideline">新手指南</a>
+                    <a class="nav-link T-text"  dsnid="h055" dsnnote="常見問題" href="/static/guideline#common_problem">常見問題</a>
+                </nav>
+            </div>
+    </header>
+    <main>
+        <div class="container1 container2">
+            <div class="bottom-left">
+                <span class="title T-text" style="font-weight: bold;" dsnid="01" dsnnote="上方標題"></span><br>
+                <span class="title2 T-text"   dsnid="02"  dsnnote="上方標題文字"></span>
+            </div>
+        </div>
+        <div class="container">
+            <form class="container2 data_form" id="data_form" method="post" action="/static/search_results">
+                <div class="search_title">
+                    <img src="../img/search/resource.png">
+                    <h2 class="T-title"  dsnid="03"  dsnnote="資源種類">資源種類</h2>
+                    <a href="#q1" onclick="show_a(0)"><img class="question" src="../img/search/question.png" title="資源種類介紹"></a>
+                </div>
+                <div class="search_content container2">
+                    <span class="type_des T-title" dsnid="04" dsnnote="標題下方提示文字">(必填)請至少選擇一種資源種類，讓我們提供您要的資訊。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A1" id="economy"><label for="economy" class="container2 T-text" dsnid="05" dsnnote="經濟資訊">經濟資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A2" id="law"><label for="law" class="T-text" dsnid="06" dsnnote="法律資訊">法律資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A3" id="emergency"><label for="emergency" class="T-text" dsnid="07" dsnnote="緊急資訊">緊急資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A4" id="education"><label for="education" class="T-text" dsnid="08" dsnnote="教育資訊">教育資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A5" id="career"><label for="career" class="T-text" dsnid="09" dsnnote="職涯資訊">職涯資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A6" id="medical"><label for="medical" class="T-text" dsnid="10" dsnnote="醫療資訊">醫療資訊</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="demand" value="A7" id="psychology"><label for="psychology" class="T-text" dsnid="11" dsnnote="心理資訊">心理資訊</label></span>
+                </div>
+                <div class="search_title">
+                    <img src="../img/search/member.png">
+                    <h2 class="container2 T-title"  dsnid="12" dsnnote="申請者身分">申請者身分</h2>
+                    <a href="#q2" onclick="show_a(1)"><img class="question" src="../img/search/question.png" title="申請者身分介紹"></a>
+                </div>
+                <div class="search_content container2">
+                    <span class="type_des T-title" dsnid="13" dsnnote="標題下方提示文字">(複選)每種身分都有屬於他們的資源。</span><br>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A1" id="identity1"><label for="identity1" class="container2 T-text" dsnid="14" dsnnote="新住民">新住民</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A2" id="identity2"><label for="identity2" class="T-text" dsnid="15" dsnnote="新住民子女">新住民子女</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A3" id="identity3"><label for="identity3" class="T-text" dsnid="16" dsnnote="原住民">原住民</label></span>
+                    <span class="checkbox-span"><input onclick="checkIdentity4(this)" class="form-check-input" type="checkbox" name="identity" value="A4" id="identity4"><label for="identity4" class="T-text" dsnid="A16" dsnnote="以上皆否">以上皆否</label></span>
+                </div>
+                <div class="search_title">
+                    <img src="../img/search/condition.png">
+                    <h2 class="container2 T-title"  dsnid="18" dsnnote="申請者狀況">申請者狀況</h2>
+                    <a href="#q3" onclick="show_a(2)"><img class="question" src="../img/search/question.png" title="申請者狀況介紹"></a>
+                </div>
+                <div class="search_content container2">
+                    <span class="type_des T-title" dsnid="19" dsnnote="標題下方提示文字">(複選)給我們更多您的狀況，讓我們給你更精確地資訊。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A1" id="condition0"><label for="condition0" class="container2 T-text" dsnid="A19" dsnnote="身心障礙">身心障礙</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A2" id="condition1"><label for="condition1" class=" T-text" dsnid="20" dsnnote="經濟弱勢">經濟弱勢</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A3" id="condition2"><label for="condition2" class="T-text" dsnid="21" dsnnote="就職青年">就職青年</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A4" id="condition3"><label for="condition3" class="T-text" dsnid="22" dsnnote="單親家庭">單親家庭</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A5" id="condition4"><label for="condition4" class="container2 T-text" dsnid="23" dsnnote="家事糾紛">家事糾紛</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A6" id="condition5"><label for="condition5" class="T-text" dsnid="24" dsnnote="暴力/霸凌受害者">暴力/霸凌受害者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A7" id="condition6"><label for="condition6" class="T-text" dsnid="25" dsnnote="心理患者">心理患者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A8" id="condition7"><label for="condition7" class="T-text" dsnid="26" dsnnote="醫院患者">醫院患者</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="A9" id="condition8"><label for="condition8" class="T-text" dsnid="27" dsnnote="懷孕少女">懷孕少女</label></span>
+                    <span class="checkbox-span"><input class="form-check-input" type="checkbox" name="condition" value="B1" id="condition9"><label for="condition9" class="T-text" dsnid="A27" dsnnote="租屋者">租屋者</label></span>
+                </div>
+                <div class="search_title">
+                    <img src="../img/search/school.png">
+                    <h2 class="container2 T-title"  dsnid="28" dsnnote="在學狀況">在學狀況</h2>
+                    <a href="#q4" onclick="show_a(3)"><img class="question" src="../img/search/question.png" title="在學狀況介紹"></a>
+                </div>
+                <div class="search_content container2">
+                    <span class="type_des T-title" dsnid="29" dsnnote="標題下方提示文字">(單選)學校有許多資源讓我們去申請，讓我們知道你現在的在學狀況。</span><br>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A1" id="school1" onclick="SchoolCheck(0)"><label for="school1" class="container2 T-text" dsnid="30" dsnnote="未就學">未就學</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A2" id="school2" onclick="SchoolCheck(1)"><label for="school2" class="T-text" dsnid="31" dsnnote="國小">國小</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A3" id="school3" onclick="SchoolCheck(2)"><label for="school3" class="T-text" dsnid="32" dsnnote="國中">國中</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A4" id="school4" onclick="SchoolCheck(3)"><label for="school4" class="T-text" dsnid="33" dsnnote="高中">高中</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A5" id="school5" onclick="SchoolCheck(4)"><label for="school5" class="T-text" dsnid="34" dsnnote="五專">五專</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A6" id="school6" onclick="SchoolCheck(5)"><label for="school6" class="T-text" dsnid="35" dsnnote="大學">大學</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A7" id="school7" onclick="SchoolCheck(6)"><label for="school7" class="T-text" dsnid="36" dsnnote="研究所">研究所</label></span>
+                    <span class="checkbox-span"><input class="form-check-input school_check" type="checkbox" name="school" value="A8" id="school8" onclick="SchoolCheck(7)"><label for="school8" class="T-text" dsnid="37" dsnnote="畢業就學">畢業就學</label></span>
+                </div>
+                <div class="search_title">
+                    <img src="../img/search/location.png">
+                    <h2 class="container2 T-title"  dsnid="38" dsnnote="申請者地區">申請者地區</h2>
+                    <a href="#q5" onclick="show_a(4)"><img class="question" src="../img/search/question.png" title="申請者地區介紹"></a>
+                </div>
+                <div class="search_content row container2">
+                    <span class="type_des T-title" dsnid="39" dsnnote="標題下方提示文字">有些資源有地區限制。</span><br>
+                    <div class="col form-floating container2">
+                        <select class="form-select" name="R_City" id="city" onchange="setDistrict()">
+                            <option value="A0" class="T-text" dsnid="40" dsnnote="不限縣市">不限縣市</option>
+                            <option value="A1" class="T-text" dsnid="41" dsnnote="臺北市">臺北市</option>
+                            <option value="A2" class="T-text" dsnid="42" dsnnote="新北市">新北市</option>
+                            <option value="A3" class="T-text" dsnid="43" dsnnote="桃園市">桃園市</option>
+                            <option value="A4" class="container2 T-text" dsnid="44" dsnnote="台中市">台中市</option>
+                            <option value="B5" class="T-text" dsnid="45" dsnnote="台南市">台南市</option>
+                            <option value="B6" class="T-text" dsnid="46" dsnnote="高雄市">高雄市</option>
+                            <option value="A7" class="T-text" dsnid="47" dsnnote="基隆市">基隆市</option>
+                            <option value="A8" class="T-text" dsnid="48" dsnnote="新竹市">新竹市</option>
+                            <option value="A9" class="container2 T-text" dsnid="49" dsnnote="新竹縣">新竹縣</option>
+                            <option value="B1" class="T-text" dsnid="50" dsnnote="苗栗縣">苗栗縣</option>
+                            <option value="B2" class="T-text" dsnid="51" dsnnote="彰化縣">彰化縣</option>
+                            <option value="B3" class="T-text" dsnid="52" dsnnote="南投縣">南投縣</option>
+                            <option value="B4" class="T-text" dsnid="53" dsnnote="雲林縣">雲林縣</option>               
+                            <option value="B5" class="container2 T-text" dsnid="54" dsnnote="嘉義市">嘉義市</option>
+                            <option value="B6" class="T-text" dsnid="55" dsnnote="嘉義縣">嘉義縣</option>
+                            <option value="B7" class="T-text" dsnid="56" dsnnote="屏東縣">屏東縣</option>
+                            <option value="B8" class="T-text" dsnid="57" dsnnote="宜蘭縣">宜蘭縣</option>
+                            <option value="B9" class="container2 T-text" dsnid="58" dsnnote="花蓮縣">花蓮縣</option>
+                            <option value="C1" class="T-text" dsnid="59" dsnnote="台東縣">台東縣</option>
+                            <option value="C2" class="T-text" dsnid="60" dsnnote="澎湖縣">澎湖縣</option>
+                            <option value="C3" class="T-text" dsnid="61" dsnnote="金門縣">金門縣</option>
+                            <option value="C4" class="T-text" dsnid="62" dsnnote="連江縣">連江縣</option>
+                        </select>
+                        <label class="container2 floatingSelect T-text" dsnid="63" dsnnote="申請者戶籍縣市" for="city">申請者戶籍縣市</label>
+                    </div>
+                    
+                    <div class="col form-floating">
+                        <select class="form-select district" name="R_District" id="district"><option class="T-text" dsnid="64" dsnnote="不限區">不限區</option></select>
+                        <label class="floatingSelect T-text" dsnid="65" dsnnote="申請者戶籍行政區" for="district">申請者戶籍行政區</label>
+                    </div>
+                </div>
+                <div class="btn_area">
+                    <a style="display: none" id="aa" href="#data_form"></a>
+                    <button type="button" onclick="check_search_data()" class="btn btn-primary T-text" dsnid="66" dsnnote="按鈕">搜尋</button>
+                </div>
+            </form>
+            <hr class="featurette-divider container2">
+            <div class="introduce" id="search_introduce">
+                <h1 class="T-title" dsnid="sd1" dsnnote="搜尋功能介紹">搜尋功能介紹</h1>
+                <div class="introduce_text container2 T-text" dsnid="sd2" dsnnote="介紹內容">
+                    搜尋功能根據您選擇的條件，篩選出最符合您需求的資源清單。您可以使用此功能更快速地找到適合您的資源資訊。搜尋結果會產出兩種資源類別：「<a href="#q7" onclick="show_a(6)">適合資源</a>」與「<a href="#q8" onclick="show_a(7)">建議資源</a>」
+                    。適合資源是根據您勾選的條件和選擇的需求類型推薦的資源資訊；而建議資源則是根據您未勾選的需求面向推薦的相關資源資訊。以下是搜尋功能的篩選過程，並附有更詳細的補充介紹。
+                </div>
+                <div class="introduce_img container2">
+                    <img src="../img/search/search_flow.png" class="T-img" dsnid="sd_img" dsnnote="流程圖">
+                </div>
+            </div>
+            <div class="search_quesion" id="common_problem">
+                <div class="que">
+                    <div class="container2 q" onclick="show_a(0)" id="q1">
+                        <span class="T-text" dsnid="sd3" dsnnote="Q:資源種類">篩選選項：資源種類</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd4" dsnnote="A" style="height:0;padding:0;">
+                        資源種類是最重要的篩選條件。我們會根據您勾選的資源種類，推薦相應的資源資訊給您。如果篩選結果中有符合您勾選的資源種類，我們會將其整理成適合資源提供給您。相反地，如果篩選結果中有符合您需求的資源，但不屬於您勾選的資源種類，我們會將其整理成建議資源提供給您。
+                    </div>
+                    <div class="container2 q" onclick="show_a(1)" id="q2">
+                        <span class="T-text" dsnid="sd5" dsnnote="Q:申請者身分">篩選選項：申請者身分</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd6" dsnnote="A" style="height:0;padding:0;">
+                        申請者身分總共分成新住民、新住民子女、原住民與以上皆否。許多資源會嚴格規定申請者的身分，以決定是否可以申請。相反地，如果具有某些特殊身分，則有機會申請到更多資源。
+                    </div>
+                    <div class="container2 q" onclick="show_a(2)" id="q3">
+                        <span class="T-text" dsnid="sd7" dsnnote="Q:申請者狀況">篩選選項：申請者狀況</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd8" dsnnote="A" style="height:0;padding:0;">
+                        勾選申請者狀況可以讓搜尋系統找到更符合您需求的資源資訊。由於資源資訊非常龐大且多變，提供更多您的狀況可以使系統產生的結果更貼近您的需求。每種不同的狀況都可能會影響到系統提供的資訊。這對於準確地提供資源非常重要。
+                    </div>
+                    <div class="container2 q" onclick="show_a(3)" id="q4">
+                        <span class="T-text" dsnid="sd9" dsnnote="Q:在學狀況">篩選選項：在學狀況</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd10" dsnnote="A" style="height:0;padding:0;">
+                        學校是擁有眾多資源的地方，在不同的求學階段，您都可以從學校獲取申請資源的資訊與機會。相對地，不同階段的在學狀況可能影響您能獲得的資源。勾選您的在學狀況，可以讓我們將不適合的資源排除，找到更符合您需求的資源資訊。
+                    </div>
+                    <div class="container2 q" onclick="show_a(4)" id="q5">
+                        <span class="T-text" dsnid="sd11" dsnnote="Q:申請者地區">篩選選項：申請者地區</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd12" dsnnote="A" style="height:0;padding:0;">
+                        少部分的資源有地區上的限制，這可能會考慮到戶籍地址或就讀學校的區域。為了提供更準確的資訊，您可以透過選擇地址限制，讓系統排除不符合地區資源的內容。
+                    </div>
+                    <div class="container2 q" onclick="show_a(5)" id="q6">
+                        <span class="T-text" dsnid="sd13" dsnnote="Q:強制資源">強制資源</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd14" dsnnote="A" style="height:0;padding:0;">
+                        強制資源是系統根據您提供的申請者狀況，強烈建議給您的資源。這類型的資源會無視您勾選的其他條件，直接依據您勾選的申請者狀況出現在您的搜尋結果中。您可以在搜尋結果的資源下方看到「強烈建議」的標示來辨識這些強制資源。我們認為此資源一定對您有幫助。
+                    </div>
+                    <div class="container2 q" onclick="show_a(6)" id="q7">
+                        <span class="T-text" dsnid="sd15" dsnnote="Q:適合資源">適合資源</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd16" dsnnote="A" style="height:0;padding:0;">
+                        適合資源是依據您勾選的篩選條件，經過層層的篩選過後，在依據您選擇的資源種類，把剩下符合您勾選資源種類的資源視作適合資源，適合資源是依據您勾選的所有條件提供給您的資源。適合資源也會存放「強制資源」的內容，這也許與您勾選的資源種類不符，但我們認為此資訊也許對您有幫助。
+                    </div>
+                    <div class="container2 q" onclick="show_a(7)" id="q8">
+                        <span class="T-text" dsnid="sd17" dsnnote="Q:建議資源">建議資源</span>
+                        <img class="q_img" src="../img/arrow_single.png">
+                    </div>
+                    <hr>
+                    <div class="a T-text" dsnid="sd18" dsnnote="A" style="height:0;padding:0;">
+                        建議資源是根據您勾選的篩選條件，經過層層篩選後，再根據您選擇的資源種類，將那些不符合資源種類但仍與您的申請條件相似的資源視為建議資源。建議資源的價值在於，它可以提供您意想不到的資源建議。雖然這些資源不在您的預期資源種類內，但我們仍然將這些資訊告訴您。
+                    </div>
+                </div>
+            </div>
+            <hr class="featurette-divider container2">
+        </div>
+        <div class="footer_div">
+            <footer class="py-1">
+                <div class="row">
+                    <div class="col-6 col-md-2 mb-3">
+                    <h5 class="T-title" dsnid="h057" dsnnote="關於我們">關於我們</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="/static/about_us#letter" class="nav-link p-0 text-body-secondary T-text" dsnid="h058" dsnnote="給使用者的一封信">給使用者的一封信</a></li>
+                        <li class="nav-item mb-2"><a href="/static/about_us#content" class="nav-link p-0 text-body-secondary T-text" dsnid="h059" dsnnote="聯絡資訊">聯絡資訊</a></li>
+                        <li class="nav-item mb-2"><a href="/static/about_us#sponser" class="nav-link p-0 text-body-secondary T-text" dsnid="h060" dsnnote="贊助單位">贊助單位</a></li>
+                    </ul>
+                    </div>
+            
+                    <div class="col-6 col-md-2 mb-3">
+                    <h5 class="T-title" dsnid="h061" dsnnote="新手指南">新手指南</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="/static/guideline#introduction" class="nav-link p-0 text-body-secondary T-text" dsnid="h062" dsnnote="DSN介紹">DSN介紹</a></li>
+                        <li class="nav-item mb-2"><a href="/static/guideline#disclaimer" class="nav-link p-0 text-body-secondary T-text" dsnid="h063" dsnnote="免責聲明">免責聲明</a></li>
+                        <li class="nav-item mb-2"><a href="/static/guideline#common_problem" class="nav-link p-0 text-body-secondary T-text" dsnid="h064" dsnnote="常見問答">常見問答</a></li>
+                    </ul>
+                    </div>
+            
+                    <div class="col-6 col-md-2 mb-3">
+                    <h5 class="T-title" dsnid="h065" dsnnote="文件申請教學">文件申請教學</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000047" class="nav-link p-0 text-body-secondary T-text" dsnid="h066" dsnnote="戶籍謄本">戶籍謄本</a></li>
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000048" class="nav-link p-0 text-body-secondary T-text" dsnid="h067" dsnnote="診斷證明">診斷證明</a></li>
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000049" class="nav-link p-0 text-body-secondary T-text" dsnid="h068" dsnnote="財產清冊">財產清冊</a></li>
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000050" class="nav-link p-0 text-body-secondary T-text" dsnid="h069" dsnnote="所得清單">所得清單</a></li>
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000051" class="nav-link p-0 text-body-secondary T-text" dsnid="h070" dsnnote="中/低收入戶證明">中/低收入戶</a></li>
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000052" class="nav-link p-0 text-body-secondary T-text" dsnid="h071" dsnnote="學校成績單">學校成績單</a></li>
+                        <li class="nav-item mb-2"><a href="/resource?ID=R000000053" class="nav-link p-0 text-body-secondary T-text" dsnid="h072" dsnnote="在學證明">在學證明</a></li>
+                    </ul>
+                    </div>
+                    <div class="col-6 col-md-2 mb-3">
+                        <h5 class="T-title" dsnid="h073" dsnnote="其他資訊">其他資訊</h5>
+                        <ul class="nav flex-column">
+                            <li class="nav-item mb-2"><a href="/static/cookie_policy" class="nav-link p-0 text-body-secondary T-text" dsnid="h074" dsnnote="Cookie政策及條款">Cookie政策及條款</a></li>
+                            <li class="nav-item mb-2"><a href="/static/search" class="nav-link p-0 text-body-secondary T-text" dsnid="h083" dsnnote="資源搜尋">資源搜尋</a></li>
+                            <li class="nav-item mb-2"><a href="/sign_in" class="nav-link p-0 text-body-secondary T-text" dsnid="h075" dsnnote="管理登入">管理登入</a></li>
+                        </ul>
+                        </div>
+                    <div class="col-md-4 mb-3">
+                    <form>
+                        <h5 class="T-text" dsnnote="頁尾留言" dsnid="h076">沒有找到您想要的資源嗎?</h5>
+                        <p class="T-text" dsnid="h077">透過下方的輸入框跟我們講吧，我們會盡力找到更好的資訊的</p>
+                        <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                            <label for="newsletter1" class="visually-hidden T-text" dsnid="h078">留言</label>
+                            <input id="newsletter1" type="text" class="form-control T-text" dsnid="h079" placeholder="向我們留言..">
+                            <button onclick="sendMsg('page')" class="btn btn-primary T-text" type="button" dsnid="h080" style="width:25%">送出</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            
+                <div class="d-flex flex-column flex-sm-row justify-content-between py-1 my-1 border-top">
+                    <p class="T-title" dsnid="h081" dsnnote="頁尾商標">&copy; 2023 Company, Inc. All rights reserved.</p>
+                    <ul class="list-unstyled d-flex">
+                    <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
+                    <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
+                    <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </main>
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/ajax.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="../js/frontend.js"></script>
+    <script>
+        header_nav_check();
+        getHeader_data('search');
+        getSearch_data();
+    </script>
+</body>
+</html>
+</html>

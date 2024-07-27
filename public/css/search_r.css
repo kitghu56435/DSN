@@ -21,6 +21,10 @@ h2 > img{
     width:25%;
     text-align: center;
 }
+.search_remark{
+    color:rgba(33, 37, 41, 0.75);
+    
+}
 h4 > img{
     position: relative;
     top:5px;

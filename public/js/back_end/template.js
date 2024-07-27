@@ -301,6 +301,19 @@ function Select_Option_HTML(value,value_array,id_array){
     
     return str;
 }
+function set_Height(id){
+    let text = document.getElementsByName(id)[0];
+    let container2 = text.parentElement.parentElement.parentElement;
+
+    if(container2){
+        if(container2.offsetHeight < 400){
+            container2.style.height = (container2.offsetHeight*2.5) + 'px';
+        }else{
+            container2.setAttribute('style','');
+        }
+        
+    }
+}
 function container_img(img_name){
     if(img_name == ''){
         return '../../../img/backend/plus.png';

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync,writeFile,unlink} = require('fs');
 const db = require('../db');
-const {Administrator_verafication,setMsgbox,checkData,NextID,RDNextID,addID} = require('../function');
+const {Administrator_verafication,setMsgbox,checkData,NextID,RDNextID,addID,RDNextIDs} = require('../function');
 const moment = require('moment-timezone');
 
 
@@ -12,7 +12,7 @@ router.use(Administrator_verafication);
 
 
 router.get('/',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/resource.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource.html','utf-8');
     let msgbox = '';
     let all_d = 0; //需求數量
     let all_r = 0; //資源數量
@@ -112,7 +112,7 @@ router.get('/',(req,res)=>{
 
 
 router.get('/demand',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/demand.html','utf-8');
+    let html = readFileSync('./public/html/back_end/demand/demand.html','utf-8');
     let D_ID = req.query.D_ID;
     let msgbox = '';
     let all_r = 0;      //資源數量
@@ -178,7 +178,7 @@ router.get('/demand',(req,res)=>{
     
 })
 router.get('/demand/name_setting',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/resource_setting_d.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_setting_d.html','utf-8');
     let D_ID = req.query.D_ID;
     let msg = req.query.data;
     let msgbox = '';
@@ -257,7 +257,7 @@ router.post('/demand/name_setting/data',(req,res)=>{
 router.get('/demand/edit',(req,res)=>{
     let R_ID = req.query.R_ID;
     let L_ID = req.query.L_ID;
-    let html = readFileSync('./public/html/back_end/edit/resource_edit.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_edit.html','utf-8');
 
     if(L_ID == undefined) L_ID = 'L000000001';
 
@@ -267,6 +267,7 @@ router.get('/demand/edit',(req,res)=>{
     </script>`
     res.end(html);
 })
+
 router.post('/demand/edit/data',(req,res)=>{
     let R_ID = req.body.R_ID;
     let L_ID = req.body.L_ID;
@@ -670,7 +671,7 @@ router.post('/demand/edit/save',(req,res)=>{
 
 
 router.get('/demand/setting',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/resource_setting.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_setting.html','utf-8');
     let R_ID = req.query.R_ID;
     let L_ID = req.query.L_ID;
 
@@ -835,7 +836,7 @@ router.post('/demand/setting/save',(req,res)=>{
 
 
 router.get('/demand/search',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/resource_search.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_search.html','utf-8');
     let R_ID = req.query.R_ID;
 
    
@@ -916,7 +917,7 @@ router.post('/demand/search/save',(req,res)=>{
 
 
 router.get('/demand/feedback',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/resource_feedback.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_feedback.html','utf-8');
     let R_ID = req.query.R_ID;
     let msgbox = '';
     let data = {
@@ -966,7 +967,7 @@ router.get('/demand/feedback',(req,res)=>{
     })
 })
 router.get('/demand/supplier',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/resource_supplier.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_supplier.html','utf-8');
     let R_ID = req.query.R_ID;
     let msgbox = '';
     let data = {
@@ -1173,7 +1174,7 @@ router.post('/delete',(req,res)=>{
 
 
 router.get('/add_r',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/resource_add_r.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_add_r.html','utf-8');
     let msg = req.query.data;
     let msgbox = '';
     let data = {
@@ -1259,7 +1260,7 @@ router.post('/add_r/data',(req,res)=>{
 
 
 router.get('/add_t',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/resource_add_t.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_add_t.html','utf-8');
     let data = req.query.data;
     let msgbox = '';
     switch(data){
@@ -1292,7 +1293,7 @@ router.post('/add_t/data',(req,res)=>{
 
 
 router.get('/add_d',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/resource_add_d.html','utf-8');
+    let html = readFileSync('./public/html/back_end/resource/resource_add_d.html','utf-8');
     let data = req.query.data;
     let msgbox = '';
     switch(data){
@@ -1327,7 +1328,7 @@ router.post('/add_d/data',(req,res)=>{
 
 
 router.get('/template',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/template.html','utf-8');
+    let html = readFileSync('./public/html/back_end/template/template.html','utf-8');
     let msgbox = '';
     let all_t = 0;      //模板數量
     let data = {
@@ -1389,7 +1390,7 @@ router.get('/template',(req,res)=>{
     
 })
 router.get('/template/edit',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/template_edit.html','utf-8');
+    let html = readFileSync('./public/html/back_end/template/template_edit.html','utf-8');
     let T_ID = req.query.T_ID;
     let T_Path = '';
     let msgbox = '';
@@ -1711,7 +1712,7 @@ router.get('/template/edit',(req,res)=>{
 
 
 router.get('/template/setting',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/template_setting.html','utf-8');
+    let html = readFileSync('./public/html/back_end/template/template_setting.html','utf-8');
     let T_ID = req.query.T_ID;
     let msgbox = '';
     let data = {
@@ -1768,7 +1769,7 @@ router.post('/template/setting/save',(req,res)=>{
     
 })
 router.get('/template/use',(req,res)=>{
-    let html = readFileSync('./public/html/back_end/edit/template_r.html','utf-8');
+    let html = readFileSync('./public/html/back_end/template/template_r.html','utf-8');
     let T_ID = req.query.T_ID;
     let msgbox = '';
     let data = {
@@ -2036,12 +2037,26 @@ async function update_Resource_data(data){
     let R_Update = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let R_ID = data.R_ID;
     let L_ID = data.L_ID;
+    let delete_sql = 'DELETE FROM Resource_data WHERE R_ID = ? AND L_ID = ?';
+    let parameter = [R_ID,L_ID];
 
     for(x = 0;x<data.Template_ID.length;x++){
+        delete_sql += ' AND RD_Template_ID != ?';
+        parameter.push(data.Template_ID[x]);
         await create_Resource_data(R_ID,L_ID,data.Template_ID[x],data[data.Template_ID[x]]);
     }
 
+
+    // console.log(delete_sql);
+    // console.log(parameter);
+
     return new Promise((resolve,rejects)=>{
+        //同步資料庫資料，刪除沒有包含在這批的dsnid資料
+        db.execute(delete_sql,parameter,(err)=>{
+            if(err){
+                console.log(err);
+            }
+        })
         //更新資源更新時間
         db.execute(`UPDATE Resources SET R_Update = ? WHERE R_ID = ?`,[R_Update,R_ID],(err)=>{
             if(err){
@@ -2055,15 +2070,23 @@ async function update_Resource_data(data){
 }
 async function create_Resource_data(R_ID,L_ID,Template_ID,Content){
     let RD_ID = await RDNextID('Resource_data','RD_ID','RD');
+    
 
     await delete_Resource_data(R_ID,L_ID,Template_ID,Content);  //先刪除原來的資料
 
     return new Promise((resolve,reject)=>{
-        if(Content != 'img_no_change'){
+        if(Content == 'delete_img'){  //刪除照片
+            unlink(`./public/img/resource/${Template_ID}_${R_ID}_${L_ID}.png`,(err)=>{
+                if(err){
+                    console.log(err);
+                }
+                resolve();
+            })
+        }else if(Content != 'img_no_change'){
             if(isBase64(Content)){  //是照片
                 let img_name = Template_ID + '_' + R_ID + '_' + L_ID + '.png';
                 let base64Data = Content.replace(/^data:image\/\w+;base64,/, "");
-                let new_file = __dirname + `../../public/img/resource/${img_name}`;
+                let new_file = __dirname + `/../public/img/resource/${img_name}`;
                 var dataBuffer = Buffer.from(base64Data, 'base64');
                 writeFile(new_file, dataBuffer, function(err) {
                     if(err){
@@ -2092,6 +2115,7 @@ async function delete_Resource_data(R_ID,L_ID,Template_ID,Content){
             if(isBase64(Content)){
                 unlink(`./public/img/resource/${Template_ID}_${R_ID}_${L_ID}.png`,(err)=>{
                     if(err){
+                        console.log('123');
                         console.log(err);
                     }
                 })
