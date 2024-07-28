@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {readFileSync} = require('fs');
+const supplier = require('../model/supplier');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
 const moment = require('moment-timezone');
@@ -61,6 +62,8 @@ router.get('/',(req,res)=>{
     })
     
 })
+
+
 router.post('/delete',(req,res)=>{
     let S_ID = req.body.S_ID;
     let data = {
@@ -68,59 +71,45 @@ router.post('/delete',(req,res)=>{
         "supplier" : []
     }
 
-    if(checkData(S_ID)){
-        db.execute(`DELETE FROM Supplier_binding WHERE S_ID = ?;`,[S_ID],(err)=>{
+    supplier.Delete_Supplier(S_ID).then(()=>{
+        db.execute(`SELECT * FROM Supplier ORDER BY S_ID;`,(err,results)=>{
             if(err){
-                res.json({"msg" : "dberr"});
                 console.log(err);
-            }
-        })
-        db.execute(`DELETE FROM Supplier WHERE S_ID = ?;`,[S_ID],(err)=>{
-            if(err){
-                res.json({"msg" : "dberr"});
-                console.log(err);
+                data.msg = "dberr";
             }else{
-                db.execute(`SELECT * FROM Supplier ORDER BY S_ID;`,(err,results)=>{
-                    if(err){
-                        console.log(err);
-                        res.json({"msg" : "dberr"});
-                    }else{
-                        for(i = 0;i<results.length;i++){
-                            data.supplier.push({
-                                "S_ID" : results[i].S_ID,
-                                "S_Name" : results[i].S_Name,
-                                "S_Resource" : [],
-                                "S_Web" : results[i].S_Web,
-                                "S_Date" : results[i].S_Date
-                            })
-                        }
-                    }
-                })
-                db.execute(`SELECT Supplier_binding.*,RD_Content FROM Supplier_binding,Resources,Resource_data WHERE Supplier_binding.R_ID = Resource_data.R_ID 
-                AND Supplier_binding.R_ID = Resources.R_ID AND L_ID = 'L000000001'AND RD_Type = 2 AND R_Delete = 0 ORDER BY S_ID;`,(err,results)=>{
-                    if(err){
-                        console.log(err);
-                        res.json({"msg" : "dberr"});
-                    }else{
-                        for(i = 0;i<results.length;i++){
-                            for(j = 0;j<data.supplier.length;j++){
-                                if(results[i].S_ID == data.supplier[j].S_ID){
-                                    data.supplier[j].S_Resource.push(results[i].RD_Content);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-            
-            
-                    res.json(data);
-                })
+                for(i = 0;i<results.length;i++){
+                    data.supplier.push({
+                        "S_ID" : results[i].S_ID,
+                        "S_Name" : results[i].S_Name,
+                        "S_Resource" : [],
+                        "S_Web" : results[i].S_Web,
+                        "S_Date" : results[i].S_Date
+                    })
+                }
             }
         })
-    }else{
-        res.json({"msg" : "dataerr"});
-    }
+        db.execute(`SELECT Supplier_binding.*,RD_Content FROM Supplier_binding,Resources,Resource_data WHERE Supplier_binding.R_ID = Resource_data.R_ID 
+        AND Supplier_binding.R_ID = Resources.R_ID AND L_ID = 'L000000001'AND RD_Type = 2 AND R_Delete = 0 ORDER BY S_ID;`,(err,results)=>{
+            if(err){
+                console.log(err);
+                data.msg = "dberr";
+            }else{
+                for(i = 0;i<results.length;i++){
+                    for(j = 0;j<data.supplier.length;j++){
+                        if(results[i].S_ID == data.supplier[j].S_ID){
+                            data.supplier[j].S_Resource.push(results[i].RD_Content);
+                            break;
+                        }
+                    }
+                }
+            }
     
+    
+            res.json(data);
+        })
+    }).catch((info)=>{
+        res.json({"msg":info})
+    })    
 })
 
 
@@ -162,21 +151,21 @@ router.get('/add',(req,res)=>{
     })
     
 })
+
+
 router.post('/add/data',(req,res)=>{
-    if(checkData(req.body.S_Name)){
-        new Promise((resolve,reject)=>{
-            resolve(create_Supplier(req.body));
-        }).then(()=>{
-            res.writeHead(303,{Location:'/backend/supplier'});
-            res.end();
-        }).catch(()=>{
-            res.writeHead(303,{Location:'/backend/supplier/add?data=create_err'});
-            res.end();
-        })
-    }else{
-        res.writeHead(303,{Location:'/backend/supplier/add?data=err'});
+    
+    supplier.Create_Supplier(req.body).then(()=>{
+        res.writeHead(303,{Location:'/backend/supplier'});
         res.end();
-    }
+    }).catch((info)=>{
+        if(info == 'dberr'){
+            res.writeHead(303,{Location:'/backend/supplier/add?data=create_err'});
+        }else{
+            res.writeHead(303,{Location:'/backend/supplier/add?data=err'});
+        }
+        res.end();
+    })
 })
 
 
@@ -190,6 +179,8 @@ router.get('/edit',(req,res)=>{
     </script>`
     res.end(html);
 })
+
+
 router.post('/edit/data',(req,res)=>{
     let S_ID = req.body.S_ID;
     let data = {
@@ -222,34 +213,38 @@ router.post('/edit/data',(req,res)=>{
         res.json(data);
     })
 })
+
+
 router.post('/edit/save',(req,res)=>{
-    let S_ID = req.body.S_ID;
-    let S_Name = req.body.S_Name;
+   
 
-    
-    if(checkData(S_ID) && checkData(S_Name)){
-        db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
-            if(err){
-                console.log(err);
-                res.json({"msg" : "dberr"})
-            }else if(results.length == 0){
-                res.json({"msg" : "nodata"});
-            }else{
-                new Promise((resolve,reject)=>{
-                    resolve(update_Supplier(req.body));
-                }).then((result)=>{
-                    res.json({"msg" : "success"});
-                }).catch((re)=>{
-                    res.json({"msg" : re});
-                })              
-            }
-        })
-    }else{
-        res.json({"msg" : "dataerr"})
-    }
+    supplier.Edit_Supplier(req.body).then(()=>{
+        res.json({"msg" : "success"});
+    }).catch((info)=>{
+        res.json({"msg" : info});
+    })
+
+    // if(checkData(S_ID) && checkData(S_Name)){
+    //     db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
+    //         if(err){
+    //             console.log(err);
+    //             res.json({"msg" : "dberr"})
+    //         }else if(results.length == 0){
+    //             res.json({"msg" : "nodata"});
+    //         }else{
+    //             new Promise((resolve,reject)=>{
+    //                 resolve(update_Supplier(req.body));
+    //             }).then((result)=>{
+    //                 res.json({"msg" : "success"});
+    //             }).catch((re)=>{
+    //                 res.json({"msg" : re});
+    //             })              
+    //         }
+    //     })
+    // }else{
+    //     res.json({"msg" : "dataerr"})
+    // }
 })
-
-
 
 
 
@@ -265,6 +260,8 @@ router.get('/resource',(req,res)=>{
     </script>`
     res.end(html);
 })
+
+
 router.post('/resource/data',(req,res)=>{
     let S_ID = req.body.S_ID;
     let data = {
@@ -314,6 +311,8 @@ router.post('/resource/data',(req,res)=>{
         res.json(data)
     })
 })
+
+
 router.post('/resource/save',(req,res)=>{
     let S_ID = req.body.S_ID;
 
@@ -348,81 +347,9 @@ router.post('/resource/save',(req,res)=>{
 
 
 
-async function create_Supplier(data){
-    let S_ID = await NextID('Supplier','S_ID','S');
-    let S_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
-    let R_ID = data.R_ID;
-
-    
-    if(checkData(R_ID)){
-        if(typeof R_ID == 'object'){
-            for(c = 0;c<R_ID.length;c++){
-                await create_Supplier_binding(R_ID[c],S_ID);
-            }
-        }else{
-            await create_Supplier_binding(R_ID,S_ID);
-        }
-    } 
-   
-    
-    return new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Supplier VALUES(?,?,?,?,?,?,?,?)`,
-        [S_ID,data.S_Name,data.S_Phone,data.S_Web,S_Date,data.S_Remark,data.S_Manager,data.S_Manager_phone],(err)=>{
-            if(err){
-                console.log(err)
-                reject();
-            }else{
-                resolve();
-            }
-        })
-    })
-}
-async function create_Supplier_binding(R_ID,S_ID){
-    let SB_ID = await NextID('Supplier_binding','SB_ID','SB');
-
-    new Promise((resolve,reject)=>{
-        db.execute(`INSERT INTO Supplier_binding VALUES(?,?,?);`,[SB_ID,R_ID,S_ID],(err)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve();
-            }
-        })
-    })
-}
-async function update_Supplier(data){
-    let S_ID = data.S_ID;
-    let R_ID = data.R_ID;
-
-    await delete_Supplier_binding(S_ID)  //先刪除目前綁定的資源
-
-    if(checkData(R_ID)){    //重新綁定
-        if(typeof R_ID == 'object'){
-            for(c = 0;c<R_ID.length;c++){
-                await create_Supplier_binding(R_ID[c],S_ID);
-            }
-        }else{
-            await create_Supplier_binding(R_ID,S_ID);
-        }
-    } 
 
 
 
-    return new Promise((resolve,rejects)=>{
-        resolve();
-    })
-}
-async function delete_Supplier_binding(S_ID){
-    return new Promise((resolve)=>{
-        db.execute(`DELETE FROM Supplier_binding WHERE S_ID = ?`,[S_ID],(err)=>{
-            if(err){
-                console.log(err);
-            }
-            resolve();
-        })
-    })
-}
 
 
 
