@@ -900,6 +900,8 @@ function setResource_setting(data){
         T_ID.innerHTML = Select_Option_HTML(data.T_ID,T_value_array,T_id_array);
         D_ID.innerHTML = Select_Option_HTML(data.D_ID,D_value_array,D_id_array);
         
+        str += '<tr><th>供應商序號</th><th>供應商名稱</th><th>勾選</th></tr>';
+
         for(i = 0;i < data.S_List.length;i++){
             str += `<tr onclick="checkbox('c${i}')"><td>${data.S_List[i].S_ID}</td><td>${data.S_List[i].S_Name}</td><td><input value="${data.S_List[i].S_ID}" name="S_ID" id="c${i}" type="checkbox" ${Checked(data.S_List[i].S_Check)}></td></tr>`
         }

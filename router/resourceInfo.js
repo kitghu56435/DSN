@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const monitor = require('../model/monitor');
 const {readFileSync} = require('fs');
 const db = require('../db');
 
@@ -10,6 +11,7 @@ const db = require('../db');
 router.get('/',(req,res)=>{
     let R_ID = req.query.ID;
     let T_Path = '';
+    
     
 
     db.execute(`SELECT DATE_FORMAT(R_Update,'%Y年%m月%d日') R_Update,T_Path FROM Resources,Template WHERE Resources.R_ID = ? AND Resources.T_ID = Template.T_ID AND R_Delete = 0 AND R_Shelf = 1;`,[R_ID],(err,results)=>{
@@ -38,6 +40,7 @@ router.get('/',(req,res)=>{
 
 router.post('/data',(req,res)=>{
     let R_ID = req.body.R_ID;
+    monitor.Flow(R_ID,req.cookies.utoken);
     let T_Path = '';
     let L_ID = req.cookies.leng;
     let utoken = req.cookies.utoken;
@@ -49,6 +52,7 @@ router.post('/data',(req,res)=>{
         "R_Update" : undefined,
         "msg" : ""
     }
+    
 
     db.execute(`SELECT DATE_FORMAT(R_Update,'%Y年%m月%d日') R_Update,T_Path FROM Resources,Template WHERE Resources.R_ID = ? AND Resources.T_ID = Template.T_ID AND R_Delete = 0 AND R_Shelf = 1;`,[R_ID],(err,results)=>{
         if(err){

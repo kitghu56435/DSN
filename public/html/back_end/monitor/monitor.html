@@ -143,16 +143,16 @@
                 </div>
                 <div class="data_screen">
                     <div class="action">
-                        <button>訪客累計數量</button>
-                        <button>訪客造訪數量</button>
-                        <button>不重複訪客數量</button>
-                        <select>
-                            <option>1小時</option>
-                            <option>1天</option>
-                            <option>1個月</option>
-                            <option>3個月</option>
-                            <option>6個月</option>
-                            <option>1年</option>
+                        <button id="PV" style="color:white;background-color:#4F4F4F" onclick="clickAction_Btn(this),getMonitor_data()">訪客累計數量</button>
+                        <button id="Visits" onclick="clickAction_Btn(this),getMonitor_data()">訪客造訪數量</button>
+                        <button id="UV" onclick="clickAction_Btn(this),getMonitor_data()">不重複訪客數量</button>
+                        <select id="time_range" onchange="getMonitor_data()">
+                            <option value="1h">1小時</option>
+                            <option value="1d" selected>1天</option>
+                            <option value="1m">1個月</option>
+                            <option value="3m">3個月</option>
+                            <option value="6m">6個月</option>
+                            <option value="1y">1年</option>
                         </select>
                         <span>時間範圍</span>
                     </div>
@@ -181,8 +181,4 @@
 <script src="../../js/back_end/sidebars.js"></script>
 <script src="../../js/back_end/monitor.js"></script>
 <script src="../../js/back_end/data_block_list.js"></script>
-<script>
-    setData_block(0,5);
-    setData_monitor();
-</script>
 </html>

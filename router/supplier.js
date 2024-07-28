@@ -4,7 +4,6 @@ const {readFileSync} = require('fs');
 const supplier = require('../model/supplier');
 const db = require('../db');
 const {Administrator_verafication,setMsgbox,NextID,checkData} = require('../function');
-const moment = require('moment-timezone');
 
 
 router.use(Administrator_verafication);
@@ -223,30 +222,7 @@ router.post('/edit/save',(req,res)=>{
     }).catch((info)=>{
         res.json({"msg" : info});
     })
-
-    // if(checkData(S_ID) && checkData(S_Name)){
-    //     db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
-    //         if(err){
-    //             console.log(err);
-    //             res.json({"msg" : "dberr"})
-    //         }else if(results.length == 0){
-    //             res.json({"msg" : "nodata"});
-    //         }else{
-    //             new Promise((resolve,reject)=>{
-    //                 resolve(update_Supplier(req.body));
-    //             }).then((result)=>{
-    //                 res.json({"msg" : "success"});
-    //             }).catch((re)=>{
-    //                 res.json({"msg" : re});
-    //             })              
-    //         }
-    //     })
-    // }else{
-    //     res.json({"msg" : "dataerr"})
-    // }
 })
-
-
 
 
 
@@ -316,24 +292,12 @@ router.post('/resource/data',(req,res)=>{
 router.post('/resource/save',(req,res)=>{
     let S_ID = req.body.S_ID;
 
-    if(checkData(S_ID)){
-        db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
-            if(err){
-                console.log(err);
-                res.json({"msg" : "dberr"})
-            }else if(results.length == 0){
-                res.json({"msg" : "nodata"});
-            }else{
-                new Promise((resolve,reject)=>{
-                    resolve(update_Supplier(req.body));
-                }).then((result)=>{
-                    res.json({"msg" : "success","num" : req.body.R_ID.length});
-                })            
-            }
-        })
-    }else{
-        res.json({"msg" : "dataerr"})
-    }
+
+    supplier.Edit_Supplier_resource(req.body).then(()=>{
+        res.json({"msg" : "success","num" : req.body.R_ID.length});
+    }).catch((info)=>{
+        res.json({"msg" : info});
+    })
 })
 
 

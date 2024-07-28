@@ -4,8 +4,9 @@ const port = 3008 || process.env.PORT;
 const {readFileSync} = require('fs');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const {setCookie} = require('./function');
+const monitor_model = require('./model/monitor')
 const cookie_time = 1000 * 60 * 60 * 4 //四小時
 
 
@@ -17,6 +18,7 @@ const static = require('./router/static');
 const language = require('./router/language');
 const supplier = require('./router/supplier');
 const message = require('./router/message');
+const monitor = require('./router/monitor');
 
 
 app.use(express.static('public'));
@@ -43,11 +45,14 @@ app.use('/backend/resource',resource);
 app.use('/backend/language',language);
 app.use('/backend/supplier',supplier);
 app.use('/backend/message',message);
-
+app.use('/backend/monitor',monitor);
 
 
 app.get('/',(req,res)=>{
     let html = readFileSync('./public/html/front_end/index.html','utf-8');
+    monitor_model.Flow('index',req.cookies.utoken);
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;

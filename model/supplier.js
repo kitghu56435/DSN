@@ -1,7 +1,7 @@
 const db = require('../db');
-const {NextID,checkData,RDNextID} = require('../function');
+const {NextID,checkData} = require('../function');
 const moment = require('moment-timezone');
-const {readFileSync} = require('fs');
+
 
 
 
@@ -70,7 +70,7 @@ async function Delete_Supplier(S_ID){
 }
 
 
-//修改供應商
+//修改供應商基本資料
 async function Edit_Supplier(data){
     let S_ID = data.S_ID;
     let S_Name = data.S_Name;
@@ -86,7 +86,7 @@ async function Edit_Supplier(data){
                 }else if(results.length == 0){
                     reject('nodata')
                 }else{
-                    update_Supplier(data).then(()=>{
+                    update_Supplier_data(data).then(()=>{
                         resolve('success')
                     }).catch((info)=>{
                         reject(info)
@@ -100,7 +100,34 @@ async function Edit_Supplier(data){
 }
 
 
+//修改供應商綁定資料
+async function Edit_Supplier_resource(data){
+    let S_ID = data.S_ID;
+    
 
+
+
+    return new Promise((resolve,reject)=>{
+        if(checkData(S_ID)){
+            db.execute(`SELECT S_ID FROM Supplier WHERE S_ID = ?;`,[S_ID],(err,results)=>{  //確認是否有此供應商續號
+                if(err){
+                    console.log(err);
+                    reject("dberr")
+                }else if(results.length == 0){
+                    reject('nodata')
+                }else{
+                    update_Supplier_resource(data).then(()=>{
+                        resolve()
+                    }).catch((info)=>{
+                        reject(info)
+                    })             
+                }
+            })
+        }else{
+            reject("dataerr");
+        }
+    })
+}
 
 
 
@@ -118,7 +145,23 @@ async function create_Supplier_binding(R_ID,S_ID){
         })
     })
 }
-async function update_Supplier(data){
+
+async function update_Supplier_data(data){
+    
+    return new Promise((resolve,rejects)=>{
+        db.execute(`UPDATE Supplier SET S_Name = ? , S_Phone = ? , S_Web = ? , S_Manager = ? , S_Manager_phone = ? , S_Remark = ? WHERE S_ID = ?`,
+        [data.S_Name,data.S_Phone,data.S_Web,data.S_Manager,data.S_Manager_phone,data.S_Remark,data.S_ID],(err)=>{
+            if(err){
+                console.log(err);
+                rejects('dberr');
+            }else{
+                resolve();
+            }
+        })
+    })
+}
+
+async function update_Supplier_resource(data){
     let S_ID = data.S_ID;
     let R_ID = data.R_ID;
 
@@ -137,9 +180,10 @@ async function update_Supplier(data){
 
 
     return new Promise((resolve,rejects)=>{
-        resolve();
+        resolve()
     })
 }
+
 async function delete_Supplier_binding(S_ID){
     return new Promise((resolve)=>{
         db.execute(`DELETE FROM Supplier_binding WHERE S_ID = ?`,[S_ID],(err)=>{
@@ -157,5 +201,6 @@ async function delete_Supplier_binding(S_ID){
 module.exports = {
     Delete_Supplier,
     Create_Supplier,
-    Edit_Supplier
+    Edit_Supplier,
+    Edit_Supplier_resource
 };

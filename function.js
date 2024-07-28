@@ -75,6 +75,7 @@ const setCookie = (req,res,next) =>{
             maxAge: 1000 * 60 * 60 * 24 * 365,
         });
     }
+    
     next();
 }
 
@@ -139,6 +140,13 @@ function getClientIP(header,key){
     return ip;
 }
 
+function add0(value){
+    if(value.toString().length == 1){
+        return '0' + value.toString();
+    }else{
+        return value.toString();
+    }
+}
 
 async function NextID(table,ID_Name,ID_Type){
     return new Promise((resolve,reject)=>{
@@ -449,5 +457,5 @@ module.exports = {
     EOM,
     SOM,
     Proportion,
-    Required_Resource
+    add0,
 }

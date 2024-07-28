@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync} = require('fs');
 const db = require('../db');
-const {Required_Resource,setMsgbox,checkData,NextID,find} = require('../function');
+const {Required_Resource,NextID,find} = require('../function');
 const moment = require('moment-timezone');
-
+const monitor = require('../model/monitor');
 
 
 //這個API是為了開發測試header語言切換而再的
@@ -110,6 +110,10 @@ router.post('/index_data',(req,res)=>{
 
 router.get('/search',(req,res)=>{
     let html = readFileSync('./public/html/front_end/search.html','utf-8');
+    monitor.Flow('search',req.cookies.utoken);
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -138,6 +142,7 @@ router.post('/search_data',(req,res)=>{
 
 router.post('/search_results',(req,res)=>{
     let html = readFileSync('./public/html/front_end/search_r.html','utf-8');
+    monitor.Flow('search_results',req.cookies.utoken);
     let L_ID = req.cookies.leng;
     let demand = req.body.demand;
     let identity = req.body.identity;
@@ -337,6 +342,9 @@ router.post('/search_results',(req,res)=>{
         setSearch_results(${JSON.stringify(data)});
         </script>
         `;
+        if(req.cookies.accept == 'null'){
+            html +=  `<script>cookie_msg()</script>`;
+        }
         res.end(html);
     })
 
@@ -372,6 +380,10 @@ router.post('/search_results_data',(req,res)=>{
 
 router.get('/notfound',(req,res)=>{
     let html = readFileSync('./public/html/front_end/notfound.html','utf-8');
+    monitor.Flow('notfound',req.cookies.utoken);
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -401,6 +413,11 @@ router.post('/notfound_data',(req,res)=>{
 
 router.get('/guideline',(req,res)=>{
     let html = readFileSync('./public/html/front_end/guideline.html','utf-8');
+    monitor.Flow('guideline',req.cookies.utoken);
+
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -430,6 +447,11 @@ router.post('/guideline_data',(req,res)=>{
 
 router.get('/about_us',(req,res)=>{
     let html = readFileSync('./public/html/front_end/about_us.html','utf-8');
+    monitor.Flow('about_us',req.cookies.utoken);
+
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -458,6 +480,9 @@ router.post('/about_us_data',(req,res)=>{
 
 router.get('/cookie_policy',(req,res)=>{
     let html = readFileSync('./public/html/front_end/cookie_policy.html','utf-8');
+    monitor.Flow('cookie_policy',req.cookies.utoken);
+
+    
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -487,6 +512,10 @@ router.post('/cookie_policy_data',(req,res)=>{
 
 router.get('/economy',(req,res)=>{
     let html = readFileSync('./public/html/front_end/finance.html','utf-8');
+    monitor.Flow('economy',req.cookies.utoken);
+
+
+    
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -517,6 +546,11 @@ router.post('/economy_data',(req,res)=>{
 
 router.get('/emergency',(req,res)=>{
     let html = readFileSync('./public/html/front_end/emergency.html','utf-8');
+    monitor.Flow('emergency',req.cookies.utoken);
+
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -546,6 +580,10 @@ router.post('/emergency_data',(req,res)=>{
 
 router.get('/law',(req,res)=>{
     let html = readFileSync('./public/html/front_end/law.html','utf-8');
+    monitor.Flow('law',req.cookies.utoken);
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -576,6 +614,10 @@ router.post('/law_data',(req,res)=>{
 
 router.get('/application',(req,res)=>{
     let html = readFileSync('./public/html/front_end/application.html','utf-8');
+    monitor.Flow('application',req.cookies.utoken);
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -605,6 +647,10 @@ router.post('/application_data',(req,res)=>{
 
 router.get('/psychology',(req,res)=>{
     let html = readFileSync('./public/html/front_end/psychology.html','utf-8');
+    monitor.Flow('psychology',req.cookies.utoken);
+
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -634,6 +680,9 @@ router.post('/psychology_data',(req,res)=>{
 
 router.get('/education',(req,res)=>{
     let html = readFileSync('./public/html/front_end/education.html','utf-8');
+    monitor.Flow('education',req.cookies.utoken);
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -663,6 +712,9 @@ router.post('/education_data',(req,res)=>{
 
 router.get('/career',(req,res)=>{
     let html = readFileSync('./public/html/front_end/career.html','utf-8');
+    monitor.Flow('career',req.cookies.utoken);
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
@@ -692,6 +744,9 @@ router.post('/career_data',(req,res)=>{
 
 router.get('/medical',(req,res)=>{
     let html = readFileSync('./public/html/front_end/medical.html','utf-8');
+    monitor.Flow('medical',req.cookies.utoken);
+
+
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
     if(req.cookies.accept == 'null'){
         html +=  `<script>cookie_msg()</script>`;
