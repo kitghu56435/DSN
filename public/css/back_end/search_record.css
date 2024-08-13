@@ -11,8 +11,7 @@ section{
 
 .content{
     width:100%;
-    padding:1%;
-    font-size: 22px;
+    font-size: 24px;
 }
 
 .data_screen{
@@ -27,13 +26,14 @@ section{
 
 .data_screen > .action > button{
     font-size: 1em;
-    width:12vw;
+    width:8vw;
     background-color: white;
     border-radius: 30px;
     font-weight: bold;
     border: 2px solid #6C6C6C;
     padding:0.2em 0.5em;
     transition: 0.3s;
+    margin-left: 3%;
 }
 .data_screen > .action > button:hover{
     background-color: #6C6C6C	;
@@ -42,7 +42,6 @@ section{
 
 .data_screen > .action > span{
     position: relative;
-    top:5px;
     float: right;
     font-size: 1em;
     margin-right: 0.5em;
@@ -165,10 +164,7 @@ section{
     }
     
     .content{
-        font-size: 18px;
-    }
-    .data_table > .t_table{
-        height: 400px;
+        font-size: 20px;
     }
     .data_screen > .screen{
         height: 400px;
@@ -184,10 +180,7 @@ section{
     }
     
     .content{
-        font-size: 14px;
-    }
-    .data_table > .t_table{
-        height: 350px;
+        font-size: 16px;
     }
     .data_screen > .screen{
         height: 350px;

@@ -440,6 +440,7 @@ function Proportion(all,n){  //回傳百分比(%)
 
 
 module.exports = {
+    Required_Resource,
     getClientIP,
     NextID,
     RDNextID,

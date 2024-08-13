@@ -23,7 +23,7 @@ section{
 
 .data_screen > .action{
     width:100%;
-    padding:1.5% 2% 1.5% 2%;
+    padding:0% 2% 3% 2%;
 }
 
 .data_screen > .action > button{
@@ -87,6 +87,9 @@ section{
     .content{
         font-size: 18px;
     }
+    .data_screen > .screen{
+        height: 450px;
+    }
 
 }
 
@@ -101,7 +104,9 @@ section{
         font-size: 14px;
     }
    
-    
+    .data_screen > .screen{
+        height: 400px;
+    }
 }
 
 

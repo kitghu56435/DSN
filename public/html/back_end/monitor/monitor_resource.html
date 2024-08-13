@@ -18,7 +18,7 @@
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../../img/logo.png" style="margin-right:5%">
+            <img src="../../../img/logo.png" class="back_end_logo" style="margin-right:5%">
             <span class="fs-2 fw-semibold">管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
@@ -57,9 +57,9 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                        <li><a href="/backend/monitor" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="/backend/monitor/costomer" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量</a></li>
+                        <li><a href="/backend/monitor/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量</a></li>
                     </ul>
                     </div>
                 </li>
@@ -121,8 +121,8 @@
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:17%;position: fixed;"></div>
         <div class="sidebars2">
-            <a href="" >訪客流量數據</a>
-            <a href="" style="background-color: #7B7B7B;color: white;">資源流量數據</a>
+            <a href="/backend/monitor/costomer" >訪客流量</a>
+            <a href="/backend/monitor/resource" style="background-color: #7B7B7B;color: white;">資源流量</a>
         </div>
         <section>
             <div class="container-breadcrumb my-2">
@@ -135,10 +135,10 @@
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language">監控管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/monitor">監控管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language/static">資源流量數據</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/monitor/resource">資源流量</a>
                     </li>
                   </ol>
                 </nav>
@@ -146,28 +146,23 @@
             <div class="content">
                 <div class="data_screen">
                     <div class="action">
-                        <span class="date_span">指定時間範圍</span>
-                        <input type="date">-<input type="date">
-                        <select>
-                            <option>--</option>
-                            <option>1小時</option>
-                            <option>1天</option>
-                            <option>1個月</option>
-                            <option>3個月</option>
-                            <option>6個月</option>
-                            <option>1年</option>
+                        <span  style="float: none;top:0;">指定資源</span>
+                        <input type="text" id="resource_text" disabled>
+                        <button style="width:10vw" onclick="open_window('selectR')">選擇資源</button>
+                        <select id="range" onchange="selectR_done()">
+                            <option value="1h">1小時</option>
+                            <option value="1d" selected>1天</option>
+                            <option value="1w">1周</option>
+                            <option value="1m">1月</option>
+                            <option value="3m">3月</option>
+                            <option value="6m">6月</option>
                         </select>
                         <span>時間範圍</span>
                     </div>
-                    <div class="action">
-                        <span  style="float: none;">指定資源</span>
-                        <input type="text" disabled>
-                        <button style="width:8vw">選擇</button>
-                    </div>
-                    <div class="action" style="margin-bottom:2%">
-                        <button>累計數量</button>
-                        <button>造訪數量</button>
-                        <button>不重複數量</button>
+                    <div class="action" style="margin-bottom:2%;margin-top:2%">
+                        <button id="PV" style="color:white;background-color:#4F4F4F" onclick="clickAction_Btn(this),selectR_done()">累計數量</button>
+                        <button id="Visits" onclick="clickAction_Btn(this),selectR_done()">造訪數量</button>
+                        <button id="UV" onclick="clickAction_Btn(this),selectR_done()">不重複數量</button>
                     </div>
                     <div class="screen">
                         <canvas id="chart"></canvas>
@@ -175,16 +170,16 @@
                 </div>
                 <div class="data_table">
                     <div class="t_table">
-                        <div class="table_title">資源觸擊排名</div>
-                        <table>
-                            <tr><th style="width:23%">排名</th><th style="width:48%">資源名稱</th><th style="width:29%">次數</th></tr>
+                        <div class="table_title">資源累計觸擊排名</div>
+                        <table class="table_rank">
+                            <tr><th style="width:23%">排名</th><th style="width:48%">資源名稱</th><th style="width:29%">累積數</th></tr>
                             <tr><td>1</td><td>資源名稱</td><td>1</td></tr>
                             <tr><td>2</td><td>資源名稱</td><td>1</td></tr>
                             <tr><td>3</td><td>資源名稱</td><td>1</td></tr>
                         </table>
                     </div>
                     <div class="t_table">
-                        <div class="table_title">資源種類比例</div>
+                        <div class="table_title">資源累計數量比例</div>
                         <div class="pie_box">
                             <canvas id="circle"></canvas>
                         </div>
@@ -198,7 +193,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../../../js/back_end/sidebars.js"></script>
 <script src="../../../js/back_end/monitor.js"></script>
-<script>
-    setData_monitor_resource()
-</script>
+<script src="../../../js/back_end/window.js"></script>
 </html>

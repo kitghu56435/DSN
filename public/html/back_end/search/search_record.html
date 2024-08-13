@@ -17,7 +17,7 @@
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../../img/logo.png" style="margin-right:5%">
+                <img src="../../../img/logo.png" class="back_end_logo" style="margin-right:5%">
             <span class="fs-2 fw-semibold">管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
@@ -56,9 +56,9 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                        <li><a href="/backend/monitor" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="/backend/monitor/costomer" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量</a></li>
+                        <li><a href="/backend/monitor/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量</a></li>
                     </ul>
                     </div>
                 </li>
@@ -145,19 +145,10 @@
             <div class="content">
                 <div class="data_screen">
                     <div class="action">
-                        <span class="date_span">指定時間範圍</span>
-                        <input type="date">-<input type="date">
-                        <span class="date_span" style="margin-left: 1%;">數量：2</span>
-                        <select>
-                            <option>--</option>
-                            <option>1小時</option>
-                            <option>1天</option>
-                            <option>1個月</option>
-                            <option>3個月</option>
-                            <option>6個月</option>
-                            <option>1年</option>
-                        </select>
-                        <span>時間範圍</span>
+                        <span class="date_span">搜尋時間範圍</span>
+                        <input type="date"> － <input type="date">
+                        <button>搜尋</button>
+                        <span style="top:10px">數量：2</span>
                     </div>
                 </div>
                 <div class="data_table">

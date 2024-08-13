@@ -369,10 +369,10 @@ router.post('/demand/search/data',(req,res)=>{
             data.D_ID = results[0].D_ID;
             data.R_Shelf = results[0].R_Shelf;
 
-            data.R_Identity = setCode_to_Array(results[0].R_Identity);
-            data.R_Condition = setCode_to_Array(results[0].R_Condition);
-            data.R_School = setCode_to_Array(results[0].R_School);
-            data.R_City = setCode_to_Array(results[0].R_City);
+            data.R_Identity = resource.setCode_to_Array(results[0].R_Identity);
+            data.R_Condition = resource.setCode_to_Array(results[0].R_Condition);
+            data.R_School = resource.setCode_to_Array(results[0].R_School);
+            data.R_City = resource.setCode_to_Array(results[0].R_City);
         }
     })
     db.execute(`SELECT RD_Content R_Name,RD_Type FROM Resource_data WHERE R_ID = ? AND L_ID = 'L000000001' AND RD_Type = 2;`,[R_ID],(err,results)=>{
@@ -1158,24 +1158,7 @@ router.post('/template/delete',(req,res)=>{
 
 
 
-function setCode_to_Array(code){
-    let str = '';
-    let array = [];
 
-    if(code == undefined || code == null || code == 'null'){
-        return '';
-    }else{
-        for(m = 0;m < code.length;m++){
-            str += code[m];
-            if(m%2 == 1){
-                array.push(str);
-                str = '';
-            }
-        }
-
-        return array;
-    }
-}
 function T_Use(str){
     if(str == 'null' || str == null){
         return 0;

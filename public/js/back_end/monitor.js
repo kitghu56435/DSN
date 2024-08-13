@@ -1,5 +1,6 @@
 
-
+let myChart = null;
+let myChart_circle = null;
 
 function clickAction_Btn(node){
     if(node.style.color == 'white'){
@@ -11,27 +12,29 @@ function clickAction_Btn(node){
 
 
 function setData_monitor(data){
-    const ctx = document.getElementById('chart');
+    let ctx = document.getElementById('chart');
+    let table_rank = document.getElementById('table_rank');
+    let labels = [];
+    let str = '';
     let datasets = [];
-    let labels = ["0am","1am","2am","3am","4am","5am","6am","7am","8am","9am",
-        "10am","11am","12pm","13pm","14pm","15pm","16pm","17pm","18pm","19pm",
-        "20pm","21pm","22pm","23pm"
-    ];
-    if(data.PV){
+
+    
+    
+    if(data.PV.length != 0){
         labels = data.PV.map(row => row.label);
         datasets.push({
             label: '訪客累計數量',
             data: data.PV.map(row => row.count),
         })
     }
-    if(data.Visits){
+    if(data.Visits.length != 0){
         labels = data.Visits.map(row => row.label);
         datasets.push({
             label: '訪客造訪數量',
             data: data.Visits.map(row => row.count),
         })
     }
-    if(data.UV){
+    if(data.UV.length != 0){
         labels = data.UV.map(row => row.label);
         datasets.push({
             label: '不重複訪客數量',
@@ -40,13 +43,8 @@ function setData_monitor(data){
     }
 
 
-    
-
-
-
-
-    
-    new Chart(
+    //布置chirt    
+    myChart = new Chart(
         ctx,
         {
             type: 'line',
@@ -67,7 +65,21 @@ function setData_monitor(data){
             }
         }
     );
+
+    if(data.Resource_ranking != undefined){
+        str = '<tr><th style="width:20%">資源排名</th><th style="width:28%">資源名稱</th><th style="width:28%">資源種類</th><th style="width:24%">造訪數</th></tr>';
+        if(data.Resource_ranking.length == 0){
+            str += '<td colspan="4">無資料</td>'
+        }else{
+            for(i = 0;i<data.Resource_ranking.length;i++){
+                str += `<tr><td>${data.Resource_ranking[i].rank}</td><td>${data.Resource_ranking[i].R_Name}</td><td>${data.Resource_ranking[i].D_Name}</td><td>${data.Resource_ranking[i].count}</td></tr>`;
+            }
+        }
+        
+        table_rank.innerHTML = str;
+    }
     
+
 }
 
 function getMonitor_data(){
@@ -77,11 +89,12 @@ function getMonitor_data(){
         if(httpRequest.readyState === 4){
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
+                myChart.destroy();
                 
-                if(jsonResponse.msgbox == 'dberr'){
+                if(jsonResponse.msgbox != ''){
                     msgbox(1,'資料庫錯誤');
                 }else{
-                    console.log('good')
+                    setData_monitor(jsonResponse);
                 }
             }else{
                 alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
@@ -109,49 +122,130 @@ function getMonitor_data(){
 }
 
 
-
-
-
-function setData_monitor_costomer(){
+function setData_monitor_costomer(data){
     const ctx = document.getElementById('chart');
+    let labels = [];
+    let datasets = [];
 
-    const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-        { year: 2017, count: 28 },
-        { year: 2018, count: 28 },
-        { year: 2019, count: 28 },
-    ];
+
+    if(data.PV_Count == -1){
+        setData_block(0,'--');
+    }else{
+        setData_block(0,data.PV_Count);
+    }
+
+    if(data.PV_Count_percentage == -1){
+        setData_block(6,'--');
+    }else{
+        setData_block(6,data.PV_Count_percentage + '%');
+    }
+
+    if(data.Visits_Count == -1){
+        setData_block(1,'--');
+    }else{
+        setData_block(1,data.Visits_Count);
+    }
+
+    if(data.Visits_Count_percentage == -1){
+        setData_block(7,'--');
+    }else{
+        setData_block(7,data.Visits_Count_percentage + '%');
+    }
+
+    if(data.UV_Count == -1){
+        setData_block(2,'--');
+    }else{
+        setData_block(2,data.UV_Count);
+    }
+
+    if(data.UV_Count_percentage == -1){
+        setData_block(8,'--');
+    }else{
+        setData_block(8,data.UV_Count_percentage + '%');
+    }
+
+
+    if(data.PV_Average == -1){
+        setData_block(3,'--');
+    }else{
+        setData_block(3,data.PV_Average);
+    }
+
+    if(data.PV_Average_percentage == -1){
+        setData_block(9,'--');
+    }else{
+        setData_block(9,data.PV_Average_percentage + '%');
+    }
+
+
+    if(data.Visits_Average == -1){
+        setData_block(4,'--');
+    }else{
+        setData_block(4,data.Visits_Average);
+    }
+
+    if(data.Visits_Average_percentage == -1){
+        setData_block(10,'--');
+    }else{
+        setData_block(10,data.Visits_Average_percentage + '%');
+    }
+
+
+    if(data.UV_Average == -1){
+        setData_block(5,'--');
+    }else{
+        setData_block(5,data.UV_Average);
+    }
+
+    if(data.UV_Average_percentage == -1){
+        setData_block(11,'--');
+    }else{
+        setData_block(11,data.UV_Average_percentage + '%');
+    }
+
     
     
-    new Chart(
+    if(data.PV.length != 0){
+        labels = data.PV.map(row => row.label);
+        datasets.push({
+            label: '訪客累計數量',
+            data: data.PV.map(row => row.count),
+        })
+    }
+    if(data.Visits.length != 0){
+        labels = data.Visits.map(row => row.label);
+        datasets.push({
+            label: '訪客造訪數量',
+            data: data.Visits.map(row => row.count),
+        })
+    }
+    if(data.UV.length != 0){
+        labels = data.UV.map(row => row.label);
+        datasets.push({
+            label: '不重複訪客數量',
+            data: data.UV.map(row => row.count),
+        })
+    }
+    
+    
+    myChart = new Chart(
         ctx,
         {
             type: 'line',
             options: {
-            maintainAspectRatio:false,
-            plugins: {
-              legend: {
-                display: false
-              },
-              tooltip: {
-                enabled: false
-              }
-            }
-        },
+                maintainAspectRatio:false,
+                plugins: {
+                    // legend: {
+                    //     display: false
+                    // },
+                    // tooltip: {
+                    //     enabled: false
+                    // }
+                }
+            },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]  
+                labels: labels,
+                datasets: datasets
             }
         }
     );
@@ -159,76 +253,122 @@ function setData_monitor_costomer(){
 }
 
 
-function setData_monitor_resource(){
-    const ctx = document.getElementById('chart');
-    const c = document.getElementById('circle');
+function getMonitor_costomer_data(){
+    let httpRequest = new XMLHttpRequest();
 
-    const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-        { year: 2017, count: 28 },
-        { year: 2018, count: 28 },
-        { year: 2019, count: 28 },
-    ];
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                myChart.destroy();
+                
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,'資料庫錯誤');
+                }else{
+                    console.log(jsonResponse)
+                    setData_monitor_costomer(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+
+    let PV_node = document.getElementById('PV');
+    let Visits_node = document.getElementById('Visits');
+    let UV_node = document.getElementById('UV');
+    let time_range = document.getElementById('time_range').value;
+    let PV = false;
+    let Visits = false;
+    let UV = false;
     
+    if(PV_node.style.color == 'white'){PV = true;}
+    if(Visits_node.style.color == 'white'){Visits = true;}
+    if(UV_node.style.color == 'white'){UV = true;}
+
+
     
-    new Chart(
+    httpRequest.open('POST','/backend/monitor/costomer/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('PV=' + PV + '&Visits=' + Visits + '&UV=' + UV  + '&time_range=' + time_range);
+}
+
+
+function setData_monitor_resource(data){
+    const ctx = document.getElementById('chart');
+    const circle = document.getElementById('circle');
+    let table_rank = document.getElementsByClassName('table_rank')[0];
+    let datasets = [];
+    let circle_datasets = [];
+    let labels = [];
+
+    
+
+
+    if(data.PV.length != 0){
+        labels = data.PV.map(row => row.R_Name);
+        datasets.push({
+            "label": '累計數量',
+            "data": data.PV.map(row => row.Count),
+        })
+        circle_datasets.push({
+            "label": '累計數量',
+            "data": data.PV.map(row => row.Count),
+        })
+    }
+    if(data.Visits.length != 0){
+        labels = data.Visits.map(row => row.R_Name);
+        datasets.push({
+            label: '造訪數量',
+            data: data.Visits.map(row => row.Count),
+        })
+    }
+    if(data.UV.length != 0){
+        labels = data.UV.map(row => row.R_Name);
+        datasets.push({
+            label: '不重複數量',
+            data: data.UV.map(row => row.Count),
+        })
+    }
+
+
+    
+    myChart = new Chart(
         ctx,
         {
             type: 'bar',
             options: {
-            maintainAspectRatio:false,
-            plugins: {
-              legend: {
-                display: false
-              },
-              tooltip: {
-                enabled: false
-              }
-            }
-        },
+                maintainAspectRatio:false,
+            },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]  
+                labels: labels,
+                datasets: datasets
             }
         }
     );
 
-    new Chart(
-        c,
+    myChart_circle = new Chart(
+        circle,
         {
             type: 'pie',
             options: {
                 maintainAspectRatio:false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
             },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]
+                labels: labels,
+                datasets: circle_datasets
             }
         }
     );
-    
+    let str = '<tr><th style="width:23%">排名</th><th style="width:48%">資源名稱</th><th style="width:29%">累積數</th></tr>';
+    for(i = 0;i < data.Rank.length; i++){
+        str += `<tr><td>${data.Rank[i].rank}</td><td>${data.Rank[i].R_Name}</td><td>${data.Rank[i].count}</td></tr>`;
+    }
+    table_rank.innerHTML = str;
 }
+
+
+
+
+
+

@@ -17,8 +17,8 @@
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../img/backend/resource.png" style="margin-right:5%">
-            <span class="fs-2 fw-semibold">DSN管理後臺</span>
+            <img src="../../../img/logo.png" class="back_end_logo" style="margin-right:5%">
+            <span class="fs-2 fw-semibold">管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
@@ -56,9 +56,9 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                        <li><a href="/backend/monitor" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="/backend/monitor/costomer" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量</a></li>
+                        <li><a href="/backend/monitor/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量</a></li>
                     </ul>
                     </div>
                 </li>
@@ -140,6 +140,8 @@
                     <div class="data_block"><p>0</p><span>在線訪客</span></div>
                     <div class="data_block"><p>0</p><span>今日訪客</span></div>
                     <div class="data_block"><p>0</p><span>本月訪客</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/monitor/costomer')"><p><img src="../../../img/backend/monitor.png"></p><span>訪客流量</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/monitor/resource')"><p><img src="../../../img/backend/monitor.png"></p><span>資源流量</span></div>
                 </div>
                 <div class="data_screen">
                     <div class="action">
@@ -149,10 +151,10 @@
                         <select id="time_range" onchange="getMonitor_data()">
                             <option value="1h">1小時</option>
                             <option value="1d" selected>1天</option>
-                            <option value="1m">1個月</option>
-                            <option value="3m">3個月</option>
-                            <option value="6m">6個月</option>
-                            <option value="1y">1年</option>
+                            <option value="1w">1周</option>
+                            <option value="1m">1月</option>
+                            <option value="3m">3月</option>
+                            <option value="6m">6月</option>
                         </select>
                         <span>時間範圍</span>
                     </div>
@@ -163,11 +165,9 @@
                 <div class="data_table">
                     <div class="t_table">
                         <div class="table_title">活耀資源排名</div>
-                        <table>
-                            <tr><th style="width:20%">資源排名</th><th style="width:28%">資源名稱</th><th style="width:28%">資源種類</th><th style="width:24%">造訪數</th></tr>
-                            <tr><td>1</td><td>資源名稱</td><td>經濟需求</td><td>0</td></tr>
-                            <tr><td>2</td><td>資源名稱</td><td>經濟需求</td><td>0</td></tr>
-                            <tr><td>3</td><td>資源名稱</td><td>經濟需求</td><td>0</td></tr>
+                        <table id="table_rank">
+                            <tr><th style="width:20%">資源排名</th><th style="width:28%">資源名稱</th><th style="width:28%">資源種類</th><th style="width:24%">累計數</th></tr>
+                            <tr><td colspan="4">無資料</td></tr>
                         </table>
                     </div>
                     

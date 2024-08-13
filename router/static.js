@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const {readFileSync} = require('fs');
 const db = require('../db');
-const {Required_Resource,NextID,find} = require('../function');
-const moment = require('moment-timezone');
 const monitor = require('../model/monitor');
-
+const search = require('../model/search');
+const resource = require('../model/resource');
+const message = require('../model/message');
 
 //這個API是為了開發測試header語言切換而再的
 router.get('/header',(req,res)=>{
@@ -152,6 +152,7 @@ router.post('/search_results',(req,res)=>{
     let R_District = req.body.R_District;
     let temp_R_List = [];    //暫時存放的列表1
     let temp_R_List2 = [];    //暫時存放的列表2
+    search.Record(req.body,req.cookies.utoken,L_ID);
     let data = {
         "Search_data" : {
             "demand" : demand,
@@ -169,15 +170,14 @@ router.post('/search_results',(req,res)=>{
     
     
     //申請者身分過濾(適合資料)
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_identity(identity,L_ID));
-    }).then((results)=>{
+
+    search.searchResource_identity(identity,L_ID).then((results)=>{
         let match = false;
         let add_num = 0;
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length-add_num;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_IdentityText(identity,results[i].R_Identity),L_ID));
+                    temp_R_List[j].R_Label.push(getR_Label_leng(search.getMultiple_IdentityText(identity,results[i].R_Identity),L_ID));
                     match = true;
                     break;
                 }
@@ -190,7 +190,7 @@ router.post('/search_results',(req,res)=>{
                     "R_ID" : results[i].R_ID,
                     "R_Name" : results[i].R_Name,
                     "R_Depiction" : results[i].R_Depiction,
-                    "R_Label" : [getR_Label_leng(getMultiple_IdentityText(identity,results[i].R_Identity),L_ID)],
+                    "R_Label" : [getR_Label_leng(search.getMultiple_IdentityText(identity,results[i].R_Identity),L_ID)],
                     "R_Img" : results[i].R_Img,
                     "Search_Type" : "search"
                 })
@@ -203,13 +203,11 @@ router.post('/search_results',(req,res)=>{
     
 
     //申請者狀況過濾(適合資料)(不符合需要刪掉，如果申請狀況沒有提供，就保留符合資源需求的資源)
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_condition(condition,L_ID));
-    }).then((results)=>{
+    search.searchResource_condition(condition,L_ID).then((results)=>{
         for(i = 0;i<results.length;i++){
             for(j = 0;j<temp_R_List.length;j++){
                 if(temp_R_List[j].R_ID == results[i].R_ID){
-                    temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_ConditionText(condition,results[i].R_Condition),L_ID));
+                    temp_R_List[j].R_Label.push(getR_Label_leng(search.getMultiple_ConditionText(condition,results[i].R_Condition),L_ID));
                     temp_R_List2.push(temp_R_List[j]); 
                     break;
                 }
@@ -218,8 +216,8 @@ router.post('/search_results',(req,res)=>{
         //如果申請狀況沒有提供，就保留符合資源需求的資源
         if(!condition){
             for(j = 0;j<temp_R_List.length;j++){
-                if(checkDemand(demand,temp_R_List[j].D_ID)){
-                    //temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_ConditionText(condition,results[i].R_Condition),L_ID));
+                if(search.checkDemand(demand,temp_R_List[j].D_ID)){
+                    //temp_R_List[j].R_Label.push(getR_Label_leng(search.getMultiple_ConditionText(condition,results[i].R_Condition),L_ID));
                     temp_R_List2.push(temp_R_List[j]); 
                 }
             }
@@ -234,16 +232,15 @@ router.post('/search_results',(req,res)=>{
 
 
     //申請者在學狀況過濾(適合資料)(不符合需要刪掉)
+    
+
     if(school){
-        new Promise((resolve,reject)=>{
-            resolve(searchResource_school(school,L_ID));
-        }).then((results)=>{
-            
+        search.searchResource_school(school,L_ID).then((results)=>{
             //如果沒有提供在校狀況，則跳過
             for(i = 0;i<results.length;i++){
                 for(j = 0;j<temp_R_List.length;j++){
                     if(temp_R_List[j].R_ID == results[i].R_ID){
-                        temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_SchoolText(school,results[i].R_School),L_ID));
+                        temp_R_List[j].R_Label.push(getR_Label_leng(search.getMultiple_SchoolText(school,results[i].R_School),L_ID));
                         temp_R_List2.push(temp_R_List[j]); 
                         break;
                     }
@@ -251,7 +248,6 @@ router.post('/search_results',(req,res)=>{
             }
             temp_R_List = temp_R_List2;
             temp_R_List2 = [];
-            
         })
     }
 
@@ -260,29 +256,23 @@ router.post('/search_results',(req,res)=>{
 
     //申請者地區過濾(適合資料)(不符合需要刪掉)
     if(R_City){
-        new Promise((resolve,reject)=>{
-            resolve(searchResource_location(R_City));
-        }).then((results)=>{
-            
+        search.searchResource_location(R_City).then((results)=>{
             for(i = 0;i<results.length;i++){
                 for(j = 0;j<temp_R_List.length;j++){
                     if(temp_R_List[j].R_ID == results[i].R_ID){
-                        temp_R_List[j].R_Label.push(getR_Label_leng(getMultiple_LocationText(R_City,results[i].R_City),L_ID));
+                        temp_R_List[j].R_Label.push(getR_Label_leng(search.getMultiple_LocationText(R_City,results[i].R_City),L_ID));
                         data.R_List.push(temp_R_List[j])
                         break;
                     }
                 }
             }
-            //console.log(data.R_List);
         })
     }
     
 
     if(condition){
         //加入強制資源(強制資料)
-        new Promise((resolve,reject)=>{
-            resolve(searchResource_requestData(condition,L_ID));
-        }).then((results)=>{
+        search.searchResource_requestData(condition,L_ID).then((results)=>{
             let match = false;
             let add_num = 0;
             for(i = 0;i<results.length;i++){
@@ -309,7 +299,7 @@ router.post('/search_results',(req,res)=>{
                 }
                 match = false;
             }
-        })        
+        })      
     }
 
 
@@ -317,9 +307,7 @@ router.post('/search_results',(req,res)=>{
     
     //使用需求序號，尋找全部適合資源
     //如果有match到，就成為適合資源，沒有就成為建議資源
-    new Promise((resolve,reject)=>{
-        resolve(searchResource_suitable(demand));
-    }).then((results)=>{
+    search.searchResource_suitable(demand).then((results)=>{
         let match = false;
         for(i = 0;i<data.R_List.length;i++){
             for(j = 0;j<results.length;j++){
@@ -347,16 +335,6 @@ router.post('/search_results',(req,res)=>{
         }
         res.end(html);
     })
-
-    
-    //尚未開發
-    //加入其他資源
-    // new Promise((resolve,reject)=>{
-        
-    // }).then((results)=>{
-        
-    // })
-
     
 })
 router.post('/search_results_data',(req,res)=>{
@@ -780,10 +758,7 @@ router.post('/msg',(req,res)=>{
     let msg = req.body.msg;
     let R_ID = req.body.R_ID;
 
-    
-    new Promise((resolve,reject)=>{
-        resolve(createResource_feedback(msg,utoken,R_ID))
-    }).then(()=>{
+    message.createResource_feedback(msg,utoken,R_ID).then(()=>{
         res.json({'msg':'done'});
     }).catch(()=>{
         res.json({'msg':'dberr'});
@@ -796,9 +771,7 @@ router.post('/like',(req,res)=>{
     let utoken = req.cookies.utoken;
     let R_ID = req.body.R_ID;
     
-    new Promise((resolve,reject)=>{
-        resolve(setResource_Like(R_ID,utoken))
-    }).then((R_Like)=>{
+    resource.setResource_Like(R_ID,utoken).then((R_Like)=>{
         res.json({'msg':'done','R_Like':R_Like});
     }).catch(()=>{
         res.json({'msg':'dberr'});
@@ -869,506 +842,9 @@ function getR_Label_leng(str,L_ID){
         return str;
     }
 }
-function getDemandID(code){
-    switch(code){
-        case 'A1' : return `D000000001`  //經濟需求
-        case 'A2' : return `D000000003`  //法律需求
-        case 'A3' : return `D000000002`  //緊急需求
-        case 'A4' : return `D000000004`  //教育需求
-        case 'A5' : return `D000000005`  //職涯資訊
-        case 'A6' : return `D000000006`  //醫療資訊
-        case 'A7' : return `D000000007`  //心理資訊
-        default : return '';
-    }
-}
-function getIdentityText(code){
-    switch(code){
-        case 'A0' : return '';  //所有身分回傳空字串
-        case 'A1' : return '新住民';
-        case 'A2' : return '新住民子女';
-        case 'A3' : return '原住民';
-        case 'A4' : return '以上皆否';
-    }
-}
-function getSchoolText(code){
-    switch(code){
-        case 'A0' : return '';  //所有就學回傳空字串
-        case 'A1' : return '未就學';
-        case 'A2' : return '國小';
-        case 'A3' : return '國中';
-        case 'A4' : return '高中';
-        case 'A5' : return '五專';
-        case 'A6' : return '大學';
-        case 'A7' : return '研究所';
-        case 'A8' : return '畢業就學';
-    }
-}
-function getConditionText(code){
-    switch(code){
-        case 'A0' : return '';  //所有狀況回傳空字串
-        case 'A1' : return '身心障礙';
-        case 'A2' : return '經濟弱勢';
-        case 'A3' : return '就職青年';
-        case 'A4' : return '單親家庭';
-        case 'A5' : return '家事糾紛';
-        case 'A6' : return '暴力/霸凌受害者';
-        case 'A7' : return '心理患者';
-        case 'A8' : return '醫院患者';
-        case 'A9' : return '懷孕少女';
-        case 'B1' : return '租屋者';
-    }
-}
-function getCityText(code){
-    switch(code){
-        case 'A0' : return '';  //所有縣市回傳空字串
-        case 'A1' : return '臺北市';
-        case 'A2' : return '新北市';
-        case 'A3' : return '桃園市';
-        case 'A4' : return '台中市';
-        case 'A5' : return '台南市';
-        case 'A6' : return '高雄市';
-        case 'A7' : return '基隆市';
-        case 'A8' : return '新竹市';
-        case 'A9' : return '新竹縣';
-        case 'B1' : return '苗栗縣';
-        case 'B2' : return '彰化縣';
-        case 'B3' : return '南投縣';
-        case 'B4' : return '雲林縣';
-        case 'B5' : return '嘉義市';
-        case 'B6' : return '嘉義縣';
-        case 'B7' : return '屏東縣';
-        case 'B8' : return '宜蘭縣';
-        case 'B9' : return '花蓮縣';
-        case 'C1' : return '台東縣';
-        case 'C2' : return '澎湖縣';
-        case 'C3' : return '金門縣';
-        case 'C4' : return '連江縣';
-    }
-}
-function getMultiple_IdentityText(identity,R_Identity){
-    //identity   使用者搜尋的序號
-    //R_Identity 資源的身分序號
-    if(R_Identity == 'A0'){
-        return getIdentityText(R_Identity);
-    }else{
-        if(typeof identity == 'string'){
-            if(find(identity,R_Identity)){
-                //console.log(identity,R_Identity);
-                return getIdentityText(identity);
-            }
-        }else if(typeof identity == 'object'){
-            let str = '';
-            for(h = 0;h<identity.length;h++){
-                if(find(identity[h],R_Identity)){
-                    str +=  getIdentityText(identity[h]) + "、";
-                }
-            }
-            return str.substring(0,(str.length - 1));
-        }
-    }
-    
-}
-function getMultiple_ConditionText(condition,R_Condition){
-    //condition   使用者搜尋的序號
-    //R_Condition 資源的狀況序號
-    if(R_Condition == 'A0'){
-        return getConditionText(R_Condition);
-    }else{
-        if(typeof condition == 'string'){
-            if(find(condition,R_Condition)){
-                //console.log(condition,R_Condition);
-                return getConditionText(condition);
-            }
-        }else if(typeof condition == 'object'){
-            let str = '';
-            for(h = 0;h<condition.length;h++){
-                if(find(condition[h],R_Condition)){
-                    str +=  getConditionText(condition[h]) + "、";
-                }
-            }
-            return str.substring(0,(str.length - 1));
-        }
-    }
-}
-function getMultiple_SchoolText(school,R_School){
-    if(R_School == 'A0'){
-        return getSchoolText(R_School);
-    }else{
-        if(find(school,R_School)){
-            return getSchoolText(school);
-        }
-    }
-}
-function getMultiple_LocationText(City,R_City){
-    if(R_City == 'A0' || City == 'A0'){
-        return getCityText(R_City);
-    }else{
-        if(find(City,R_City)){
-            return getCityText(City);
-        }
-    }
-}
-function checkDemand(demand,D_ID){
-    let found = false;
-
-    if(typeof demand == 'string'){
-        if(getDemandID(demand) == D_ID){
-            found = true;
-        }
-    }else if(typeof demand == 'object'){
-        let str = '';
-        for(h = 0;h<demand.length;h++){
-            if(getDemandID(demand[i]) == D_ID){
-                found = true;
-                break;
-            }
-        }
-    }
-
-    return found;
-}
-async function searchResource_location(R_City){
-    return new Promise((resolve,reject)=>{
-        if(R_City == 'A0'){
-            db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND Resources.R_Shelf = 1`,(err,results)=>{
-                if(err){
-                    console.log(err);
-                    reject();
-                }else{
-                    resolve(results)
-                }
-            })
-        }else{
-            db.execute(`SELECT R_ID,R_City FROM Resources WHERE R_Delete = 0 AND Resources.R_Shelf = 1 AND (R_City LIKE ? OR R_City LIKE '%A0%')`,['%' + R_City + '%'],(err,results)=>{
-                if(err){
-                    console.log(err);
-                    reject();
-                }else{
-                    resolve(results)
-                }
-            })
-        }
-        
-    })
-}
-async function searchResource_identity(identity,L_ID){
-    let parameter = [L_ID];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
-    (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
-    AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 3 AND ( R_Identity LIKE '%A0%' `;
 
 
-    if(typeof identity == 'string'){
-        str += 'OR R_Identity LIKE ? ';
-        parameter.push(`%${identity}%`);
-    }else if(typeof identity == 'object'){
-        for(i = 0;i<identity.length;i++){
-            str += 'OR R_Identity LIKE ? ';
-            parameter.push(`%${identity[i]}%`);
-        }
-    }
 
-    str +=` )) Depiction
-    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( R_Identity LIKE '%A0%' `;
-
-    parameter.push(L_ID);
-    parameter.push(L_ID);
-
-    if(typeof identity == 'string'){
-        str += 'OR R_Identity LIKE ? ';
-        parameter.push(`%${identity}%`);
-    }else if(typeof identity == 'object'){
-        for(i = 0;i<identity.length;i++){
-            str += 'OR R_Identity LIKE ? ';
-            parameter.push(`%${identity[i]}%`);
-        }
-    }
-    str += ')';
-    //console.log(str);
-    //console.log(parameter);
-
-    return new Promise((resolve,reject)=>{
-        db.execute(str,parameter,(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve(results)
-            }
-        })
-    })
-}
-async function searchResource_school(school,L_ID){
-    let parameter = [L_ID];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_School,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
-    (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
-    AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 3 AND ( R_School LIKE '%A0%' `
-
-    if(typeof school == 'string'){
-        str += 'OR R_School LIKE ? ';
-        parameter.push(`%${school}%`);
-    }else if(typeof school == 'object'){
-        for(i = 0;i<school.length;i++){
-            str += 'OR R_School LIKE ? ';
-            parameter.push(`%${school[i]}%`);
-        }
-    }
-
-
-    str +=` )) Depiction
-    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( R_School LIKE '%A0%' `;
-
-
-    parameter.push(L_ID);
-    parameter.push(L_ID);
-
-
-    if(typeof school == 'string'){
-        str += 'OR R_School LIKE ? ';
-        parameter.push(`%${school}%`);
-    }else if(typeof school == 'object'){
-        for(i = 0;i<school.length;i++){
-            str += 'OR R_School LIKE ? ';
-            parameter.push(`%${school[i]}%`);
-        }
-    }
-    str += ')';
-    // console.log(str);
-    // console.log(parameter);
-    
-
-    return new Promise((resolve,reject)=>{
-        db.execute(str,parameter,(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve(results)
-            }
-        })
-    })
-}
-async function searchResource_condition(condition,L_ID){
-    let parameter = [L_ID];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Condition,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
-    (SELECT Resources.R_ID,RD_Content R_Depiction FROM Resources,Resource_data WHERE Resources.R_ID = Resource_data.R_ID 
-    AND Resource_data.L_ID = ? AND Resource_data.RD_Type = 3 AND ( R_Condition LIKE '%A0%' `
-
-    if(typeof condition == 'string'){
-        str += 'OR R_Condition LIKE ? ';
-        parameter.push(`%${condition}%`);
-    }else if(typeof condition == 'object'){
-        for(i = 0;i<condition.length;i++){
-            str += 'OR R_Condition LIKE ? ';
-            parameter.push(`%${condition[i]}%`);
-        }
-    }
-
-
-    str +=` )) Depiction
-    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( R_Condition LIKE '%A0%' `;
-
-
-    parameter.push(L_ID);
-    parameter.push(L_ID);
-
-
-    if(typeof condition == 'string'){
-        str += 'OR R_Condition LIKE ? ';
-        parameter.push(`%${condition}%`);
-    }else if(typeof condition == 'object'){
-        for(i = 0;i<condition.length;i++){
-            str += 'OR R_Condition LIKE ? ';
-            parameter.push(`%${condition[i]}%`);
-        }
-    }
-    str += ')';
-    // console.log(str);
-    // console.log(parameter);
-    
-
-    return new Promise((resolve,reject)=>{
-        db.execute(str,parameter,(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve(results)
-            }
-        })
-    })
-}
-async function searchResource_suitable(demand){
-    let parameter = [];
-    str = `SELECT R_ID,Resources.D_ID FROM Resources,Demand WHERE  R_Delete = 0 AND Resources.R_Shelf = 1 AND Demand.D_ID = Resources.D_ID AND L_ID = 'L000000001' AND ( FALSE `;
-
-    if(typeof demand == 'string'){
-        str += 'OR Demand.D_ID = ? ';
-        parameter.push(`${getDemandID(demand)}`);
-    }else if(typeof demand == 'object'){
-        for(i = 0;i<demand.length;i++){
-            if(demand[i] != 'A8'){  //避開申請需求
-                str += 'OR Demand.D_ID = ? ';
-                parameter.push(`${getDemandID(demand[i])}`);
-            }   
-        }
-    }
-    str += ')';
-    
-    // console.log(str);
-    // console.log(parameter);
-
-    return new Promise((resolve,reject)=>{
-        db.execute(str,parameter,(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve(results)
-            }
-        })
-    })
-    
-}
-async function searchResource_requestData(condition,L_ID){
-    let parameter = [L_ID];
-    str = `SELECT Resources.R_ID,RD_Content R_Name,R_Depiction,R_Img,R_Identity,Demand.D_ID,D_Name FROM Resources,Demand,Resource_data,
-    (SELECT R_ID,RD_Content R_Depiction FROM Resource_data WHERE L_ID = ? `
-
-    if(typeof condition == 'string'){
-        if(Required_Resource[condition]){
-
-            for(i = 0;i<Required_Resource[condition].length;i++){
-                str += 'AND R_ID = ? ';
-                parameter.push(Required_Resource[condition][i]);
-            }
-            
-        }
-    }else if(typeof condition == 'object'){
-        for(i = 0;i<condition.length;i++){
-
-            if(Required_Resource[condition[i]]){
-                for(j = 0;j<Required_Resource[condition[i]].length;j++){
-                    str += 'AND R_ID = ? ';
-                    parameter.push(Required_Resource[condition[i]][j]);
-                }
-            }
-
-        }
-    }
-
-
-    str += ` AND RD_Type = 3) Depiction
-    WHERE Resources.D_ID = Demand.D_ID AND Resources.R_ID = Resource_data.R_ID AND Depiction.R_ID = Resources.R_ID 
-    AND Demand.L_ID = ? AND Resource_data.L_ID = ? AND Resources.R_Shelf = 1 AND Resource_data.RD_Type = 2 AND ( FALSE `;
-
-    parameter.push(L_ID);
-    parameter.push(L_ID);
-
-    if(typeof condition == 'string'){
-        if(Required_Resource[condition]){
-
-            for(i = 0;i<Required_Resource[condition].length;i++){
-                str += 'OR Resources.R_ID LIKE ? ';
-                parameter.push(`%${Required_Resource[condition][i]}%`);
-            }
-            
-        }
-    }else if(typeof condition == 'object'){
-        for(i = 0;i<condition.length;i++){
-
-            if(Required_Resource[condition[i]]){
-                for(j = 0;j<Required_Resource[condition[i]].length;j++){
-                    str += 'OR Resources.R_ID LIKE ? ';
-                    parameter.push(`%${Required_Resource[condition[i]][j]}%`);
-                }
-            }
-
-        }
-    }
-    str += ')';
-    //console.log(str);
-    //console.log(parameter);
-
-    return new Promise((resolve,reject)=>{
-        db.execute(str,parameter,(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve(results)
-            }
-        })
-    })
-}
-async function createResource_feedback(msg,utoken,R_ID){
-    let RF_ID = await NextID('Resource_feedback','RF_ID','RF');
-    let RF_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
-    if(R_ID == undefined || R_ID == 'undefined'){
-        R_ID = null;
-    }
-
-    return new Promise((resolve,reject)=>{
-
-
-        db.execute(`INSERT INTO Resource_feedback VALUES(?,?,?,?,?);`,[RF_ID,R_ID,msg,RF_Date,utoken],(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                resolve()
-            }
-        })
-    })
-}
-async function setResource_Like(R_ID,utoken){
-    let RL_ID = await NextID('Resources_like','RL_ID','RL');
-    let RL_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
-    
-
-    return new Promise((resolve,reject)=>{
-
-        db.execute('SELECT COUNT(*) Num FROM Resources_like WHERE R_ID = ? AND RL_Cookie = ?',[R_ID,utoken],(err,results)=>{
-            if(err){
-                console.log(err);
-                reject();
-            }else{
-                let sql = '';
-                let parameter = [];
-                if(results[0].Num == 0){  //沒有案讚，這次是要按讚
-                    sql = `INSERT INTO Resources_like VALUES(?,?,?,?);`;
-                    parameter = [RL_ID,utoken,R_ID,RL_Date];
-                }else{ //有案讚，取消按讚
-                    sql = `DELETE FROM Resources_like WHERE R_ID = ? AND RL_Cookie = ?`;
-                    parameter = [R_ID,utoken];
-                }
-
-                db.execute(sql,parameter,(err,results)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-
-                        db.execute('SELECT COUNT(*) Num FROM Resources_like WHERE R_ID = ?',[R_ID],(err,results)=>{
-                            if(err){
-                                console.log(err);
-                                reject();
-                            }else{
-                                resolve(results[0].Num);
-                            }
-                        })
-
-
-                    }
-                })
-                
-            }
-        })
-    })
-}
 
 
 module.exports = router;

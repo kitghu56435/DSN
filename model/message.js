@@ -20,6 +20,29 @@ async function Delete_Message(RF_ID){
 }
 
 
+//新增留言
+async function createResource_feedback(msg,utoken,R_ID){
+    let RF_ID = await NextID('Resource_feedback','RF_ID','RF');
+    let RF_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+    if(R_ID == undefined || R_ID == 'undefined'){
+        R_ID = null;
+    }
+
+    return new Promise((resolve,reject)=>{
+
+
+        db.execute(`INSERT INTO Resource_feedback VALUES(?,?,?,?,?);`,[RF_ID,R_ID,msg,RF_Date,utoken],(err,results)=>{
+            if(err){
+                console.log(err);
+                reject();
+            }else{
+                resolve()
+            }
+        })
+    })
+}
+
+
 
 
 
@@ -28,5 +51,6 @@ async function Delete_Message(RF_ID){
 
 
 module.exports = {
+    createResource_feedback,
     Delete_Message,
 };

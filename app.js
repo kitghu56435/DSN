@@ -19,6 +19,8 @@ const language = require('./router/language');
 const supplier = require('./router/supplier');
 const message = require('./router/message');
 const monitor = require('./router/monitor');
+const search = require('./router/search');
+const window = require('./router/window');
 
 
 app.use(express.static('public'));
@@ -46,6 +48,9 @@ app.use('/backend/language',language);
 app.use('/backend/supplier',supplier);
 app.use('/backend/message',message);
 app.use('/backend/monitor',monitor);
+app.use('/backend/search',search);
+app.use('/backend/window',window);
+
 
 
 app.get('/',(req,res)=>{

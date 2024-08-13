@@ -17,7 +17,7 @@
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../../img/logo.png" style="margin-right:5%">
+            <img src="../../../img/logo.png" class="back_end_logo" style="margin-right:5%;height:3em;width:3em;">
             <span class="fs-2 fw-semibold">管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
@@ -56,9 +56,9 @@
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                        <li><a href="/backend/monitor" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="/backend/monitor/costomer" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量</a></li>
+                        <li><a href="/backend/monitor/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量</a></li>
                     </ul>
                     </div>
                 </li>
@@ -149,12 +149,12 @@
                         <input type="date">-<input type="date">
                         <select>
                             <option>--</option>
-                            <option>1小時</option>
-                            <option>1天</option>
-                            <option>1個月</option>
-                            <option>3個月</option>
-                            <option>6個月</option>
-                            <option>1年</option>
+                            <option value="1h">1小時</option>
+                            <option value="1d" selected>1天</option>
+                            <option value="1w">1周</option>
+                            <option value="1m">1月</option>
+                            <option value="3m">3月</option>
+                            <option value="6m">6月</option>
                         </select>
                         <span>時間範圍</span>
                     </div>
@@ -165,13 +165,13 @@
                 </div>
                 <div class="data_table">
                     <div class="t_table">
-                        <div class="table_title">資源種類</div>
+                        <div class="table_title">資源需求比例圖</div>
                         <div class="pie_box">
                             <canvas id="circle1"></canvas>
                         </div>
                     </div>
                     <div class="t_table">
-                        <div class="table_title">申請者身分</div>
+                        <div class="table_title">申請者身分比例圖</div>
                         <div class="pie_box">
                             <canvas id="circle2"></canvas>
                         </div>
@@ -179,13 +179,13 @@
                 </div>
                 <div class="data_table">
                     <div class="t_table">
-                        <div class="table_title">申請者狀況</div>
+                        <div class="table_title">申請者狀況比例圖</div>
                         <div class="pie_box">
                             <canvas id="circle3"></canvas>
                         </div>
                     </div>
                     <div class="t_table">
-                        <div class="table_title">在學狀況</div>
+                        <div class="table_title">在學狀況比例圖</div>
                         <div class="pie_box">
                             <canvas id="circle4"></canvas>
                         </div>
@@ -193,7 +193,7 @@
                 </div>
                 <div class="data_table">
                     <div class="t_table">
-                        <div class="table_title">申請者地區</div>
+                        <div class="table_title">申請者地區長條圖</div>
                         <div class="bar_box">
                             <canvas id="chart"></canvas>
                         </div>

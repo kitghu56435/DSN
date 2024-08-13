@@ -23,10 +23,10 @@ section{
 
 .data_screen > .action{
     width:100%;
-    padding:1.5% 2% 1.5% 2%;
+    padding:0% 2% 1.5% 2%;
 }
 
-.data_screen > .action > button{
+.data_screen > .action > button,.selectR > .btn_area > button{
     font-size: 1em;
     width:12vw;
     background-color: white;
@@ -36,7 +36,7 @@ section{
     padding:0.2em 0.5em;
     transition: 0.3s;
 }
-.data_screen > .action > button:hover{
+.data_screen > .action > button:hover,.selectR > .btn_area > button:hover{
     background-color: #6C6C6C	;
     color: white;
 }
@@ -151,13 +151,115 @@ section{
     pointer-events: none;
 }
 
+.window_X{
+    float: right;
+    width:40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.window_X:hover{
+    transform: scale(1.05,1.05);
+}
 
 
+.selectR{
+    position: fixed;
+    z-index: 16;
+    width:40%;
+    background-color:white;
+    box-shadow: 0px 0px 3px #ADADAD;
+    padding:1% 2% 1% 2%;
 
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%); 
+    font-size: 20px;
+}
+.selectR > .title{
+    font-size: 2em;
+    text-align: center;
+    margin-bottom:2%;
+}
+.selectR > .btn_area > button{
+    margin-top:2%;
+}
+.selectR > .content{
+    padding:2%;
+    height:80%;
+    font-size: 1em;
+    box-shadow: inset 0px 0px 5px #ADADAD;
+    border-radius: 10px;
+}
+.selectR > .btn_area{
+    text-align: center;
+    font-size: 1em;
+}
+.selectR .block1{
+    text-align: center;
+}
+.selectR .block1 > input{
+    background-image: url('../../img/backend/search.png');
+    background-size: 28px 28px;
+    background-position: 9px 9px;
+    background-repeat: no-repeat;
+    font-size:1em;
+    padding:10px;
+    border-radius: 20px;
+    padding-left: 10%;
+    border: 1px solid #8E8E8E;
+    width:80%;
+}
+.selectR .block2{
+    margin-top:2%;
+    background-color: #E0E0E0;
+    border-radius: 10px;
+    height:400px;
+    overflow-y: auto;
+}
+.selectR .block2  table{
+    width:100%;
+    cursor: pointer;
+    border-collapse: collapse;
+}
+.selectR .block2  table :hover{
+    background-color: #BEBEBE;
+}
+.selectR .block2 td{
+    padding:1% 0 1% 0;
+}
+.selectR .block2 input{
+    width:100%;
+    height:30px;
+    margin:0;
+    margin-top:10%;
+}
+.selectR .block2 span{
+    font-size: 1em;
+}
+.selectR .block2 img{
+    width:25%;
+    transition: 0.3s;
+}
 
-
-
-
+.selectR .block2 .F_s{
+    overflow: hidden;
+    width:90%;
+    padding-left:7%;
+    margin:0;
+    transition: 0.3s;
+}
+.selectR .block2  hr{
+    border: 0px;
+    height:2px;
+    background-color: #8E8E8E;
+}
+.selectR .block2 .F_s_line > hr{
+    width:2px;
+    border: 0px;
+    height:40px;
+    background-color: #8E8E8E;
+    margin:0px 0px 0px 5px;
+}
 
 
 @media (max-width:1600px){
@@ -174,6 +276,25 @@ section{
     }
     .data_screen > .screen{
         height: 400px;
+    }
+
+    .selectR{
+        font-size: 18px;
+    }
+   
+    
+    .selectR .block2{
+        height:350px;
+    }
+    .selectR .block2 input{
+        width:100%;
+        height:25px;
+    }
+
+    .selectR .block2 .F_s_line > hr{
+        width:2px;
+        height:30px;
+        margin:0px 0px 0px 3px;
     }
 
 }
@@ -199,6 +320,28 @@ section{
         height:300px;
     }
     
+
+    .selectR{
+        font-size: 14px;
+    }
+    
+    .selectR > .btn_area > button{
+        padding:4px 10px 4px 10px;
+    }
+    .selectR .block2{
+        height:250px;
+    }
+    .selectR .block2 input{
+        width:100%;
+        height:20px;
+    }
+   
+
+    .selectR .block2 .F_s_line > hr{
+        width:1px;
+        height:30px;
+        margin:0px 0px 0px 3px;
+    }
 }
 
 

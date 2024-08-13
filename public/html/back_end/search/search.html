@@ -7,22 +7,22 @@
     <title>DSN管理後臺-搜尋管理</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-    <link rel="icon" href="../../img/icon.ico" type="image/x-icon">
-    <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/back_end/search_data.css" rel="stylesheet">
-    <link href="../../css/back_end/sidebars.css" rel="stylesheet">
-    <link href="../../css/back_end/data_block_list.css" rel="stylesheet">
+    <link rel="icon" href="../../../img/icon.ico" type="image/x-icon">
+    <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../css/back_end/search.css" rel="stylesheet">
+    <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
+    <link href="../../../css/back_end/data_block_list.css" rel="stylesheet">
 </head>
 <body>
     <main class="d-flex flex-nowrap">
         <div class="flex-shrink-0 p-3" style="position: fixed;">
             <a href="/backend/resource" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-            <img src="../../img/backend/resource.png" style="margin-right:5%">
-            <span class="fs-2 fw-semibold">DSN管理後臺</span>
+            <img src="../../../img/logo.png" class="back_end_logo" style="margin-right:5%">
+            <span class="fs-2 fw-semibold">管理後臺</span>
             </a>
             <ul class="list-unstyled ps-0">
                 <li class="mb-1">
-                    <img src="../../img/backend/resource.png">
+                    <img src="../../../img/backend/resource.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
                     資源管理
                     </button>
@@ -37,7 +37,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/chat.png">
+                    <img src="../../../img/backend/chat.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#chat-collapse" aria-expanded="false">
                     留言管理
                     </button>
@@ -50,20 +50,20 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/monitor.png">
+                    <img src="../../../img/backend/monitor.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                     監控管理
                     </button>
                     <div class="collapse" id="dashboard-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量數據</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量數據</a></li>
+                        <li><a href="/backend/monitor" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">監控管理</a></li>
+                        <li><a href="/backend/monitor/costomer" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">訪客流量</a></li>
+                        <li><a href="/backend/monitor/resource" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">資源流量</a></li>
                     </ul>
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/search.png">
+                    <img src="../../../img/backend/search.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#search-collapse" aria-expanded="false">
                     搜尋管理
                     </button>
@@ -76,7 +76,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/supplier.png">
+                    <img src="../../../img/backend/supplier.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#supplier-collapse" aria-expanded="false">
                     供應商管理
                     </button>
@@ -88,7 +88,7 @@
                     </div>
                 </li>
                 <li class="mb-1">
-                    <img src="../../img/backend/language.png">
+                    <img src="../../../img/backend/language.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#language-collapse" aria-expanded="false">
                     語言管理
                     </button>
@@ -102,7 +102,7 @@
                 </li>
                 <li class="border-top my-3"></li>
                 <li class="mb-1">
-                    <img src="../../img/backend/member.png">
+                    <img src="../../../img/backend/member.png">
                     <button class="fs-3 btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
                     管理員
                     </button>
@@ -125,7 +125,7 @@
                   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
                     <li class="breadcrumb-item">
                       <a class="link-body-emphasis" href="/backend/resource">
-                        <img src="../../img/backend/search.png">
+                        <img src="../../../img/backend/search.png">
                         <span class="visually-hidden fs-4">資源管理</span>
                       </a>
                     </li>
@@ -139,19 +139,21 @@
                 <div class="data_block_list">
                     <div class="data_block"><p>0</p><span>今日搜尋量</span></div>
                     <div class="data_block"><p>0</p><span>月搜尋量</span></div>
-                    <div class="data_block"><p>0</p><span>重複搜尋</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/monitor/costomer')"><p><img src="../../../img/backend/search.png"></p><span>訪客流量</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/monitor/resource')"><p><img src="../../../img/backend/search.png"></p><span>資源流量</span></div>
                 </div>
                 <div class="data_screen">
                     <div class="action">
-                        <button>累計數量</button>
-                        <button>不重複數量</button>
-                        <select>
-                            <option>1小時</option>
-                            <option>1天</option>
-                            <option>1個月</option>
-                            <option>3個月</option>
-                            <option>6個月</option>
-                            <option>1年</option>
+                        <button id="PV" style="color:white;background-color:#4F4F4F" onclick="clickAction_Btn(this),getSearch_data()">搜尋累計數量</button>
+                        <button id="UV" onclick="clickAction_Btn(this),getSearch_data()">不重複訪客數量</button>
+                        <button id="UVisits" onclick="clickAction_Btn(this),getSearch_data()">重複搜尋數量</button>
+                        <select onchange="getSearch_data()" id="time_range">
+                            <option value="1h">1小時</option>
+                            <option value="1d" selected>1天</option>
+                            <option value="1w">1周</option>
+                            <option value="1m">1月</option>
+                            <option value="3m">3月</option>
+                            <option value="6m">6月</option>
                         </select>
                         <span>時間範圍</span>
                     </div>
@@ -162,15 +164,13 @@
                 <div class="data_table">
                     <div class="t_table">
                         <div class="table_title">搜尋紀錄表</div>
-                        <table>
-                            <tr><th style="width:33%">搜尋時間</th><th style="width:33%">需求參數</th><th style="width:34%">身分參數</th></tr>
-                            <tr><td>2024年12月12日</td><td>經濟需求</td><td>原住民</td></tr>
-                            <tr><td>2024年12月12日</td><td>經濟需求</td><td>原住民</td></tr>
-                            <tr><td>2024年12月12日</td><td>經濟需求</td><td>原住民</td></tr>
+                        <table class="search_record">
+                            <tr><th style="width:33%">搜尋時間</th><th style="width:33%">需求參數</th><th style="width:34%">狀況參數</th></tr>
+                            
                         </table>
                     </div>
                     <div class="t_table">
-                        <div class="table_title">資訊種類比例</div>
+                        <div class="table_title">累計資訊種類比例</div>
                         <div class="pie_box">
                             <canvas id="circle"></canvas>
                         </div>
@@ -180,13 +180,10 @@
         </section>
     </main>
 </body>
-<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="../../js/back_end/sidebars.js"></script>
-<script src="../../js/back_end/search.js"></script>
-<script src="../../js/back_end/data_block_list.js"></script>
-<script>
-    setData_block(0,5);
-    setData_search();
-</script>
+<script src="../../../js/back_end/sidebars.js"></script>
+<script src="../../../js/back_end/search.js"></script>
+<script src="../../../js/back_end/window.js"></script>
+<script src="../../../js/back_end/data_block_list.js"></script>
 </html>
