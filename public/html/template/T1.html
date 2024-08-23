@@ -41,7 +41,11 @@
             </div>
     </header>
     <main>
-        <div class="container">
+        <div class="loading">
+            <img src="../../img/logo.png"><br>
+            <span>loading....</span>
+        </div>
+        <div class="container" style="opacity: 0">
             <div class="title container2"><h1 class="T-title" dsnid="resource_name" dsnnote="資源名稱"><!-- 模板資源名稱 --></h1></div>
             <div><span class="title_s T-text" dsnid="resource_label" dsnnote="弱勢資源網 (資源資訊) "><!-- 弱勢資源網 (資源資訊)  --></span></div>
             <div><span class="update_time T-text" dsnid="update_time" dsnnote="上次更新時間"><!-- 上次更新時間  --></span></div>
@@ -57,14 +61,12 @@
                             </p>
                         </div>
                         <div class="label container2">
-                            資源關鍵字：
+                            <span class="T-text" dsnid="keyword" dsnnote="資源關鍵字"><!-- 資源關鍵字： --></span>
                             <div><span class="T-text" dsnid="002" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
                             <div><span class="T-text" dsnid="003" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
                             <div><span class="T-text" dsnid="004" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
                             <div><span class="T-text" dsnid="005" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
                             <div><span class="T-text" dsnid="006" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
-                            <div><span class="T-text" dsnid="007" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
-                            <div><span class="T-text" dsnid="008" dsnnote="資源標籤"><!-- 資源標籤 --></span></div>
                         </div>
                     </div>
                     <div class="section1-img container2"><img class="T-img" dsnid="011" dsnnote="資源照片" src="#"></div>
@@ -439,7 +441,7 @@
                         <a href="#">資料內容來源</a><br>
                     </div>
                     <div class="heart-btn">
-                        <div id="Like_btn" class="content" onclick="">
+                        <div id="Like_btn" class="Like_content" onclick="">
                           <span class="heart"></span>
                           <span class="like_text">Like</span>
                           <span class="numb"></span>
@@ -525,11 +527,11 @@
     <script src="../../js/ajax.js"></script>
     <script>
         $(document).ready(function(){
-            $('.content').click(function(){
-            $('.content').toggleClass("heart-active")
-            $('.like_text').toggleClass("heart-active")
-            $('.numb').toggleClass("heart-active")
-            $('.heart').toggleClass("heart-active")
+            $('.heart-btn  .content').click(function(){
+                $('.heart-btn  .content').toggleClass("heart-active")
+                $('.heart-btn .like_text').toggleClass("heart-active")
+                $('.heart-btn .numb').toggleClass("heart-active")
+                $('.heart-btn .heart').toggleClass("heart-active")
             });
         });
         header_nav_check();

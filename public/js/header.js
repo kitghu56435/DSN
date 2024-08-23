@@ -5,6 +5,7 @@ window.addEventListener('resize', function() {
 });
 
 let catalogue_page = ['economy','emergency','law','education','career','medical','psychology','application'];
+
 function header_nav_check(){
     
     let nav_item = document.getElementsByClassName('nav-item');
@@ -61,7 +62,7 @@ function getHeader_data(page_name){
                     alert('header資料錯誤');
                 }else{
                     setHeader_data(jsonResponse);
-                    header_nav_check();
+                    header_nav_check();''
                 }
             }else{
                 alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);

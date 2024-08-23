@@ -1,8 +1,21 @@
 
-
+.loading{
+    position: fixed;
+    z-index: 9999;
+    top:50%;
+    left: 50%;
+    text-align: center;
+    font-size: 22px;
+    transform: translate(-50%,-50%);
+    transition: 0.3s;
+}
+.loading > img{
+    width:150px;
+}
 .container{
     margin-top:2%;
-    font-size: 22px;
+    font-size: 20px;
+    transition: 0.3s;
 }
 .title{
     margin-bottom: 1%;
@@ -56,7 +69,7 @@
 .section1 .label > div{
     display: inline;
 }
-.section1 > .section1-text  span {
+.section1 > .section1-text .label > div >  span {
     margin-top: 0.5%;
     display: inline-block;
     white-space: nowrap;
@@ -69,7 +82,9 @@
 }
 
 .section2{
-    margin-bottom: 5%;
+    margin-bottom: 3%;
+    display: flex;
+    flex-direction:column-reverse;
 }
 .section2 .text > span{
     font-size: 1.2em;
@@ -78,8 +93,6 @@
     display: inline-block;
 }
 .section2 > .section2-img{
-    margin-top:2%;
-    margin-bottom: 2%;
     text-align: center;
 }
 .section2 > .section2-img > img{
@@ -209,6 +222,9 @@ table tbody tr:nth-child(odd) {
 
 
 @media (max-width:1600px){
+    .loading > img{
+        width:130px;
+    }
     .container{
         font-size: 20px;
     }
@@ -222,6 +238,9 @@ table tbody tr:nth-child(odd) {
     }
 }
 @media (max-width:1280px){
+    .loading > img{
+        width:110px;
+    }
     .container{
         max-width: 1000px;
         font-size: 16px;
@@ -250,6 +269,9 @@ table tbody tr:nth-child(odd) {
     
 }
 @media (max-width:768px){
+    .loading > img{
+        width:110px;
+    }
     .container > .content {
         padding-left: 0%;
     }
@@ -263,12 +285,22 @@ table tbody tr:nth-child(odd) {
     }
 }
 @media (max-width:560px){
+    .loading > img{
+        width:90px;
+    }
     .container{
         line-height: 30px;
         font-size: 18px;
     }
     .container > .content {
         padding-left: 0%;
+    }
+    .section1 > .section1-img > img{
+        width:250px;
+        height:250px;
+    }
+    .section1 > .section1-text, .section1 > .section1-img, .section1 > .section2-img {
+        padding: 4% 0% 4% 0%;
     }
     .title{
         margin-top: 5%;
@@ -278,11 +310,14 @@ table tbody tr:nth-child(odd) {
         font-size: 1.8em;
     }
     .title > h2{
-        margin-top:10%;
-        margin-bottom: 10%;
+        margin-top:8%;
+        margin-bottom: 8%;
     }
     .section1{
         flex-direction: column-reverse;
+    }
+    .section2{
+        flex-direction:column;
     }
     .section2 > .section2-img > img{
         width: 100%;

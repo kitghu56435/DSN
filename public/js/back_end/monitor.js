@@ -302,7 +302,8 @@ function setData_monitor_resource(data){
     let circle_datasets = [];
     let labels = [];
 
-    
+
+    console.log(data.UV)
 
 
     if(data.PV.length != 0){
@@ -315,6 +316,13 @@ function setData_monitor_resource(data){
             "label": '累計數量',
             "data": data.PV.map(row => row.Count),
         })
+
+        if(data.Visits.length != 0){
+            data.Visits = twoArrarysort(data.PV,data.Visits,'R_ID');
+        }
+        if(data.UV.length != 0){
+            data.UV = twoArrarysort(data.PV,data.UV,'R_ID');
+        }
     }
     if(data.Visits.length != 0){
         labels = data.Visits.map(row => row.R_Name);
@@ -322,6 +330,11 @@ function setData_monitor_resource(data){
             label: '造訪數量',
             data: data.Visits.map(row => row.Count),
         })
+        if(data.PV.length == 0){
+            if(data.UV.length != 0){
+                data.UV = twoArrarysort(data.Visits,data.UV,'R_ID');
+            }
+        }
     }
     if(data.UV.length != 0){
         labels = data.UV.map(row => row.R_Name);
@@ -331,6 +344,9 @@ function setData_monitor_resource(data){
         })
     }
 
+    console.log(data)
+    
+    
 
     
     myChart = new Chart(
@@ -365,6 +381,23 @@ function setData_monitor_resource(data){
         str += `<tr><td>${data.Rank[i].rank}</td><td>${data.Rank[i].R_Name}</td><td>${data.Rank[i].count}</td></tr>`;
     }
     table_rank.innerHTML = str;
+}
+
+
+
+function twoArrarysort(array1,array2,key){
+    let new_array = []
+
+    
+    for(h = 0 ; h < array1.length;h++ ){
+        for(k = 0 ;k < array2.length;k++){
+            if(array1[h][key] == array2[k][key]){
+                new_array.push(array2[k])
+                break;
+            }
+        }
+    }
+    return new_array;
 }
 
 

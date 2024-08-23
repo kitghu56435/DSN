@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link rel="icon" href="../../../img/icon.ico" type="image/x-icon">
     <link href="../../../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../../css/back_end/search_data.css" rel="stylesheet">
+    <link href="../../../css/back_end/search_proportion.css" rel="stylesheet">
     <link href="../../../css/back_end/sidebars.css" rel="stylesheet">
     <link href="../../../css/back_end/sidebars2.css" rel="stylesheet">
 </head>
@@ -69,9 +69,9 @@
                     </button>
                     <div class="collapse" id="search-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
+                        <li><a href="/backend/search" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
+                        <li><a href="/backend/search/record" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
+                        <li><a href="/backend/search/proportion" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
                     </ul>
                     </div>
                 </li>
@@ -120,8 +120,8 @@
         </div>
         <div class="b-example-divider b-example-vr" style="margin-left:17%;position: fixed;"></div>
         <div class="sidebars2">
-            <a href="">搜尋紀錄</a>
-            <a href="" style="background-color: #7B7B7B;color: white;">搜尋數據</a>
+            <a href="/backend/search/record">搜尋紀錄</a>
+            <a href="/backend/search/proportion" style="background-color: #7B7B7B;color: white;">搜尋數據</a>
         </div>
         <section>
             <div class="container-breadcrumb my-2">
@@ -134,10 +134,10 @@
                       </a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language">搜尋管理</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/search">搜尋管理</a>
                     </li>
                     <li class="breadcrumb-item fs-4">
-                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/language/static">搜尋數據</a>
+                        <a class="link-body-emphasis fw-semibold text-decoration-none fs-4" href="/backend/search/proportion">搜尋數據</a>
                     </li>
                   </ol>
                 </nav>
@@ -145,10 +145,10 @@
             <div class="content">
                 <div class="data_screen">
                     <div class="action">
-                        <span class="date_span">指定時間範圍</span>
-                        <input type="date">-<input type="date">
-                        <select>
-                            <option>--</option>
+                        <button id="PV" style="color:white;background-color:#4F4F4F" onclick="clickAction_Btn_Single(this),getSearch_proportion()">搜尋累計數量</button>
+                        <button id="UV" onclick="clickAction_Btn_Single(this),getSearch_proportion()">不重複訪客數量</button>
+                        <button id="UVisits" onclick="clickAction_Btn_Single(this),getSearch_proportion()">重複搜尋數量</button>
+                        <select onchange="getSearch_proportion()" id="time_range">
                             <option value="1h">1小時</option>
                             <option value="1d" selected>1天</option>
                             <option value="1w">1周</option>
@@ -158,22 +158,18 @@
                         </select>
                         <span>時間範圍</span>
                     </div>
-                    <div class="action">
-                        <button>累計數量</button>
-                        <button>不重複數量</button>
-                    </div>
                 </div>
                 <div class="data_table">
                     <div class="t_table">
                         <div class="table_title">資源需求比例圖</div>
                         <div class="pie_box">
-                            <canvas id="circle1"></canvas>
+                            <canvas id="demand_pie"></canvas>
                         </div>
                     </div>
                     <div class="t_table">
                         <div class="table_title">申請者身分比例圖</div>
                         <div class="pie_box">
-                            <canvas id="circle2"></canvas>
+                            <canvas id="identity_pie"></canvas>
                         </div>
                     </div>
                 </div>
@@ -181,13 +177,13 @@
                     <div class="t_table">
                         <div class="table_title">申請者狀況比例圖</div>
                         <div class="pie_box">
-                            <canvas id="circle3"></canvas>
+                            <canvas id="condition_pie"></canvas>
                         </div>
                     </div>
                     <div class="t_table">
                         <div class="table_title">在學狀況比例圖</div>
                         <div class="pie_box">
-                            <canvas id="circle4"></canvas>
+                            <canvas id="school_pie"></canvas>
                         </div>
                     </div>
                 </div>
@@ -195,9 +191,8 @@
                     <div class="t_table">
                         <div class="table_title">申請者地區長條圖</div>
                         <div class="bar_box">
-                            <canvas id="chart"></canvas>
+                            <canvas id="city_pie"></canvas>
                         </div>
-                        
                     </div>
                 </div>
             </div>
@@ -208,7 +203,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../../../js/back_end/sidebars.js"></script>
 <script src="../../../js/back_end/search.js"></script>
-<script>
-    setData_search_data()
-</script>
+<script src="../../../js/back_end/window.js"></script>
 </html>

@@ -1,6 +1,6 @@
 const db = require('../db');
 const moment = require('moment-timezone');
-const {NextID,checkData,RDNextID, add0} = require('../function');
+const {checkData,RDNextID, add0} = require('../function');
 let gap = 30; //min 造訪間隔時間
 
 
@@ -42,6 +42,8 @@ async function getCustomer_data(type,range){
         case '6m' : date_start = Day_ago(182); break;
         default : data_count = 23; break;
     }
+
+    
     
     return new Promise((resolve,reject)=>{
         //累計顧客數量
@@ -208,7 +210,7 @@ async function getCustomer_data(type,range){
 
                         user_list.push({
                             "cookie" : result[0].FL_Cookie,
-                            "count" : 1,
+                            "count" : 0,
                             "time" : result[0].FL_Time
                         });
 
@@ -221,7 +223,7 @@ async function getCustomer_data(type,range){
                                     let user_list_accept_time = new Date(user_list_time.getTime() + (1000 * 60 * gap));
                                     let data_time = new Date(result[i].FL_Time);
                                     
-
+                                    
                                     if(data_time > user_list_accept_time){
                                         user_list.push({
                                             "cookie" : result[i].FL_Cookie,
@@ -229,6 +231,7 @@ async function getCustomer_data(type,range){
                                             "time" : result[i].FL_Time
                                         });
                                     }
+                                    
                                     break;
                                 }
                             }
@@ -236,7 +239,7 @@ async function getCustomer_data(type,range){
                             if(!found){
                                 user_list.push({
                                     "cookie" : result[i].FL_Cookie,
-                                    "count" : 1,
+                                    "count" : 0,
                                     "time" : result[i].FL_Time
                                 });
                             }
@@ -245,6 +248,7 @@ async function getCustomer_data(type,range){
                         }
                     }
 
+                    
                     
                     
                     if(range == '1h'){  //1小時 
@@ -377,7 +381,6 @@ async function getCustomer_data(type,range){
                                 "count" : count,
                             })
                         }
-                        
                         resolve(data);
                     }
                 })
@@ -387,6 +390,7 @@ async function getCustomer_data(type,range){
                         console.log(err);
                         reject();
                     }else{
+                        
                         let label = create_label('h',24);
                         for(i = 0; i < label.length; i++){
                             let count = 0;
@@ -559,7 +563,7 @@ async function getCustomer_count(type,range,date_start,date_end){
 
                         user_list.push({
                             "cookie" : result[0].FL_Cookie,
-                            "count" : 1,
+                            "count" : 0,
                             "time" : result[0].FL_Time
                         });
 
@@ -587,7 +591,7 @@ async function getCustomer_count(type,range,date_start,date_end){
                             if(!found){
                                 user_list.push({
                                     "cookie" : result[i].FL_Cookie,
-                                    "count" : 1,
+                                    "count" : 0,
                                     "time" : result[i].FL_Time
                                 });
                             }
@@ -699,7 +703,7 @@ async function getCustomer_last_data_percentage(type,range,date_start,date_end){
 
                         user_list.push({
                             "cookie" : result[0].FL_Cookie,
-                            "count" : 1,
+                            "count" : 0,
                             "time" : result[0].FL_Time
                         });
 
@@ -727,7 +731,7 @@ async function getCustomer_last_data_percentage(type,range,date_start,date_end){
                             if(!found){
                                 user_list.push({
                                     "cookie" : result[i].FL_Cookie,
-                                    "count" : 1,
+                                    "count" : 0,
                                     "time" : result[i].FL_Time
                                 });
                             }
@@ -936,7 +940,7 @@ async function getResource_data(type,range,resource){
                             user_list.push({
                                 "R_ID" : result[0].FL_Page,
                                 "cookie" : result[0].FL_Cookie,
-                                "count" : 1,
+                                "count" : 0,
                                 "time" : result[0].FL_Time
                             });
 
@@ -962,7 +966,7 @@ async function getResource_data(type,range,resource){
                                     user_list.push({
                                         "R_ID" : result[i].FL_Page,
                                         "cookie" : result[i].FL_Cookie,
-                                        "count" : 1,
+                                        "count" : 0,
                                         "time" : result[i].FL_Time
                                     });
                                 }
@@ -985,7 +989,7 @@ async function getResource_data(type,range,resource){
                     }
                 })
             }else if(type == 'UV'){
-                db.execute(`SELECT FL_Page,COUNT(FL_Time) Counts,FL_Time FROM Flow WHERE FL_Time BETWEEN ? AND ? AND FL_Page LIKE 'R%' ${resource_sql} GROUP BY FL_Page,FL_Cookie`,parameter,(err,result)=>{
+                db.execute(`SELECT FL_Page,COUNT(FL_Time) Counts FROM Flow WHERE FL_Time BETWEEN ? AND ? AND FL_Page LIKE 'R%' ${resource_sql} GROUP BY FL_Page,FL_Cookie`,parameter,(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -1068,28 +1072,28 @@ async function getResource_Rank(limit,range,resource) {
     }
     parameter.push(String(limit));
     
-
+   
 
     return new Promise((resolve,reject)=>{
-        db.execute(`SELECT FL_Page,COUNT(FL_Time) Count,Resource_data.RD_Content,D_Name FROM Flow,Resource_data,Resources,Demand WHERE FL_Time 
+        db.execute(`SELECT FL_Page,COUNT(FL_Time) Counts,MAX(Resource_data.RD_Content) RD_Content,MAX(D_Name) D_Name FROM Flow,Resource_data,Resources,Demand WHERE FL_Time 
         BETWEEN ? AND ? AND FL_Page LIKE 'R%' AND Flow.FL_Page = Resource_data.R_ID AND 
-        Resource_data.R_ID = Resources.R_ID AND Demand.D_ID = Resources.D_ID AND RD_Type = 2 AND Demand.L_ID = 'L000000001' 
-        AND Resource_data.L_ID = 'L000000001' ${resource_sql} GROUP BY FL_Page ORDER BY Count DESC LIMIT ?;`,parameter,(err,result)=>{
+        Resource_data.R_ID = Resources.R_ID AND Demand.D_ID = Resources.D_ID AND Resource_data.RD_Type = 2 AND Demand.L_ID = 'L000000001' 
+        AND Resource_data.L_ID = 'L000000001' ${resource_sql} GROUP BY FL_Page ORDER BY Counts DESC LIMIT ?;`,parameter,(err,result)=>{
             if(err){
                 console.log(err);
                 reject('dberr')
             }else{
                 let rank = 1;
                 for(i = 0;i < result.length;i++){
-                    if(parseInt(result[i].Count) != 0){
+                    if(parseInt(result[i].Counts) != 0){
                         data.push({
                             "rank" : rank,
                             "R_Name" : result[i].RD_Content,
                             "D_Name" : result[i].D_Name,
-                            "count" : result[i].Count,
+                            "count" : result[i].Counts,
                         })
                         if(i < result.length - 1){
-                            if(result[i].Count > result[i+1].Count){
+                            if(result[i].Counts > result[i+1].Counts){
                                 rank += 1;
                             }
                         }
@@ -1158,8 +1162,9 @@ function Arrarysort(array,key){
 
 
 function create_label(type,count){
+    let now_text = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+    let now = new Date(now_text)
     let data = [];
-    let now = new Date();
     let time = '';
     for(i = (count - 1);i >= 0 ; i--){
         switch(type){

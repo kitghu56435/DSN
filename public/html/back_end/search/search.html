@@ -69,9 +69,9 @@
                     </button>
                     <div class="collapse" id="search-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
+                        <li><a href="/backend/search" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
+                        <li><a href="/backend/search/record" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
+                        <li><a href="/backend/search/proportion" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
                     </ul>
                     </div>
                 </li>
@@ -139,13 +139,13 @@
                 <div class="data_block_list">
                     <div class="data_block"><p>0</p><span>今日搜尋量</span></div>
                     <div class="data_block"><p>0</p><span>月搜尋量</span></div>
-                    <div class="data_block block_click" onclick="url('/backend/monitor/costomer')"><p><img src="../../../img/backend/search.png"></p><span>訪客流量</span></div>
-                    <div class="data_block block_click" onclick="url('/backend/monitor/resource')"><p><img src="../../../img/backend/search.png"></p><span>資源流量</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/search/record')"><p><img src="../../../img/backend/search.png"></p><span>搜尋紀錄</span></div>
+                    <div class="data_block block_click" onclick="url('/backend/search/proportion')"><p><img src="../../../img/backend/search.png"></p><span>搜尋數據</span></div>
                 </div>
                 <div class="data_screen">
                     <div class="action">
                         <button id="PV" style="color:white;background-color:#4F4F4F" onclick="clickAction_Btn(this),getSearch_data()">搜尋累計數量</button>
-                        <button id="UV" onclick="clickAction_Btn(this),getSearch_data()">不重複訪客數量</button>
+                        <button id="UV" onclick="clickAction_Btn(this),getSearch_data()">不重複搜尋數量</button>
                         <button id="UVisits" onclick="clickAction_Btn(this),getSearch_data()">重複搜尋數量</button>
                         <select onchange="getSearch_data()" id="time_range">
                             <option value="1h">1小時</option>

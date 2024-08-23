@@ -137,6 +137,12 @@ function showSituational(n){
 }
 
 
+
+
+
+
+
+
 function getR_Label_leng(str,L_ID){
     if(L_ID == 'L000000002'){
         switch(str){

@@ -10,6 +10,22 @@ function clickAction_Btn(node){
     }
 }
 
+function clickAction_Btn_Single(node){
+    let PV = document.getElementById('PV');
+    let UV = document.getElementById('UV');
+    let UVisits = document.getElementById('UVisits');
+
+    PV.setAttribute('style','');
+    UV.setAttribute('style','');
+    UVisits.setAttribute('style','');
+
+    if(node.style.color == 'white'){
+        node.setAttribute('style','');
+    }else{
+        node.setAttribute('style','color:white;background-color:#4F4F4F');
+    }
+}
+
 function setSearch_data(data){
     const ctx = document.getElementById('chart');
     const circle = document.getElementById('circle');
@@ -141,160 +157,303 @@ function getSearch_data(){
 }
 
 
-function setSearch_proportion(){
-    const ctx = document.getElementById('chart');
-    const c1 = document.getElementById('circle1');
-    const c2 = document.getElementById('circle2');
-    const c3 = document.getElementById('circle3');
-    const c4 = document.getElementById('circle4');
+
+let Chart_city = null;
+let Chart_demand = null;
+let Chart_identity = null;
+let Chart_condition = null;
+let Chart_school = null;
+
+function setSearch_proportion(data){
+    const city_pie = document.getElementById('city_pie');
+    const demand_pie = document.getElementById('demand_pie');
+    const identity_pie = document.getElementById('identity_pie');
+    const condition_pie = document.getElementById('condition_pie');
+    const school_pie = document.getElementById('school_pie');
     
-    const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-        { year: 2017, count: 28 },
-        { year: 2018, count: 28 },
-        { year: 2019, count: 28 },
-    ];
+    let city_labels_pie = [];
+    let city_datasets_pie = [];
+    let demand_labels_pie = [];
+    let demand_datasets_pie = [];
+    let identity_labels_pie = [];
+    let identity_datasets_pie = [];
+    let condition_labels_pie = [];
+    let condition_datasets_pie = [];
+    let school_labels_pie = [];
+    let school_datasets_pie = [];
+
+
+    if(data.Demand_PV.length != 0){
+        city_labels_pie = data.City_PV.map(row => row.name);
+        city_datasets_pie.push({
+            label: '搜尋累計數量',
+            data: data.City_PV.map(row => row.count),
+        })
+        demand_labels_pie = data.Demand_PV.map(row => row.name);
+        demand_datasets_pie.push({
+            data: data.Demand_PV.map(row => row.count),
+        })
+        identity_labels_pie = data.Identity_PV.map(row => row.name);
+        identity_datasets_pie.push({
+            data: data.Identity_PV.map(row => row.count),
+        })
+        condition_labels_pie = data.Condition_PV.map(row => row.name);
+        condition_datasets_pie.push({
+            data: data.Condition_PV.map(row => row.count),
+        })
+        school_labels_pie = data.School_PV.map(row => row.name);
+        school_datasets_pie.push({
+            data: data.School_PV.map(row => row.count),
+        })
+    }
+    if(data.Demand_UV.length != 0){
+        city_labels_pie = data.City_UV.map(row => row.name);
+        city_datasets_pie.push({
+            label: '搜尋累計數量',
+            data: data.City_UV.map(row => row.count),
+        })
+        demand_labels_pie = data.Demand_UV.map(row => row.name);
+        demand_datasets_pie.push({
+            data: data.Demand_UV.map(row => row.count),
+        })
+        identity_labels_pie = data.Identity_UV.map(row => row.name);
+        identity_datasets_pie.push({
+            data: data.Identity_UV.map(row => row.count),
+        })
+        condition_labels_pie = data.Condition_UV.map(row => row.name);
+        condition_datasets_pie.push({
+            data: data.Condition_UV.map(row => row.count),
+        })
+        school_labels_pie = data.School_UV.map(row => row.name);
+        school_datasets_pie.push({
+            data: data.School_UV.map(row => row.count),
+        })
+    }
+    if(data.Demand_UVisits.length != 0){
+        city_labels_pie = data.City_UVisits.map(row => row.name);
+        city_datasets_pie.push({
+            label: '搜尋累計數量',
+            data: data.City_UVisits.map(row => row.count),
+        })
+        demand_labels_pie = data.Demand_UVisits.map(row => row.name);
+        demand_datasets_pie.push({
+            data: data.Demand_UVisits.map(row => row.count),
+        })
+        identity_labels_pie = data.Identity_UVisits.map(row => row.name);
+        identity_datasets_pie.push({
+            data: data.Identity_UVisits.map(row => row.count),
+        })
+        condition_labels_pie = data.Condition_UVisits.map(row => row.name);
+        condition_datasets_pie.push({
+            data: data.Condition_UVisits.map(row => row.count),
+        })
+        school_labels_pie = data.School_UVisits.map(row => row.name);
+        school_datasets_pie.push({
+            data: data.School_UVisits.map(row => row.count),
+        })
+    }
+
+    
+    if(demand_labels_pie.length == 0){
+        msgbox(1,'查無資料')
+    }
     
     
-    new Chart(
-        ctx,
+    Chart_city = new Chart(
+        city_pie,
         {
             type: 'bar',
             options: {
             maintainAspectRatio:false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
             },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                {
-                    label: 'Acquisitions by year',
-                    data: data.map(row => row.count)
-                }
-                ]
+                labels: city_labels_pie,
+                datasets: city_datasets_pie
             }
         }
-    );
+    );     
     
     
-    new Chart(
-        c1,
+    
+    Chart_demand = new Chart(
+        demand_pie,
         {
             type: 'pie',
             options: {
                 maintainAspectRatio:false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
             },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]
+                labels: demand_labels_pie,
+                datasets: demand_datasets_pie
             }
         }
     );
 
-    new Chart(
-        c2,
+    Chart_identity = new Chart(
+        identity_pie,
         {
             type: 'pie',
             options: {
                 maintainAspectRatio:false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
             },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]
+                labels: identity_labels_pie,
+                datasets: identity_datasets_pie
             }
         }
     );
 
-    new Chart(
-        c3,
+    Chart_condition = new Chart(
+        condition_pie,
         {
             type: 'pie',
             options: {
                 maintainAspectRatio:false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
             },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]
+                labels: condition_labels_pie,
+                datasets: condition_datasets_pie
             }
         }
     );
 
-    new Chart(
-        c4,
+    Chart_school = new Chart(
+        school_pie,
         {
             type: 'pie',
             options: {
                 maintainAspectRatio:false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
             },
             data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                    {
-                        label: 'Acquisitions by year',
-                        data: data.map(row => row.count)
-                    }
-                ]
+                labels: school_labels_pie,
+                datasets: school_datasets_pie
             }
         }
     );
+}
+
+function getSearch_proportion(){
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                Chart_city.destroy();
+                Chart_demand.destroy();
+                Chart_identity.destroy();
+                Chart_condition.destroy();
+                Chart_school.destroy();
+                
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,'資料庫錯誤');
+                }else{
+                    setSearch_proportion(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+
+    let PV_node = document.getElementById('PV');
+    let UVisits_node = document.getElementById('UVisits');
+    let UV_node = document.getElementById('UV');
+    let time_range = document.getElementById('time_range').value;
+    let PV = false;
+    let UVisits = false;
+    let UV = false;
+    
+    if(PV_node.style.color == 'white'){PV = true;}
+    if(UVisits_node.style.color == 'white'){UVisits = true;}
+    if(UV_node.style.color == 'white'){UV = true;}
+
+
+    
+    httpRequest.open('POST','/backend/search/proportion/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('PV=' + PV + '&UVisits=' + UVisits + '&UV=' + UV  + '&time_range=' + time_range);
+}
+
+
+function setSearch_record(data){
+    let number = document.getElementById('number');
+    let table_content = document.getElementsByClassName('table_content')[0];
+    let date_start = document.getElementById('date_start');
+    let date_end = document.getElementById('date_end');
+    date_start.value = data.today_start;
+    date_end.value = data.today_end;
+
+    let str = `<tr>
+        <th style="width:15%">搜尋時間</th>
+        <th style="width:15%">資源種類</th>
+        <th style="width:10%">申請者身分</th>
+        <th style="width:10%">申請者狀況</th>
+        <th style="width:10%">在學狀況</th>
+        <th style="width:10%">申請者地區</th>
+    </tr>`;
+
+    if(data != undefined){
+        number.innerHTML = '數量：' + data.record.length;
+        for(i = 0;i < data.record.length;i++){
+            str += `
+            <tr>
+                <td>
+                ${data.record[i].SR_Date}<br>
+                ${data.record[i].SR_Time}
+                </td>
+                <td>${data.record[i].SR_Demand}</td>
+                <td>${data.record[i].SR_Identity}</td>
+                <td>${data.record[i].SR_Condition}</td>
+                <td>${data.record[i].SR_School}</td>
+                <td>${SR_City(data.record[i].SR_City)}${data.record[i].SR_District}</td>
+            </tr>`;
+        }
+
+        if(data.record.length == 0){
+            str += `<tr>
+                <td colspan="6">查無搜尋紀錄</td>
+            </tr>`;
+        }
+    }
+
+    table_content.innerHTML = str;
+
+}
+
+
+function getSearch_record(){
+    let date_start = document.getElementById('date_start').value;
+    let date_end = document.getElementById('date_end').value;
+    let httpRequest = new XMLHttpRequest();
+
+    httpRequest.onreadystatechange = function(){
+        if(httpRequest.readyState === 4){
+            if(httpRequest.status === 200){
+                let jsonResponse = JSON.parse(httpRequest.responseText);
+                if(jsonResponse.msgbox != ''){
+                    msgbox(1,'資料庫錯誤');
+                }else{
+                    setSearch_record(jsonResponse);
+                }
+            }else{
+                alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status,'','simple');
+            }
+        }
+    }
+
+    
+    httpRequest.open('POST','/backend/search/record/data');
+    httpRequest.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    httpRequest.send('date_start=' + date_start + '&date_end=' + date_end);
+
+}
+
+
+function SR_City(str){
+    if(str == ''){
+        return '不限市'
+    }else{
+        return str;
+    }
 }

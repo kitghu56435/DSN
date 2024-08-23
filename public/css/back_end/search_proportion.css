@@ -95,7 +95,7 @@ section{
     padding-top:4%;
     padding-bottom:4%;
     width:95%;
-    height:90%;
+    height:600px;
     margin: auto;
 }
 .table_title{
@@ -166,11 +166,12 @@ section{
     .content{
         font-size: 18px;
     }
-    .data_table > .t_table{
-        height: 400px;
-    }
+    
     .data_screen > .screen{
         height: 400px;
+    }
+    .data_table > .t_table > .bar_box{
+        height:500px;
     }
 
 }
@@ -185,15 +186,16 @@ section{
     .content{
         font-size: 14px;
     }
-    .data_table > .t_table{
-        height: 350px;
-    }
+    
     .data_screen > .screen{
-        height: 350px;
+        height: 400px;
     }
     .data_table > .t_table > .pie_box{
         padding-top:5%;
-        height:300px;
+        height:350px;
+    }
+    .data_table > .t_table > .bar_box{
+        height:400px;
     }
     
 }

@@ -51,10 +51,14 @@ function msgbox(mode,str,func){
 
     if(msgbox != undefined){
         msgbox.parentElement.removeChild(msgbox);
-        black_screen.parentElement.removeChild(black_screen);
+        if(black_screen != undefined){
+            black_screen.parentElement.removeChild(black_screen);
+        }
     }else if(mode == 1){
         let msg = document.createElement('div');
+        let black_screen = document.createElement('div');
         msg.setAttribute('class','msgbox');
+        black_screen.setAttribute('class','black_screen');
         msg.innerHTML = `
             <div class="title" style="text-align: center">系統通知<img onclick="msgbox()" src="/img/X.png"></div>
             <hr>
@@ -62,10 +66,13 @@ function msgbox(mode,str,func){
             <hr>
             <div class="btn_a"><button onclick="msgbox()">確認</button></div>
         `
+        body.appendChild(black_screen);
         body.appendChild(msg);
     }else if(mode == 2){
         let msg = document.createElement('div');
+        let black_screen = document.createElement('div');
         msg.setAttribute('class','msgbox');
+        black_screen.setAttribute('class','black_screen');
         msg.innerHTML = `
             <div class="title" style="text-align: center">系統通知<img onclick="msgbox()" src="/img/X.png"></div>
             <hr>
@@ -73,6 +80,7 @@ function msgbox(mode,str,func){
             <hr>
             <div class="btn_a"><button onclick="msgbox()">取消</button><button onclick="${func}">確認</button></div>
         `
+        body.appendChild(black_screen);
         body.appendChild(msg);
     }
 }

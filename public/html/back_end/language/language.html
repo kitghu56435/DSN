@@ -69,9 +69,9 @@
                     </button>
                     <div class="collapse" id="search-collapse">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
-                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
+                        <li><a href="/backend/search" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋管理</a></li>
+                        <li><a href="/backend/search/record" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋紀錄</a></li>
+                        <li><a href="/backend/search/proportion" class="link-body-emphasis d-inline-flex text-decoration-none rounded fs-4">搜尋數據</a></li>
                     </ul>
                     </div>
                 </li>
@@ -172,37 +172,5 @@
 <script src="../../js/back_end/sidebars.js"></script>
 <script src="../../js/back_end/language.js"></script>
 <script src="../../js/back_end/data_block_list.js"></script>
-<script>
-    setData_block(0,5);
-    setData_block(1,4);
-    setLanguage({
-        "Language":[{
-            "L_ID" : "L000000001",
-            "L_Name" : "中文",
-            "L_Use" : 2,
-            "L_Date" : '2023年12月12月 12:12:12',
-        },
-        {
-            "L_ID" : "L000000002",
-            "L_Name" : "英文",
-            "L_Use" : 4,
-            "L_Date" : '2023年12月12月 12:12:12',
-        }],
-        "Static":[{
-            "SP_ID" : "SP00000001",
-            "Static_Name" : "首頁",
-            "Static_Use" : ["中文","英文"],
-        },
-        {
-            "SP_ID" : "SP00000002",
-            "Static_Name" : "新手上路",
-            "Static_Use" : ["中文","英文"],
-        },
-        {
-            "SP_ID" : "SP00000003",
-            "Static_Name" : "關於我們",
-            "Static_Use" : ["中文","英文"],
-        }]
-    });
-</script>
+<script src="../../js/back_end/window.js"></script>
 </html>

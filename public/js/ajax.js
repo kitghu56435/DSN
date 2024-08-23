@@ -130,6 +130,7 @@ function setResourceInfo_data(data){   //資源頁面專用的
     }
 
     update_time.innerHTML = '上次更新時間 ' + data.R_Update;
+    over_resource_loading()
 }
 function setLike_Btn(clike){
     let content = document.getElementsByClassName('content')[0];
@@ -145,6 +146,17 @@ function setLike_Btn(clike){
 }
 function check_text(str){
     return str.replaceAll('\n', "<br>");
+}
+function over_resource_loading(){
+    let loading = document.getElementsByClassName('loading')[0];
+    let container = document.getElementsByClassName('container')[0];
+
+    loading.setAttribute('style','opacity: 0');
+    container.setAttribute('style','opacity: 1');
+
+    setTimeout(()=>{
+        loading.setAttribute('style','opacity: 0;display:none');
+    },1000)
 }
 
 

@@ -9,7 +9,7 @@ let gap = 30; //min 造訪間隔時間
 //紀錄搜尋資料
 async function Record(data,SR_Cookie,SR_L_ID){
     let SR_Time = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
-    let SR_ID = await RDNextID('Search_Record','SR_ID','SR');
+    let SR_ID = await RDNextID('Search_record','SR_ID','SR');
 
 
     let SR_Demand = resource.setArray_to_Code(data.demand);
@@ -19,10 +19,10 @@ async function Record(data,SR_Cookie,SR_L_ID){
     let SR_City = resource.setArray_to_Code(data.R_City);
     let SR_District = resource.setArray_to_Code(data.R_District);
 
-    
+
     return new Promise((resolve,reject)=>{
         if(checkData(SR_Cookie) && checkData(SR_L_ID)){
-            db.execute(`INSERT INTO Search_Record VALUES(?,?,?,?,?,?,?,?,?,?);`,
+            db.execute(`INSERT INTO Search_record VALUES(?,?,?,?,?,?,?,?,?,?);`,
             [SR_ID,SR_L_ID,SR_Demand,SR_Identity,SR_Condition,SR_School,SR_City,SR_District,SR_Cookie,SR_Time],(err,results)=>{
                 if(err){
                     console.log(err);
@@ -61,7 +61,7 @@ async function getSearch_data(type,range){
         //累計顧客數量
         if(type == 'PV'){
             if(range == '1h'){ //1小時 
-                db.execute(`SELECT DATE_FORMAT(SR_Time,'%H:%i') Time_class,COUNT(SR_Time) Count FROM Search_Record WHERE SR_Time BETWEEN ? AND ? GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
+                db.execute(`SELECT DATE_FORMAT(SR_Time,'%H:%i') Time_class,COUNT(SR_Time) Count FROM Search_record WHERE SR_Time BETWEEN ? AND ? GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -86,7 +86,7 @@ async function getSearch_data(type,range){
                     }
                 })
             }else if(range == '1d'){ //1天
-                db.execute(`SELECT DATE_FORMAT(SR_Time,'%H:00') Time_class,COUNT(SR_Time) Count FROM Search_Record WHERE SR_Time BETWEEN ? AND ? GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
+                db.execute(`SELECT DATE_FORMAT(SR_Time,'%H:00') Time_class,COUNT(SR_Time) Count FROM Search_record WHERE SR_Time BETWEEN ? AND ? GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -111,7 +111,7 @@ async function getSearch_data(type,range){
                     }
                 })
             }else if(range == '1w'){  //1周
-                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_Record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
+                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -136,7 +136,7 @@ async function getSearch_data(type,range){
                     }
                 })
             }else if(range == '1m'){  //1月
-                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_Record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
+                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -161,7 +161,7 @@ async function getSearch_data(type,range){
                     }
                 })
             }else if(range == '3m'){  //3月
-                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_Record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
+                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -186,7 +186,7 @@ async function getSearch_data(type,range){
                     }
                 })
             }else if(range == '6m'){  //6月
-                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_Record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
+                db.execute(`SELECT DATE_FORMAT(SR_Time,'%m/%d') Time_class,COUNT(SR_Time) Count FROM Search_record WHERE SR_Time BETWEEN ? AND ?  GROUP BY Time_class;`,[date_start,date_end],(err,result)=>{
                     if(err){
                         console.log(err);
                         reject();
@@ -212,7 +212,7 @@ async function getSearch_data(type,range){
                 })
             }
         }else if(type == 'UVisits'){
-            db.execute(`SELECT DATE_FORMAT(SR_Time,'%Y-%m-%d %H:%i:%s') SR_Time,SR_Cookie FROM Search_Record WHERE SR_Time BETWEEN ? AND ? ORDER BY SR_Time;`,[date_start,date_end],(err,result)=>{
+            db.execute(`SELECT DATE_FORMAT(SR_Time,'%Y-%m-%d %H:%i:%s') SR_Time,SR_Cookie FROM Search_record WHERE SR_Time BETWEEN ? AND ? ORDER BY SR_Time;`,[date_start,date_end],(err,result)=>{
                 if(err){
                     console.log(err);
                     reject();
@@ -235,7 +235,7 @@ async function getSearch_data(type,range){
                                     let data_time = new Date(result[i].SR_Time);
                                     
 
-                                    if(data_time < user_list_accept_time){
+                                    if(data_time <= user_list_accept_time){
                                         user_list.push({
                                             "cookie" : result[i].SR_Cookie,
                                             "count" : 1,
@@ -531,13 +531,13 @@ async function getSearch_data(type,range){
 
 
 
-
-//取得搜尋需求比例  UVisits and UV 未完成
-async function getSearch_Demand_Proportion(type,range){
+//取得搜尋需求比例
+async function getSearch_Proportion(type,range,data_type){
     let Now = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
     let data = [];
     let date_start = '';
     let date_end = Now;
+    let data_field = '';
     
     switch(range){
         case '1h' : date_start = Minutes_ago(60); break;
@@ -548,30 +548,40 @@ async function getSearch_Demand_Proportion(type,range){
         case '6m' : date_start = Day_ago(182); break;
         default : date_start = Hours_ago(23); break;
     }
+
+    switch(data_type){
+        case 'Demand' : data_field = 'SR_Demand'; break;
+        case 'Identity' : data_field = 'SR_Identity'; break;
+        case 'Condition' : data_field = 'SR_Condition'; break;
+        case 'School' : data_field = 'SR_School'; break;
+        case 'City' : data_field = 'SR_City'; break;
+        default : data_field = 'SR_Demand'; break;
+    }
     
     
     return new Promise((resolve,reject)=>{
         //累計顧客數量
         if(type == 'PV'){
-            db.execute(`SELECT SR_Demand FROM Search_Record WHERE SR_Time BETWEEN ? AND ?;`,[date_start,date_end],(err,result)=>{
+            db.execute(`SELECT ${data_field} FROM Search_record WHERE SR_Time BETWEEN ? AND ?;`,[date_start,date_end],(err,result)=>{
                 if(err){
                     console.log(err);
                     reject();
                 }else{
                     let found = false;
                     
-                    
                     for(i = 0; i < result.length; i++){
-                        result[i].SR_Demand = resource.setCode_to_Array(result[i].SR_Demand);
-                        for(j = 0;j < result[i].SR_Demand.length;j++){
+                        result[i][data_field] = resource.setCode_to_Array(result[i][data_field]);
+                        for(j = 0;j < result[i][data_field].length;j++){
                             if(data.length == 0){
+
                                 data.push({
-                                    "name" : getDemandText(result[i].SR_Demand[j]),
+                                    "name" : Proportion_DataText(result[i][data_field][j],data_type),
                                     "count" : 1,
                                 })
+
                             }else{
                                 for(k = 0; k < data.length;k++){
-                                    if(data[k].name == getDemandText(result[i].SR_Demand[j])){
+                                    if(data[k].name == Proportion_DataText(result[i][data_field][j],data_type)){
                                         data[k].count += 1;
                                         found = true;
                                         break;
@@ -580,7 +590,147 @@ async function getSearch_Demand_Proportion(type,range){
 
                                 if(!found){
                                     data.push({
-                                        "name" : getDemandText(result[i].SR_Demand[j]),
+                                        "name" : Proportion_DataText(result[i][data_field][j],data_type),
+                                        "count" : 1,
+                                    })
+                                }
+
+                                found = false;
+                            }
+                        }
+                    }
+
+                    
+
+                    resolve(data);
+                }
+            })
+        }else if(type == 'UVisits'){
+            db.execute(`SELECT DATE_FORMAT(SR_Time,'%Y-%m-%d %H:%i:%s') SR_Time,SR_Cookie,${data_field} FROM Search_record WHERE SR_Time BETWEEN ? AND ? ORDER BY SR_Time;`,[date_start,date_end],(err,result)=>{
+                if(err){
+                    console.log(err);
+                    reject();
+                }else{
+                    let user_list = [];
+                    if(result.length != 0){
+                        user_list.push({
+                            "cookie" : result[0].SR_Cookie,
+                            "count" : 0,
+                            [data_field] : result[0][data_field],
+                            "time" : result[0].SR_Time,
+                        });
+
+                        let found = false;
+                        for(i = 1;i < result.length;i++){
+                            for(j = user_list.length - 1;j >= 0;j--){
+                                if(user_list[j].cookie == result[i].SR_Cookie){
+                                    found = true;
+                                    let user_list_time = new Date(user_list[j].time);
+                                    let user_list_accept_time = new Date(user_list_time.getTime() + (1000 * 60 * gap));
+                                    let data_time = new Date(result[i].SR_Time);
+                                    
+
+                                    if(data_time <= user_list_accept_time){
+                                        user_list.push({
+                                            "cookie" : result[i].SR_Cookie,
+                                            "count" : 1,
+                                            [data_field] : result[i][data_field],
+                                            "time" : result[i].SR_Time
+                                        });
+                                    }else{
+                                        user_list.push({
+                                            "cookie" : result[i].SR_Cookie,
+                                            "count" : 0,
+                                            [data_field] : result[i][data_field],
+                                            "time" : result[i].SR_Time
+                                        });
+                                    }
+                                    break;
+                                }
+                            }
+
+                            if(!found){
+                                user_list.push({
+                                    "cookie" : result[i].SR_Cookie,
+                                    "count" : 0,
+                                    [data_field] : result[i][data_field],
+                                    "time" : result[i].SR_Time
+                                });
+                            }
+                            found = false;
+                            
+                        }
+                    }
+
+                    
+
+                    let found = false;
+                    for(i = 0; i < user_list.length; i++){
+                        user_list[i][data_field] = resource.setCode_to_Array(user_list[i][data_field]);
+                        for(j = 0;j < user_list[i][data_field].length;j++){
+                            if(data.length == 0){
+                                for(k = 0; k < user_list.length;k++){
+                                    if(user_list[k].count != 0){
+                                        data.push({
+                                            "name" : Proportion_DataText(user_list[i][data_field][j],data_type),
+                                            "count" : 1,
+                                        })
+                                        break;
+                                    }
+                                }
+                            }else{
+                                for(k = 0; k < data.length;k++){
+                                    if(data[k].name == Proportion_DataText(user_list[i][data_field][j],data_type) && user_list[i].count != 0){
+                                        data[k].count += 1;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!found && user_list[i].count != 0){
+                                    data.push({
+                                        "name" : Proportion_DataText(user_list[i][data_field][j],data_type),
+                                        "count" : 1,
+                                    })
+                                }
+
+                                found = false;
+                            }
+                        }
+                    }
+                    
+
+                    resolve(data);
+                }
+            })
+        }else if(type == 'UV'){
+            db.execute(`SELECT COUNT(${data_field}),${data_field} FROM Search_record WHERE SR_Time BETWEEN ? AND ? GROUP BY ${data_field};`,[date_start,date_end],(err,result)=>{
+                if(err){
+                    console.log(err);
+                    reject();
+                }else{
+                    
+                    let found = false;
+                    
+                    for(i = 0; i < result.length; i++){
+                        result[i][data_field] = resource.setCode_to_Array(result[i][data_field]);
+                        for(j = 0;j < result[i][data_field].length;j++){
+                            if(data.length == 0){
+                                data.push({
+                                    "name" : Proportion_DataText(result[i][data_field][j],data_type),
+                                    "count" : 1,
+                                })
+                            }else{
+                                for(k = 0; k < data.length;k++){
+                                    if(data[k].name == Proportion_DataText(result[i][data_field][j],data_type)){
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!found){
+                                    data.push({
+                                        "name" : Proportion_DataText(result[i][data_field][j],data_type),
                                         "count" : 1,
                                     })
                                 }
@@ -593,316 +743,6 @@ async function getSearch_Demand_Proportion(type,range){
                     resolve(data);
                 }
             })
-        }else if(type == 'UVisits'){
-            db.execute(`SELECT DATE_FORMAT(FL_Time,'%Y-%m-%d %H:%i:%s') FL_Time,FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ? ORDER BY FL_Time;`,[date_start,date_end],(err,result)=>{
-                if(err){
-                    console.log(err);
-                    reject();
-                }else{
-                    let user_list = [];
-                    if(result.length != 0){
-
-                        user_list.push({
-                            "cookie" : result[0].FL_Cookie,
-                            "count" : 1,
-                            "time" : result[0].FL_Time
-                        });
-
-                        let found = false;
-                        for(i = 1;i < result.length;i++){
-                            for(j = user_list.length - 1;j >= 0;j--){
-                                if(user_list[j].cookie == result[i].FL_Cookie){
-                                    found = true;
-                                    let user_list_time = new Date(user_list[j].time);
-                                    let user_list_accept_time = new Date(user_list_time.getTime() + (1000 * 60 * gap));
-                                    let data_time = new Date(result[i].FL_Time);
-                                    
-
-                                    if(data_time > user_list_accept_time){
-                                        user_list.push({
-                                            "cookie" : result[i].FL_Cookie,
-                                            "count" : 1,
-                                            "time" : result[i].FL_Time
-                                        });
-                                    }
-                                    break;
-                                }
-                            }
-
-                            if(!found){
-                                user_list.push({
-                                    "cookie" : result[i].FL_Cookie,
-                                    "count" : 1,
-                                    "time" : result[i].FL_Time
-                                });
-                            }
-                            found = false;
-                            
-                        }
-                    }
-
-                    
-                    
-                    if(range == '1h'){  //1小時 
-                        let label = create_label('min',60);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < user_list.length;j++){
-                                let user_list_time = new Date(user_list[j].time);
-                                let Time_class = add0(user_list_time.getHours()) + ':' + add0(user_list_time.getMinutes());
-                                if(label[i] == Time_class){
-                                    count += parseInt(user_list[j].count)
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                    }else if(range == '1d'){ //1天
-                        let label = create_label('h',24);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                            for(j = 0;j < user_list.length;j++){
-                                let user_list_time = new Date(user_list[j].time);
-                                let Time_class = add0(user_list_time.getHours()) + ':00';
-                                if(label[i] == Time_class){
-                                    count += parseInt(user_list[j].count)
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                    }else if(range == '1w'){ //1周 
-                        let label = create_label('d',7);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                            for(j = 0;j < user_list.length;j++){
-                                let user_list_time = new Date(user_list[j].time);
-                                let Time_class = add0(user_list_time.getMonth()+1) + '/' + add0(user_list_time.getDate());
-                                if(label[i] == Time_class){
-                                    count += parseInt(user_list[j].count)
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                    }else if(range == '1m'){ //1月 
-                        let label = create_label('d',31);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                            for(j = 0;j < user_list.length;j++){
-                                let user_list_time = new Date(user_list[j].time);
-                                let Time_class = add0(user_list_time.getMonth()+1) + '/' + add0(user_list_time.getDate());
-                                if(label[i] == Time_class){
-                                    count += parseInt(user_list[j].count)
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                    }else if(range == '3m'){ //3月 
-                        let label = create_label('d',93);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                            for(j = 0;j < user_list.length;j++){
-                                let user_list_time = new Date(user_list[j].time);
-                                let Time_class = add0(user_list_time.getMonth()+1) + '/' + add0(user_list_time.getDate());
-                                if(label[i] == Time_class){
-                                    count += parseInt(user_list[j].count)
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                    }else if(range == '6m'){ //6月 
-                        let label = create_label('d',182);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                            for(j = 0;j < user_list.length;j++){
-                                let user_list_time = new Date(user_list[j].time);
-                                let Time_class = add0(user_list_time.getMonth()+1) + '/' + add0(user_list_time.getDate());
-                                if(label[i] == Time_class){
-                                    count += parseInt(user_list[j].count)
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                    }
-
-                    resolve(data);
-                }
-            })
-        }else if(type == 'UV'){
-            if(range == '1h'){ //1小時 
-                db.execute(`SELECT DATE_FORMAT(FL_Time,'%H:%i') Time_class,COUNT(FL_Time),FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ? GROUP BY Time_class,FL_Cookie;`,[date_start,date_end],(err,result)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-                        let label = create_label('min',60);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < result.length;j++){
-                                if(label[i] == result[j].Time_class){
-                                    count += 1;
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                        
-                        resolve(data);
-                    }
-                })
-            }else if(range == '1d'){ //1天
-                db.execute(`SELECT DATE_FORMAT(FL_Time,'%H:00') Time_class,COUNT(FL_Time),FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ? GROUP BY Time_class,FL_Cookie;`,[date_start,date_end],(err,result)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-                        let label = create_label('h',24);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < result.length;j++){
-                                if(label[i] == result[j].Time_class){
-                                    count += 1;
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                        
-                        resolve(data);
-                    }
-                })
-            }else if(range == '1w'){  //1周
-                db.execute(`SELECT DATE_FORMAT(FL_Time,'%m/%d') Time_class,COUNT(FL_Time),FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ?  GROUP BY Time_class,FL_Cookie;`,[date_start,date_end],(err,result)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-                        let label = create_label('d',7);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < result.length;j++){
-                                if(label[i] == result[j].Time_class){
-                                    count += 1;
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                        
-                        resolve(data);
-                    }
-                })
-            }else if(range == '1m'){  //1月
-                db.execute(`SELECT DATE_FORMAT(FL_Time,'%m/%d') Time_class,COUNT(FL_Time),FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ?  GROUP BY Time_class,FL_Cookie;`,[date_start,date_end],(err,result)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-                        let label = create_label('d',31);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < result.length;j++){
-                                if(label[i] == result[j].Time_class){
-                                    count += 1;
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                        
-                        resolve(data);
-                    }
-                })
-            }else if(range == '3m'){  //3月
-                db.execute(`SELECT DATE_FORMAT(FL_Time,'%m/%d') Time_class,COUNT(FL_Time),FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ?  GROUP BY Time_class,FL_Cookie;`,[date_start,date_end],(err,result)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-                        let label = create_label('d',93);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < result.length;j++){
-                                if(label[i] == result[j].Time_class){
-                                    count += 1;
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                        
-                        resolve(data);
-                    }
-                })
-            }else if(range == '6m'){  //6月
-                db.execute(`SELECT DATE_FORMAT(FL_Time,'%m/%d') Time_class,COUNT(FL_Time),FL_Cookie FROM Flow WHERE FL_Time BETWEEN ? AND ?  GROUP BY Time_class,FL_Cookie;`,[date_start,date_end],(err,result)=>{
-                    if(err){
-                        console.log(err);
-                        reject();
-                    }else{
-                        let label = create_label('d',182);
-                        for(i = 0; i < label.length; i++){
-                            let count = 0;
-                        
-                            for(j = 0;j < result.length;j++){
-                                if(label[i] == result[j].Time_class){
-                                    count += 1;
-                                };
-                            }
-                            
-                            data.push({
-                                "label" : label[i],
-                                "count" : count,
-                            })
-                        }
-                        
-                        resolve(data);
-                    }
-                })
-            }
         }
         
     })
@@ -913,9 +753,15 @@ async function getSearch_Demand_Proportion(type,range){
 
 
 
+
+
+
+
+
 function create_label(type,count){
+    let now_text = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+    let now = new Date(now_text)
     let data = [];
-    let now = new Date();
     let time = '';
     for(i = (count - 1);i >= 0 ; i--){
         switch(type){
@@ -973,6 +819,23 @@ function Day_ago(day){      //產出幾天以前
     let dateobj = new Date(time2);
 
     return dateobj.getFullYear() + '-' + add0((dateobj.getMonth() + 1)) + '-' + add0(dateobj.getDate()) + ' ' + add0(dateobj.getHours()) + ':' + add0(dateobj.getMinutes()) + ":" + add0(dateobj.getSeconds());
+}
+
+function Proportion_DataText(code,type){   //用於分遍data label的編號中文function
+    switch(type){
+        case 'Demand' : return getDemandText(code); break;
+        case 'Identity' : return getIdentityText(code); break;
+        case 'Condition' : return getConditionText(code); break;
+        case 'School' : return getSchoolText(code); break;
+        case 'City' : {
+            if(getCityText(code) == ''){
+                return '不限區';
+            }else{
+                return getCityText(code);
+            }
+        }
+    }
+    return null;
 }
 
 
@@ -1448,7 +1311,7 @@ function checkDemand(demand,D_ID){
 module.exports = {
     Record,
     getSearch_data,
-    getSearch_Demand_Proportion,
+    getSearch_Proportion,
 
     getDemandText,
     getDemandID,
