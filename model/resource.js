@@ -311,6 +311,7 @@ async function Edit_Resource_search(data){
 async function setResource_Like(R_ID,utoken){
     let RL_ID = await NextID('Resources_like','RL_ID','RL');
     let RL_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+    let state = null;
     
 
     return new Promise((resolve,reject)=>{
@@ -325,23 +326,28 @@ async function setResource_Like(R_ID,utoken){
                 if(results[0].Num == 0){  //沒有案讚，這次是要按讚
                     sql = `INSERT INTO Resources_like VALUES(?,?,?,?);`;
                     parameter = [RL_ID,utoken,R_ID,RL_Date];
+                    state = true;
                 }else{ //有案讚，取消按讚
                     sql = `DELETE FROM Resources_like WHERE R_ID = ? AND RL_Cookie = ?`;
                     parameter = [R_ID,utoken];
+                    state = false;
                 }
 
-                db.execute(sql,parameter,(err,results)=>{
+                db.execute(sql,parameter,(err)=>{
                     if(err){
                         console.log(err);
-                        reject();
+                        reject({"state" : !state});
                     }else{
 
                         db.execute('SELECT COUNT(*) Num FROM Resources_like WHERE R_ID = ?',[R_ID],(err,results)=>{
                             if(err){
                                 console.log(err);
-                                reject();
+                                reject({"state" : !state});
                             }else{
-                                resolve(results[0].Num);
+                                resolve({
+                                    "Num" : results[0].Num,
+                                    "state" : state,
+                                });
                             }
                         })
 

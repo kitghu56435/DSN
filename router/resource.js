@@ -59,13 +59,20 @@ router.get('/',(req,res)=>{
             console.log(err);
             msgbox += '資料庫錯誤<br>';
         }else{
-            for(i = 0;i<results.length;i++){
-                for(j = 0;j<data.Demand.length;j++){
-                    if(results[i].D_ID == data.Demand[j].D_ID){
-                        data.Demand[j].R_On_Shelf = results[i].R_Num;
-                        data.Demand[j].R_Down_Shelf = data.Demand[j].D_Resource - results[i].R_Num;
+            let found = false;
+            for(i = 0;i<data.Demand.length;i++){
+                for(j = 0;j<results.length;j++){
+                    if(results[j].D_ID == data.Demand[i].D_ID){
+                        data.Demand[i].R_On_Shelf = results[j].R_Num;
+                        data.Demand[i].R_Down_Shelf = data.Demand[i].D_Resource - results[j].R_Num;
+                        found = true;
+                        break;
                     }
                 }
+                if(!found){
+                    data.Demand[i].R_Down_Shelf = data.Demand[i].D_Resource;
+                }
+                found = false;
             }
         }
     })

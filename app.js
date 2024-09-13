@@ -59,7 +59,7 @@ app.get('/',(req,res)=>{
 
 
     html += `<script>setSearch_window_L_ID('${req.cookies.leng}')</script>`;
-    if(req.cookies.accept == 'null'){
+    if(req.cookies.accept == 'null' || req.cookies.accept == undefined){
         html +=  `<script>cookie_msg()</script>`;
     }
     res.end(html);

@@ -56,6 +56,7 @@ const Administrator_verafication = (req,res,next) => {
 //accept 對cookie的接受程度 none/accept/null/delete
 
 const setCookie = (req,res,next) =>{
+   
     if(req.cookies.leng == undefined){
         res.cookie('leng', 'L000000001',{
             httpOnly : true,
@@ -75,6 +76,7 @@ const setCookie = (req,res,next) =>{
             maxAge: 1000 * 60 * 60 * 24 * 365,
         });
     }
+    
     
     next();
 }

@@ -1,6 +1,6 @@
 
 
-function setDSNdata(data,L_ID){
+function setDSNdata(data){
     
     let T_title = document.getElementsByClassName('T-title');
     let T_text = document.getElementsByClassName('T-text');
@@ -133,15 +133,21 @@ function setResourceInfo_data(data){   //資源頁面專用的
     over_resource_loading()
 }
 function setLike_Btn(clike){
-    let content = document.getElementsByClassName('content')[0];
+    
+    let content = document.getElementsByClassName('Like_content')[0];
     let heart = document.getElementsByClassName('heart')[0];
     let like_text = document.getElementsByClassName('like_text')[0];
     let numb = document.getElementsByClassName('numb')[0];
     if(clike){
-        content.setAttribute('class','content heart-active');
+        content.setAttribute('class','Like_content heart-active');
         heart.setAttribute('class','heart heart-active');
         like_text.setAttribute('class','like_text heart-active');
         numb.setAttribute('class','numb heart-active');
+    }else{
+        content.setAttribute('class','Like_content');
+        heart.setAttribute('class','heart');
+        like_text.setAttribute('class','like_text');
+        numb.setAttribute('class','numb');
     }
 }
 function check_text(str){
@@ -592,7 +598,8 @@ function R_Like(R_ID){
                     alert('案讚失敗');
                 }else{
                     let numb = document.getElementsByClassName('numb')[0]; //like num
-                    numb.innerHTML = jsonResponse.R_Like;
+                    numb.innerHTML = jsonResponse.Num;
+                    setLike_Btn(jsonResponse.state);
                 }
             }else{
                 alert('上傳搜尋資料失敗!','statues code :' + httpRequest.status);

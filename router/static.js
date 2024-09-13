@@ -771,8 +771,8 @@ router.post('/like',(req,res)=>{
     let utoken = req.cookies.utoken;
     let R_ID = req.body.R_ID;
     
-    resource.setResource_Like(R_ID,utoken).then((R_Like)=>{
-        res.json({'msg':'done','R_Like':R_Like});
+    resource.setResource_Like(R_ID,utoken).then((data)=>{
+        res.json({'msg':'done','Num':data.Num,'state':data.state});
     }).catch(()=>{
         res.json({'msg':'dberr'});
     })

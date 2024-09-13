@@ -174,7 +174,7 @@ function cookie_msg(){
         msg.setAttribute('class','cookie_msg');
         msg.innerHTML = `
         <div style="text-align: right;margin-bottom:1%"><img onclick="setCookie('delete'),cookie_msg()" src="../img/X.png"></div>
-        <p>我們使用Cookie技術提供個人化的服務，提升您的使用體驗，詳細請閱讀我們的<a href="#">《Cookie政策及條款》</a></p>
+        <p>我們使用Cookie技術提供個人化的服務，提升您的使用體驗，詳細請閱讀我們的<a href="/static/cookie_policy">《Cookie政策及條款》</a></p>
         <div><button class="no" onclick="setCookie('none'),cookie_msg()">拒絕</button><button class="yes" onclick="setCookie('accept'),cookie_msg()">酷，我接受!</button></div>
         `
         body.appendChild(msg);
@@ -206,9 +206,9 @@ function url(path){                      //轉送函數
 
 function Shelf(n){
     if(n == 1){
-        return '上架中'
+        return 'O 上架中'
     }else{
-        return '下架中'
+        return 'X 下架中'
     }
 }
 
