@@ -757,8 +757,9 @@ router.post('/msg',(req,res)=>{
     let utoken = req.cookies.utoken;
     let msg = req.body.msg;
     let R_ID = req.body.R_ID;
-
+    
     message.createResource_feedback(msg,utoken,R_ID).then(()=>{
+        
         res.json({'msg':'done'});
     }).catch(()=>{
         res.json({'msg':'dberr'});

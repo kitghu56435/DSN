@@ -1292,20 +1292,26 @@ function setArray_to_Code(array){
     let str = '';
     let all = false
     
-
-    for(m = 0;m < array.length;m++){
-        if(array[m] == 'A0'){
-            all = true
-            break;
+    if(array != undefined){
+        for(m = 0;m < array.length;m++){
+            if(array[m] == 'A0'){
+                all = true
+                break;
+            }
+            str += array[m];
         }
-        str += array[m];
-    }
 
-    if(all){
-        return 'A0';
+        if(all){
+            return 'A0';
+        }else{
+            return str;
+        }
     }else{
-        return str;
+        return '';
     }
+    
+
+    
 }
 function setCode_to_Array(code){
     let str = '';

@@ -55,9 +55,10 @@ function setSearch_results(data){
     //搜尋結果呈現
     let demand_ID = ['D000000001','D000000002','D000000003','D000000004'
     ,'D000000005','D000000006',"D000000007"];
-    console.log(data)
+    
     let title0 = false;   //適合資訊是否放上標題了
     let title1 = false;   //建議資訊是否放上標題了
+    let suitable = false  //是否有適合資源
     let suggestion = false; //是否有建議資源
     let data_html = document.getElementsByClassName('data');  // 0 是適合資訊 1 是建議資訊
     let str0 = '';
@@ -68,6 +69,7 @@ function setSearch_results(data){
         for(j = 0;j<data.R_List.length;j++){
             if(demand_ID[i] == data.R_List[j].D_ID){
                 if(data.R_List[j].Search_Type == 'search' || data.R_List[j].Search_Type == 'required'){
+                    suitable = true;
                     if(!title0){ //先看要不要放標題
                         str0 += `<h3><div><img src="../img/index/${data.R_List[j].D_ID}.png"></div>${data.R_List[j].D_Name}</h3>
                         <div class="data_resource">`;
@@ -108,11 +110,20 @@ function setSearch_results(data){
                 }
             }
         }
+
         str0 += '</div>';
         str1 += '</div>';
     }
-    data_html[0].innerHTML = str0;
     
+    
+    if(!suitable){
+        str0 = `<div class="none-data">
+                        <h5>尚未找到匹配的適合資源，資源可能在建置中，請過一陣子再搜尋看看</h5>
+        </div>`;
+    }
+
+    data_html[0].innerHTML = str0;
+
     if(suggestion){
         data_html[1].innerHTML = str1;
     }else{

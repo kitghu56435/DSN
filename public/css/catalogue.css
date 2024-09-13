@@ -77,6 +77,10 @@ p {
   margin-top: 10px;
 }
 
+.button-none{
+  background-color:crimson;
+}
+
 @media (max-width:1600px){
   .depiction{
     height:100px;

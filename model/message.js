@@ -1,5 +1,6 @@
 const db = require('../db');
-
+const moment = require('moment-timezone');
+const {NextID} = require('../function');
 
 //刪除留言
 async function Delete_Message(RF_ID){
@@ -22,11 +23,16 @@ async function Delete_Message(RF_ID){
 
 //新增留言
 async function createResource_feedback(msg,utoken,R_ID){
+    
     let RF_ID = await NextID('Resource_feedback','RF_ID','RF');
+    
     let RF_Date = moment().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+   
     if(R_ID == undefined || R_ID == 'undefined'){
         R_ID = null;
     }
+
+    
 
     return new Promise((resolve,reject)=>{
 

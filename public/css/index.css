@@ -69,6 +69,10 @@
     --bs-btn-active-border-color: #5a23c8;
 }
 
+.btn-none{
+    background-color: crimson;
+}
+
 .bd-mode-toggle {
     z-index: 1500;
 }

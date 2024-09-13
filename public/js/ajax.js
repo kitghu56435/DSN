@@ -552,7 +552,7 @@ function sendMsg(type){
             if(httpRequest.status === 200){
                 let jsonResponse = JSON.parse(httpRequest.responseText);
                 if(jsonResponse.msg == 'dberr'){
-                    alert('留言失敗使稍後嘗試');
+                    alert('留言失敗，請稍後嘗試');
                 }else{
                     alert('您的留言已成功送出，謝謝您的回饋');
                 }
