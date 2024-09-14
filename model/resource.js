@@ -653,8 +653,11 @@ async function getResource_Page_data(L_ID,R_ID){
                     let template_html = readFileSync('./public/html/template/' + T_Path,'utf-8');
                     let content = template_html;
                     let container2 = 'container2';   //container標籤
+                    let end = 'dsn-end';   //container-end結束標籤
                     let container2_bool = false;
+                    let end_bool = false;
                     let count = 0;
+                    let count2 = 0;
                     let label_state = '';
         
                     let dnsid = '';
@@ -707,6 +710,32 @@ async function getResource_Page_data(L_ID,R_ID){
                                 count = 0;
                                 break;
                             }
+                        }
+                        for(p = 0;p<end.length;p++){
+                            if(content[k+p] == end[p]){
+                                count2++;
+                                if(count2 == end.length){  //找到dsn-end
+                                    if(container != null){
+                                        if(container.note.length < (container.item)){
+                                            container.note.push("");
+                                        }
+                                        if(container.id.length < (container.item)){
+                                            container.id.push("");
+                                        }
+                                        data.container.push(container);
+                                        
+                                        container = null;
+                                    }
+                                    end_bool = true;
+                                    break;
+                                }
+                            }else{
+                                count2 = 0;
+                                break;
+                            }
+                        }
+                        if(end_bool){
+                            break;
                         }
                         if(container2_bool){   //如果container2_bool被開啟，就開始收集內標籤
                             for(s1 = 0;s1<title_str.length;s1++){    //尋找title內標籤
@@ -902,16 +931,7 @@ async function getResource_Page_data(L_ID,R_ID){
                             label_state = '';
                         }             
                     }
-                    if(container.note.length < (container.item)){
-                        container.note.push("");
-                    }
-                    if(container.id.length < (container.item)){
-                        container.id.push("");
-                    }
-                    data.container.push(container);
-        
-        
-        
+                    
         
                     for(i = 0;i<results.length;i++){
                         for(j = 0;j<data.container.length;j++){
@@ -922,6 +942,9 @@ async function getResource_Page_data(L_ID,R_ID){
                             }
                         }
                     }
+
+
+
                     
                     for(j = 0;j<data.container.length;j++){
                         for(k = 0;k<data.container[j].item;k++){
@@ -1096,7 +1119,7 @@ async function update_Resource_data(data){
 
     // console.log(delete_sql);
     // console.log(parameter);
-
+    
     return new Promise((resolve,rejects)=>{
         
         //同步資料庫資料，刪除沒有包含在這批的dsnid資料
@@ -1104,7 +1127,6 @@ async function update_Resource_data(data){
             if(err){
                 console.log(err);
             }
-            
         })
         //更新資源更新時間
         db.execute(`UPDATE Resources SET R_Update = ? WHERE R_ID = ?`,[R_Update,R_ID],(err)=>{

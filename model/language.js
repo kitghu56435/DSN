@@ -161,8 +161,11 @@ async function getStatic_data(L_ID,SP_ID){
                     let static_page_html = readFileSync('./public/html/front_end/' + SP_File,'utf-8');
                     let content = static_page_html;
                     let container2 = 'container2';   //container標籤
+                    let end = 'dsn-end';   //container-end結束標籤
                     let container2_bool = false;
+                    let end_bool = false;
                     let count = 0;
+                    let count2 = 0;
                     let label_state = '';
         
                     let dnsid = '';
@@ -215,6 +218,32 @@ async function getStatic_data(L_ID,SP_ID){
                                 count = 0;
                                 break;
                             }
+                        }
+                        for(p = 0;p<end.length;p++){
+                            if(content[k+p] == end[p]){
+                                count2++;
+                                if(count2 == end.length){  //找到dsn-end
+                                    if(container != null){
+                                        if(container.note.length < (container.item)){
+                                            container.note.push("");
+                                        }
+                                        if(container.id.length < (container.item)){
+                                            container.id.push("");
+                                        }
+                                        data.container.push(container);
+                                        
+                                        container = null;
+                                    }
+                                    end_bool = true;
+                                    break;
+                                }
+                            }else{
+                                count2 = 0;
+                                break;
+                            }
+                        }
+                        if(end_bool){
+                            break;
                         }
                         if(container2_bool){   //如果container2_bool被開啟，就開始收集內標籤
                             for(s1 = 0;s1<title_str.length;s1++){    //尋找title內標籤
@@ -410,30 +439,21 @@ async function getStatic_data(L_ID,SP_ID){
                             label_state = '';
                         }             
                     }
-                    if(container != null){
-                        if(container.note.length < (container.item)){
-                            container.note.push("");
-                        }
-                        if(container.id.length < (container.item)){
-                            container.id.push("");
-                        }
-                    }
-                    data.container.push(container);
+                    
 
-
-                    if(container != null){
-                        for(i = 0;i<results.length;i++){
-                            for(j = 0;j<data.container.length;j++){
-                                for(k = 0;k<data.container[j].item;k++){
-                                    if(data.container[j].id[k] == results[i].RD_Template_ID){
-                                        data.container[j].content[k] = results[i].RD_Content;
-                                    }
+                    
+                    for(i = 0;i<results.length;i++){
+                        for(j = 0;j<data.container.length;j++){
+                            for(k = 0;k<data.container[j].item;k++){
+                                if(data.container[j].id[k] == results[i].RD_Template_ID){
+                                    data.container[j].content[k] = results[i].RD_Content;
                                 }
                             }
                         }
-                    }
+                    }    
                     
-        
+                    
+                    
                     if(container2_bool){
                         for(j = 0;j<data.container.length;j++){
                             for(k = 0;k<data.container[j].item;k++){
@@ -505,13 +525,23 @@ async function saveStatic_data(data){
 async function update_Static_data(data){
     let SP_ID = data.SP_ID;
     let L_ID = data.L_ID;
+    let delete_sql = 'DELETE FROM Resource_data WHERE R_ID = ? AND L_ID = ?';
+    let parameter = [SP_ID,L_ID];
 
     for(x = 0;x<data.Template_ID.length;x++){
+        delete_sql += ' AND RD_Template_ID != ?';
+        parameter.push(data.Template_ID[x]);
         await create_Static_data(SP_ID,L_ID,data.Template_ID[x],data[data.Template_ID[x]]);
     }
 
     return new Promise((resolve)=>{
-        resolve();
+        //同步資料庫資料，刪除沒有包含在這批的dsnid資料
+        db.execute(delete_sql,parameter,(err)=>{
+            if(err){
+                console.log(err);
+            }
+            resolve();
+        })
     })
 }
 async function create_Static_data(SP_ID,L_ID,Template_ID,Content){
