@@ -157,7 +157,7 @@ section{
     padding:0.2em 0.6em 0.2em 0.6em;
     width:95%;
 }
-.up_btn{
+.up_btn,.save_btn{
     position: fixed;
     border-radius: 100%;
     background-color: #9c9999;
@@ -166,15 +166,19 @@ section{
     text-align: center;
     left: 92%;
     top:85%;
-    opacity: 0.7;
+    opacity: 0.6;
     transition: 0.3s;
-    cursor: pointer;
+    cursor: pointer;        
+
 }
-.up_btn:hover{
+.save_btn{
+    top:73%;
+}
+.up_btn:hover,.save_btn:hover{
     opacity: 1;
     transform: scale(1.03);
 }
-.up_btn > img{
+.up_btn > img,.save_btn > img{
     position: relative;
     top: 48%;
     left: 30%;
@@ -204,7 +208,7 @@ section{
     .container2_title{
         height: 125px;
     }
-    .up_btn{
+    .up_btn,.save_btn{
         width:85px;
         height:85px;
     }
@@ -228,11 +232,11 @@ section{
     .container2_title{
         height: 100px;
     }
-    .up_btn{
+    .up_btn,.save_btn{
         width:70px;
         height:70px;
     }
-    .up_btn > img{
+    .up_btn > img,.save_btn > img{
         top: 45%;
         left: 30%;
         width:60%;

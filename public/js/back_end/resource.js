@@ -542,6 +542,7 @@ function setResource_edit(data){
     let sidebars2_a = sidebars2.getElementsByTagName('a');
     let btn_area = document.getElementsByClassName('btn_area')[0];
     let btn = btn_area.getElementsByTagName('button');
+    let save_btn = document.getElementsByClassName('save_btn')[0];  //浮動式存檔按鈕
 
     D_Name_bar.innerHTML = data.resource.D_Name;
     D_Name_bar.setAttribute('href','/backend/resource/demand?D_ID=' + data.resource.D_ID);
@@ -559,6 +560,7 @@ function setResource_edit(data){
     }else{
         btn[1].innerHTML = '<span style="color:red">●</span>下架中';
     }
+    save_btn.setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
     btn[0].setAttribute('onclick',`saveResource_data('${data.resource.R_ID}')`);
     btn[1].setAttribute('onclick',`shelfResource('${data.resource.R_ID}')`);
     btn[2].setAttribute('onclick',`url_blank('/resource?ID=${data.resource.R_ID}')`);

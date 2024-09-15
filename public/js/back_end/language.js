@@ -92,6 +92,7 @@ function setStatic_edit(data){
     let html_area = document.getElementsByClassName('html_area')[0];
     let btn_area = document.getElementsByClassName('btn_area')[0];
     let btn = btn_area.getElementsByTagName('button');
+    let save_btn = document.getElementsByClassName('save_btn')[0];  //浮動式存檔按鈕
     let SP_Name_Bar = document.getElementById('SP_Name_Bar');
     SP_Name_Bar.innerHTML = data.static_page.SP_Name;
     SP_Name_Bar.setAttribute('href','/backend/language/static/edit?SP_ID=' + data.static_page.SP_ID);
@@ -116,7 +117,7 @@ function setStatic_edit(data){
     static.setAttribute('onchange',`getStatic_data(this.value,'L000000001')`);
 
     btn[0].setAttribute('onclick',`saveStatic_data('${data.static_page.SP_ID}')`);
-
+    save_btn.setAttribute('onclick',`saveStatic_data('${data.static_page.SP_ID}')`);
 
     html_area.innerHTML = `<input type="hidden" name="L_ID" value="${data.L_ID}">`;
     for(i = 0;i< data.container.length;i++){

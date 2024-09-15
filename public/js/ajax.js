@@ -66,6 +66,11 @@ function setResourceInfo_data(data){   //資源頁面專用的
                     T_title[i].parentElement.setAttribute('style','');
                     T_title[i].innerHTML = check_text(data.RD_Data[j].RD_Content);
                 }
+
+                if(data.RD_Data[j].RD_Template_ID == 'resource_name'){
+                    let title = document.getElementsByTagName('title')[0];
+                    title.innerHTML = data.RD_Data[j].RD_Content;
+                }
             }
         }
     }
