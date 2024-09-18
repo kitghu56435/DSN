@@ -36,6 +36,13 @@ async function Create_Resource(data){
     let S_ID = data.S_ID;
     let R_Depiction = data.R_Depiction;
     let R_Img = data.R_Img;
+    let R_Img_Sync = data.R_Img_Sync;
+
+    if(R_Img_Sync){
+        R_Img_Sync = 1;
+    }else{
+        R_Img_Sync = 0;
+    }
 
     if(checkData(R_Name) && checkData(T_ID) && checkData(D_ID)  && checkData(R_Img) && checkData(R_Depiction)){
         if(checkData(S_ID)){
@@ -50,8 +57,8 @@ async function Create_Resource(data){
 
         return new Promise((resolve,reject)=>{
             //這邊可以做資料庫交易優化
-            db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,null,null,null,null,0);`,
-            [R_ID,D_ID,T_ID,R_Date,R_Date,R_Img],(err)=>{
+            db.execute(`INSERT INTO Resources VALUES(?,?,?,1,?,?,?,?,null,null,null,null,0);`,
+            [R_ID,D_ID,T_ID,R_Date,R_Date,R_Img,R_Img_Sync],(err)=>{
                 if(err){
                     console.log(err)
                     reject('dberr');
@@ -960,7 +967,7 @@ async function getResource_Page_data(L_ID,R_ID){
             }
     
             resolve(data);
-        })            
+        })
     })
 
 }
@@ -981,6 +988,7 @@ async function getResource_data(input_data){
         "D_ID" : "",
         "R_Depiction" : "",
         "R_Img" : "",
+        "R_Img_Sync": "",
         "T_List" : [],
         "D_List" : [],
         "S_List" : [],
@@ -989,7 +997,7 @@ async function getResource_data(input_data){
 
     
     return new Promise((resolve,reject)=>{
-        db.execute(`SELECT Resources.D_ID,D_Name,T_ID,R_Img,R_Shelf FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
+        db.execute(`SELECT Resources.D_ID,D_Name,T_ID,R_Img,R_Img_Sync,R_Shelf FROM Resources,Demand WHERE Demand.D_ID = Resources.D_ID 
         AND R_Delete = 0 AND Demand.L_ID = 'L000000001' AND Resources.R_ID = ?;`,[R_ID],(err,results)=>{
             if(err){
                 console.log(err);
@@ -999,6 +1007,7 @@ async function getResource_data(input_data){
                 data.T_ID = results[0].T_ID;
                 data.D_ID = results[0].D_ID;
                 data.R_Img = results[0].R_Img;
+                data.R_Img_Sync = results[0].R_Img_Sync;
                 data.R_Shelf = results[0].R_Shelf;
             }
         })
@@ -1216,6 +1225,7 @@ async function update_Resource(data){
     let S_ID = data.S_ID;
     let R_Img = data.R_Img;
     let R_Depiction = data.R_Depiction;
+    let R_Img_Sync = data.R_Img_Sync;
 
     
 
@@ -1227,11 +1237,17 @@ async function update_Resource(data){
         }  
     } 
 
-
+    if(R_Img_Sync){
+        R_Img_Sync = 1;
+    }else{
+        R_Img_Sync = 0;
+    }
 
     return new Promise((resolve,rejects)=>{
+        
+
         //資源需求與模板
-        db.execute(`UPDATE Resources SET T_ID = ?,D_ID = ?,R_Img = ? WHERE R_ID = ?`,[T_ID,D_ID,R_Img,R_ID],(err)=>{
+        db.execute(`UPDATE Resources SET T_ID = ?,D_ID = ?,R_Img = ?,R_Img_Sync = ? WHERE R_ID = ?`,[T_ID,D_ID,R_Img,R_Img_Sync,R_ID],(err)=>{
             if(err){
                 console.log(err)
                 rejects();
@@ -1273,6 +1289,7 @@ async function update_Resource(data){
                 }
             }
         })
+
     })
 }
 async function delete_Supplier_binding(R_ID){

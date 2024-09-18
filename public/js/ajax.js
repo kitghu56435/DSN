@@ -134,7 +134,12 @@ function setResourceInfo_data(data){   //資源頁面專用的
         }
     }
 
-    update_time.innerHTML = '上次更新時間 ' + data.R_Update;
+    if(data.L_ID == 'L000000001'){
+        update_time.innerHTML = '上次更新時間 ' + data.R_Update;
+    }else{
+        update_time.innerHTML = 'Last updated ' + data.R_Update;
+    }
+    
     over_resource_loading()
 }
 function setLike_Btn(clike){

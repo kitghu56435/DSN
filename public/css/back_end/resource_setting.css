@@ -116,6 +116,12 @@ section{
     height: 1em;
     width:1em;
 }
+.img_sync{
+    position: relative;
+    height: 1em;
+    width:1em !important;
+    top:2px;
+}
 
 
 

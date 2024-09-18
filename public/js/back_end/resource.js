@@ -836,6 +836,7 @@ function setResource_setting(data){
     let D_ID = document.getElementsByName('D_ID')[0];
     let L_ID = document.getElementsByName('L_ID')[0];
     let R_Img = document.getElementsByName('R_Img')[0];
+    let img_sync = document.getElementsByClassName('img_sync')[0];
     let R_Depiction = document.getElementsByName('R_Depiction')[0];
     let btn_area = document.getElementsByClassName('btn_area')[0];
     let btn = btn_area.getElementsByTagName('button');
@@ -870,6 +871,13 @@ function setResource_setting(data){
         btn[1].innerHTML = '<span style="color:green">●</span>上架中';
     }else{
         btn[1].innerHTML = '<span style="color:red">●</span>下架中';
+    }
+
+    console.log(data.R_Img_Sync)
+    if(data.R_Img_Sync){
+        img_sync.checked = true;
+    }else{
+        img_sync.checked = false;
     }
 
     

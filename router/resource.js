@@ -279,6 +279,8 @@ router.post('/demand/edit/data',(req,res)=>{
     let R_ID = req.body.R_ID;
     let L_ID = req.body.L_ID;
 
+    
+
     resource.getResource_Page_data(L_ID,R_ID).then((data)=>{
         res.json(data)
     })
@@ -321,6 +323,7 @@ router.get('/demand/setting',(req,res)=>{
     res.end(html);
 })
 router.post('/demand/setting/data',(req,res)=>{
+    
     resource.getResource_data(req.body).then((data)=>{
         res.json(data)
     })
