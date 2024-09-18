@@ -873,7 +873,7 @@ function setResource_setting(data){
         btn[1].innerHTML = '<span style="color:red">●</span>下架中';
     }
 
-    console.log(data.R_Img_Sync)
+    
     if(data.R_Img_Sync){
         img_sync.checked = true;
     }else{
