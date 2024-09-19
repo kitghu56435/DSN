@@ -50,6 +50,7 @@ router.post('/header_data',(req,res)=>{
     
                 D_data.D_ID = results[0].D_ID;
                 D_data.D_Name = results[0].D_Name;
+                
                 for(i = 0;i<results.length;i++){
                     resource.push({
                         "R_ID" : results[i].R_ID,
@@ -81,6 +82,7 @@ router.post('/header_data',(req,res)=>{
             res.json({"msg":"dberr"});
         }else{
             data.static_data = results;
+            
             res.json(data);
         }
     })

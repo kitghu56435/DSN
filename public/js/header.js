@@ -3,8 +3,8 @@
 window.addEventListener('resize', function() {
     header_nav_check();
 });
-
-let catalogue_page = ['economy','emergency','law','education','career','medical','psychology','application'];
+let catalogue_page = [];
+//let catalogue_page = ['economy','emergency','law','education','career','medical','psychology','application'];
 
 function header_nav_check(){
     
@@ -80,6 +80,21 @@ function getHeader_data(page_name){
 function setHeader_data(data){
 
     //動態nav
+    //let catalogue_page = ['economy','emergency','law','education','career','medical','psychology','application'];
+    for(c = 0;c < data.data.length;c++){
+        switch(data.data[c].D_ID){
+            case "D000000001" : catalogue_page.push('economy');break;
+            case "D000000002" : catalogue_page.push('emergency');break;
+            case "D000000003" : catalogue_page.push('law');break;
+            case "D000000004" : catalogue_page.push('education');break;
+            case "D000000005" : catalogue_page.push('career');break;
+            case "D000000006" : catalogue_page.push('medical');break;
+            case "D000000007" : catalogue_page.push('psychology');break;
+            case "D000000008" : catalogue_page.push('application');break;
+        }
+    }
+    
+
     let collapse = document.getElementsByClassName('collapse')[0];
     collapse.innerHTML = '';
     let ul = document.createElement('ul');
